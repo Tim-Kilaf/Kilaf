@@ -10,6 +10,7 @@ import Dashboard from './dashboard/Dashboard'
 import Detail from './detail/Detail'
 import Login from './login/Login'
 import Register from './register/Register'
+import CreateItem from './createItem/CreateItem'
 
 export default function Index() {
   return (
@@ -28,9 +29,10 @@ export default function Index() {
             path="/register"
             component={Register}
           />
+          <Route path="/create" component={CreateItem} />
           <PrivateRoute path='/'>
             <Dashboard />
-          </PrivateRoute>
+          </PrivateRoute>          
         </Switch>
       </Router>
     </Provider>
