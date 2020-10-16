@@ -18,7 +18,7 @@ module.exports = {
         fullname: 'admin',
         email: 'admin@mail.com',
         password: bcrypt.hashSync('123456', salt),
-        RoleId: 2,
+        RoleId: 1,
         createdAt: new Date,
         updatedAt: new Date
       },
@@ -26,7 +26,7 @@ module.exports = {
         fullname: 'user',
         email: 'user@mail.com',
         password: bcrypt.hashSync('123456', salt),
-        RoleId: 3,
+        RoleId: 2,
         createdAt: new Date,
         updatedAt: new Date
       }
