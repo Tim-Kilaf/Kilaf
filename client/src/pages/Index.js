@@ -5,10 +5,12 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Dashboard from './dashboard/Dashboard'
 import Login from './login/Login'
 import Register from './register/Register'
+import Appbar from '../components/appbar/Appbar'
 
 export default function Index() {
   return (
     <Router>
+      <Appbar />
       <Switch>
         <Route
           path="/"
