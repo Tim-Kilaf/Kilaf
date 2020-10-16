@@ -38,6 +38,9 @@ module.exports = {
       buyout_price: {
         type: Sequelize.INTEGER
       },
+      bid_increment: {
+        type: Sequelize.INTEGER
+      },
       start_date: {
         type: Sequelize.DATE
       },
