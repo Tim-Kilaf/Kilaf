@@ -4,7 +4,7 @@ const {Users, Roles} = require('../models')
 
 class UserController {
     static login(req,res){
-        console.log(req.body)
+        console.log(req.body, 'controller login')
         Users.findOne({
             include: [Roles],
             where:{
