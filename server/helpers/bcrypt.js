@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs')
 function hashPassword(password){
     let salt = bcrypt.genSaltSync(10);
     let hash = bcrypt.hashSync(password, salt);
-    console.log(password, ' dari bcrypt')
+    // console.log(password, ' dari bcrypt')
     return hash
 }
 
