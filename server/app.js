@@ -4,14 +4,15 @@ const app = express()
 const port = process.env.PORT || 3000
 const route = require('./routes')
 const cors = require('cors')
-const errHandler = require('./middleware/errorHandler')
 
-app
-  .use(cors())
-  .use(express.urlencoded({ extended: true }))
-  .use(express.json())
-  .use(route)
-  .use(errHandler)
-  .listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
+app.use(cors())
+app.use(express.urlencoded({extended:true}))
+app.use(express.json())
+
+app.use(route)
+
+// app.listen(port, () => {
+//   console.log(`Example app listening at http://localhost:${port}`)
+// })
+
+module.exports = app
