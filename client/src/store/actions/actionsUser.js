@@ -2,7 +2,7 @@
 export function login(payload,cb) {
     return dispatch => {
         console.log(payload, 'action payload');
-        fetch('http://localhost:3000/login', {
+        fetch('http://localhost:3001/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -11,7 +11,7 @@ export function login(payload,cb) {
         })
         .then(res => res.json())
         .then(res => {
-            if (res.message === 'Invalid Username or Password 1') {
+            if (res.message === 'Invalid Username or Password') {
                 console.log(res.message);
             } else {
                 console.log(res,'res thunk login');
@@ -39,7 +39,7 @@ export function logout() {
 export function register(payload) {
     return dispatch => {
         console.log(payload, 'action payload');
-        fetch('http://localhost:3000/register', {
+        fetch('http://localhost:3001/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
