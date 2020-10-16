@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     starting_price: DataTypes.INTEGER,
     current_price: DataTypes.INTEGER,
     buyout_price: DataTypes.INTEGER,
+    bid_increment: DataTypes.INTEGER,
     start_date: DataTypes.DATE,
     end_date: DataTypes.DATE,
     buyout_date: DataTypes.DATE

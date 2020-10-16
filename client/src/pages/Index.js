@@ -7,6 +7,7 @@ import store from '../store'
 
 // pages import
 import Dashboard from './dashboard/Dashboard'
+import Detail from './detail/Detail'
 import Login from './login/Login'
 import Register from './register/Register'
 
@@ -15,6 +16,10 @@ export default function Index() {
     <Provider store={store}>
       <Router>
         <Switch>
+        <Route
+          path={`/bid/:id`}
+          component={Detail}
+        />
         <Route
             path="/login"
             component={Login}
@@ -27,7 +32,6 @@ export default function Index() {
             <Dashboard />
           </PrivateRoute>
         </Switch>
-          
       </Router>
     </Provider>
     
