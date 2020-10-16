@@ -17,4 +17,5 @@ fs
     .forEach(file => base.use(`/${file.split('.')[0]}`, require(path.join(`${__dirname}/endpoints`, file))))
 
 // exports the endpoints
+
 module.exports = base

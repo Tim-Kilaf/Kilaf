@@ -101,4 +101,4 @@ class BiddingController {
     }
 }
 
-module.exports
+module.exports = BiddingController

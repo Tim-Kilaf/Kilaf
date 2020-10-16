@@ -18,7 +18,7 @@ afterAll((done) => {
 describe("test user REGISTER with POST /register", function() {
     it("test success register responds with json", function (done) {
         request(app)
-        .post('/register')
+        .post('/auth/register')
         .send({ fullname: "alitongtong", email: "alitong2@mail.com", password: "123456" })
         .set("Accept", "application/json")
         .expect("Content-Type", /json/)
@@ -35,7 +35,7 @@ describe("test user REGISTER with POST /register", function() {
 describe("test user LOGIN with POST /login", function () {
     it("test success login responds with json", function (done) {
       request(app)
-        .post("/login")
+        .post("/auth/login")
         .send({ email: "alitong2@mail.com", password: "123456" })
         .set("Accept", "application/json")
         .expect("Content-Type", /json/)
@@ -53,7 +53,7 @@ describe("test user LOGIN with POST /login", function () {
 describe("test user fail LOGIN with POST /login", function () {
   it("test fail LOGIN invalid password responds with json", function (done) {
     request(app)
-      .post("/login")
+      .post("/auth/login")
       .send({ email: "admin@mail.com", password: "12345" })
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
@@ -66,7 +66,7 @@ describe("test user fail LOGIN with POST /login", function () {
   });
   it("test fail LOGIN invalid email responds with json", function (done) {
     request(app)
-      .post("/login")
+      .post("/auth/login")
       .send({ email: "admin2@mail.com", password: "123456" })
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
@@ -79,7 +79,7 @@ describe("test user fail LOGIN with POST /login", function () {
   });
   it("test fail LOGIN because empty email and password responds with json", function (done) {
     request(app)
-      .post("/login")
+      .post("/auth/login")
     //   .send({ email: "admin2@mail.com", password: "123456" })
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
@@ -95,7 +95,7 @@ describe("test user fail LOGIN with POST /login", function () {
 describe("test user fail REGISTER with POST /register", function () {
     it("test fail REGISTER because empty fullname responds with json", function (done) {
       request(app)
-        .post("/register")
+        .post("/auth/register")
         .send({ fullname: '', email: "admin@mail.com", password: "123456" })
         .set("Accept", "application/json")
         .expect("Content-Type", /json/)
@@ -108,7 +108,7 @@ describe("test user fail REGISTER with POST /register", function () {
     });
     it("test fail REGISTER because empty email responds with json", function (done) {
         request(app)
-          .post("/register")
+          .post("/auth/register")
           .send({ fullname: 'Snowman', email: "", password: "123456" })
           .set("Accept", "application/json")
           .expect("Content-Type", /json/)
@@ -121,7 +121,7 @@ describe("test user fail REGISTER with POST /register", function () {
     });
     it("test fail REGISTER because wrong email format responds with json", function (done) {
         request(app)
-          .post("/register")
+          .post("/auth/register")
           .send({ fullname: 'Snowman', email: "adminmail.com", password: "123456" })
           .set("Accept", "application/json")
           .expect("Content-Type", /json/)
@@ -134,7 +134,7 @@ describe("test user fail REGISTER with POST /register", function () {
     });
     it("test fail REGISTER because empty password responds with json", function (done) {
         request(app)
-          .post("/register")
+          .post("/auth/register")
           .send({ fullname: 'Snowman', email: "admin@mail.com", password: "" })
           .set("Accept", "application/json")
           .expect("Content-Type", /json/)
@@ -147,7 +147,7 @@ describe("test user fail REGISTER with POST /register", function () {
     });
     it("test fail REGISTER because password less than 6 characters responds with json", function (done) {
         request(app)
-          .post("/register")
+          .post("/auth/register")
           .send({ fullname: 'Snowman', email: "admin@mail.com", password: "12345" })
           .set("Accept", "application/json")
           .expect("Content-Type", /json/)
@@ -160,7 +160,7 @@ describe("test user fail REGISTER with POST /register", function () {
     });
     it("test fail REGISTER because email has already exist responds with json", function (done) {
         request(app)
-          .post("/register")
+          .post("/auth/register")
           .send({ fullname: 'Snowman', email: "alitong2@mail.com", password: "123456" })
           .set("Accept", "application/json")
           .expect("Content-Type", /json/)
