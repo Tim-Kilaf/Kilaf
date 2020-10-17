@@ -68,7 +68,7 @@ export default function CreateItem() {
 
     for (let i = 0; i < payload.image.length; i++) {
       formData.append('images', payload.image[i], payload.image[i].name)
-    }
+    }     
 
     dispatch(createItem(formData))
   }

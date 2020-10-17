@@ -1,6 +1,13 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { detailItem } from '../../store/actions/actionsItem';
+import { addBidding } from '../../store/actions/actionsItem'
+import { useParams } from 'react-router-dom';
+import Moment from 'react-moment';
+import NumericInput from 'react-numeric-input';
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -9,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 50,
     margin: '0 auto',
     [theme.breakpoints.down('xs')]: {
-      width: '100%',      
+      width: '90%',
     },
   },
   containerDetail: {
@@ -24,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
     width: '450px',
     height: '384px',
     objectFit: 'cover',
+    borderRadius: 20,
     [theme.breakpoints.down('xs')]: {
       width: '100%'
     },
@@ -34,11 +42,14 @@ const useStyles = makeStyles((theme) => ({
   auctioneer: {
     fontSize: 20,
     marginTop: -30,
-    fontStyle: 'italic'
+    fontStyle: 'italic',
+    color: '#2191fb'
   },
   price: {
     fontSize: 26,
-    marginTop: -5
+    margin: '-10px 0',
+    color: '#BA274A',
+    fontWeight: 600
   },
   containerText: {
     marginLeft: 25
@@ -46,9 +57,8 @@ const useStyles = makeStyles((theme) => ({
   descriptionTitle: {
     fontSize: 25
   },
-  description: {  
+  description: {
     fontSize: 18,
-    textAlign: 'justify'
   },
   priceDetailBox: {
     fontSize: 17,
@@ -59,8 +69,8 @@ const useStyles = makeStyles((theme) => ({
   },
   hr: {
     margin: '3em 0',
-    border: '1px solid black',
-    borderRadius: 20    
+    border: '1px solid gray',
+    borderRadius: 20
   },
   bidder: {
     borderRadius: 25,
@@ -74,47 +84,114 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Detail() {
   const classes = useStyles();
+  const dispatch = useDispatch()
+  const param = useParams()
+
+  const [bid, setBid] = useState(0)
+  const [valid, setValid] = useState(false)
+
+  useEffect(() => {
+    dispatch(detailItem(param.id))
+  }, [dispatch])
+
+  const data = useSelector(state => state.reducerItem.item)
+
+  useEffect(() => {
+    if (data.item) {
+      if (bid < (data.item.current_price + data.item.bid_increment)) {
+        setValid(false)
+      } else if ((bid >= (data.item.current_price + data.item.bid_increment))) {
+        setValid(true)
+      }
+    }
+  }, [bid])
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const payload = {
+      price: bid,
+      ItemId: param.id
+    }
+
+    dispatch(addBidding(payload, (success, err) => {
+      if(err) {
+        console.log(err)
+      }
+      dispatch(detailItem(param.id))
+    }))
+  }
 
   return (
     <Box className={classes.container}>
-      <Box>
-        <Box className={classes.containerDetail}>
-          <Box style={{ width: '450px', borderRadius: 20 }} boxShadow={2}>
-            <img
-              src={'https://images-na.ssl-images-amazon.com/images/I/71qJkCH4EnL._SL1384_.jpg'}
-              className={classes.image}
-            />
-          </Box>
-          <Box className={classes.containerText}>
-            <p className={classes.title}>Ryzen 3</p>
-            <p className={classes.auctioneer}>Auctioneer</p>
-            <p className={classes.price}>Rp. 250.000</p>
-            <Box className={classes.priceDetailBox}>
-              <p className={classes.priceDetail}>Buyout at Rp. 1.250.000</p>
-              <p className={classes.priceDetail}>Bid Multiplication Rp. 1.250.000</p>
+      {data.item && data.item.ItemPictures && data.item.User &&
+        <Box>
+          <Box className={classes.containerDetail}>
+            <Box style={{ width: '450px', borderRadius: 20 }} boxShadow={2}>
+              <img
+                src={require("../../assets/images/" + data.item.ItemPictures[0].path)}
+                className={classes.image}
+              />
             </Box>
-            <p className={classes.priceDetail}>Auction Ends at DDY/MM/YYYY HH:MM</p>
+            <Box className={classes.containerText}>
+              <p className={classes.title}>{data.item.name}</p>
+              <p className={classes.auctioneer}> {data.item.User.fullname} </p>
+              <p className={classes.price}>Rp. {data.item.current_price.toLocaleString()} </p>
+              <Box className={classes.priceDetailBox}>
+                <p className={classes.priceDetail}>Buyout at Rp. {data.item.buyout_price.toLocaleString()} </p>
+                <p className={classes.priceDetail}>Bid Multiplication Rp. {data.item.bid_increment.toLocaleString()} </p>
+              </Box>
+              <Box>
+                Start at <Moment className={classes.priceDetail} format="YYYY/MM/DD HH:mm">{data.item.start_date}</Moment>
+              </Box>
+              <Box>
+                End at  <Moment className={classes.priceDetail} format="YYYY/MM/DD HH:mm">{data.item.end_date}</Moment>
+              </Box>
+              <Box>
+                <form onSubmit={(e) => handleSubmit(e)}
+                  style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', padding: '20px 0' }}>
+                  <Box>
+                    <NumericInput className="form-control" defaultValue={(data.item.current_price)}
+                      min={(data.item.current_price + data.item.bid_increment)} max={data.item.buyout_price}
+                      step={data.item.bid_increment} onChange={setBid} />
+                  </Box>
+                  <Box style={{ marginTop: 10 }}>
+                    {valid ?
+                      <Button color="primary" type="submit" variant="contained">
+                        Start Bid
+                      </Button>
+                      :
+                      <Button color="primary" variant="contained" disabled>
+                        The Minium Bid Is {(data.item.current_price + data.item.bid_increment)}
+                      </Button>
+                    }
+                  </Box>
+                </form>
+              </Box>
+            </Box>
           </Box>
-        </Box>
-        <Box style={{ padding: '0 2em' }}>
-          <p className={classes.descriptionTitle}>Description</p>
-          <p className={classes.description}>We are your relatives pass the mayo, appeal to the client, sue the vice president yet i'll pay you in a week we don't need to pay upfront i
-          hope you understand. The website doesn't have the theme i was going for do less with more and try a more powerful colour needs to be sleeker.</p>
-        </Box>
-        <hr className={classes.hr}/>
-        <p className={classes.descriptionTitle}>Bidder</p>
-        <Box className={classes.bidder} boxShadow={3}>          
-          <Box> <p style={{ fontSize: 23 }}>Rp.250.000</p> </Box>
-          <Box>
-            <p>Bidder</p>
-            <p>B** T***</p>
+          <Box style={{ padding: '0 2em' }}>
+            <p className={classes.descriptionTitle}>Description</p>
+            <p className={classes.description}> {data.item.description} </p>
           </Box>
-          <Box>
-            <p>Bid Date</p>
-            <p>08-07-2020 12:00</p>
-          </Box>
+          <hr className={classes.hr} />
+          <p className={classes.descriptionTitle}>Bidder</p>
+          {data.item.Biddings && data.item.Biddings.map(el => {
+            return (
+              <Box className={classes.bidder} boxShadow={3}>
+                <Box> <p style={{ fontSize: 23 }}>Rp. {el.price.toLocaleString()} </p> </Box>
+                <Box>
+                  <p>Bidder</p>
+                  <p> {el.User.fullname} </p>
+                </Box>
+                <Box>
+                  <p>Bid Date</p>
+                  <Moment style={{ margin: 0, padding: 0 }} format="YYYY/MM/DD HH:mm">{el.createdAt}</Moment>
+                </Box>
+              </Box>
+            )
+          })}
         </Box>
-      </Box>
+      }
     </Box>
   )
 }

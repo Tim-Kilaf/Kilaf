@@ -4,6 +4,7 @@ const authenticate = require('../../middleware/authentication')
 
 itemEndPoints
     .get('/', authenticate, ItemController.listItem)
+    .get('/:id', authenticate, ItemController.detailItem)
     .post('/create', authenticate ,ItemController.createItem)    
 
 module.exports = itemEndPoints

@@ -76,10 +76,11 @@ class BiddingController {
             // const user = {
             //     id: 1
             // }
-            const { user } = req.middleware
+            const { id } = req.user
             const { ItemId, price, date } = req.body
+
             
-            const payload = { UserId: user.id, ItemId, price, date: new Date }
+            const payload = { UserId: id, ItemId, price, date: new Date }
 
             const data = await Biddings.create(payload)
 
