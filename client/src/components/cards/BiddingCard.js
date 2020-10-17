@@ -94,7 +94,7 @@ export default function BiddingCard(props) {
   const classes = useStyles();
   const history = useHistory()
 
-  return (
+  return props.data.ItemPictures.length > 0 && (
     <Box boxShadow={3} style={{ backgroundColor: '#f7f7f7', borderRadius: 20, margin: '20px 0 10px 0'}}>
       <Box className={classes.cardContainer}>
         <Box>
