@@ -7,7 +7,9 @@ import {
   TextField,
   Button,
 } from "@material-ui/core";
-// import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { register } from '../../store/actions/actionsUser'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,13 +34,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Register() {
   const classes = useStyles();
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch()
+  const history = useHistory()
 
-  const handleUsernameChange = (event) => {
+  const handleNameChange = (event) => {
     console.log(event.target.value,'<<< username change');
-    setUsername(event.target.value);
+    setName(event.target.value);
   }
   const handleEmailChange = (event) => {
     console.log(event.target.value,'<<< email change');
@@ -51,8 +55,15 @@ export default function Register() {
 
   }
   const handleSubmit = (event) => {
-    // event.prefentDefault();
-    console.log(event, 'submit form register');
+    event.preventDefault();
+    // console.log(event, 'submit form register');
+    let payload = {
+      fullname: name,
+      email,
+      password
+    }
+    dispatch(register(payload))
+    history.push('/login')
   }
 
   return (
@@ -63,14 +74,14 @@ export default function Register() {
         </Typography>
         <form onSubmit={handleSubmit} className={classes.form}>
           <TextField 
-            placeholder="Type your username here" 
-            label="Username" 
+            placeholder="Type your full name here" 
+            label="Full Name" 
             variant="filled" 
             InputLabelProps={{
               shrink: true
             }} 
-            onChange={handleUsernameChange}
-            value={username}
+            onChange={handleNameChange}
+            value={name}
             required
           />
           <TextField 

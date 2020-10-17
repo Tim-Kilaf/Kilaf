@@ -4,7 +4,7 @@ const {Users, Roles} = require('../models')
 
 class UserController {
     static login(req,res){
-        console.log(req.body)
+        console.log(req.body, 'controller login')
         Users.findOne({
             include: [Roles],
             where:{
@@ -19,13 +19,13 @@ class UserController {
                 let access_token = generateToken(user)
                 let role = user.Role.name
                 res.status(200).json({access_token, role})
-            }else{
+            } else{ 
                 res.status(400).json({message: 'Invalid Username or Password'})
             }
         })
         .catch(err=>{
             console.log(err)
-            res.status(400).json({message: 'Invalid Username or Password 1'})
+            res.status(400).json({message: 'Invalid Username or Password'})
         })
     }
     static register(req,res){
@@ -52,7 +52,7 @@ class UserController {
                 let error = err.errors[0].message
                 return res.status(400).json({message: error})
             } else if (err.name === 'SequelizeUniqueConstraintError') {
-                return res.status(400).json({message: 'Email already exist'})
+                return res.status(400).json({message: 'Email has already exist'})
             } else {
                 return res.status(500).json({message: 'Internal Server Error'})
             }
