@@ -3,7 +3,18 @@ const path = require('path')
 
 class ItemController {
   static async listItem(req, res, next) {
+    try {
+      const items = await Items.findAll({
+        where: {
+          status: 'unsold'
+        },
+        include: [ ItemPictures ]
+      })
 
+      res.status(200).json({items})
+    } catch(errors) {
+      return next(errors)
+    }
   }
 
   static async createItem(req, res, next) {
@@ -22,14 +33,14 @@ class ItemController {
       for(let i = 0; i < images.length;i++) {
         await ItemPictures.create({
           ItemId: item.id,
-          path: `/assets/images/${images[i].name}`
+          path: `${images[i].name}`
         })
         images[i].mv(path.join(__dirname, `../../client/src/assets/images/${images[i].name}`))
       }      
       res.status(201).json({message: 'Sucessfully Created'})
-    } catch(errors) {
+    } catch(errors) {    
       console.log(errors)
-      next(errors)
+      return next(errors)
     }
   }
 }

@@ -19,3 +19,24 @@ export function createItem(payload) {
       })
   }
 }
+
+export function getItems() {
+  return dispatch => {
+    fetch('http://localhost:3001/item', {
+      method: 'GET',
+      headers: {
+        access_token: localStorage.getItem('access_token')
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        dispatch({
+          type: 'FETCH_ITEM',
+          payload: data
+        })
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+}
