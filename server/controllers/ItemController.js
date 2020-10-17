@@ -72,7 +72,6 @@ class ItemController {
           },
           {
             model: Biddings,
-            // order masih bug
             attributes: ['id', 'price', 'createdAt'],
             include: [{
               model: Users,
