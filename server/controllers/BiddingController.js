@@ -11,7 +11,6 @@ class BiddingController {
                     order: [['price', 'DESC']]
                 }
             )
-
             res.status(200).json(data)
         } catch (err) {
             console.log(err)
@@ -47,7 +46,7 @@ class BiddingController {
             const data = await Biddings.findAll(
                 {
                     where: { ItemId },
-                    // group: ['UserId'],
+                    group: ['UserId'],
                     order: [['price', 'DESC']]
                 }
             )
@@ -74,19 +73,20 @@ class BiddingController {
     static create = async (req, res, next) => {
         console.log('masuk')
         try {
-            const user = {
-                id: 1
-            }
-            // const { user } = req.middleware
+            // const user = {
+            //     id: 1
+            // }
+            const { user } = req.middleware
             const { ItemId, price, date } = req.body
             
-            const payload = { UserId: user.id, ItemId, price, date }
+            const payload = { UserId: user.id, ItemId, price, date: new Date }
 
             const data = await Biddings.create(payload)
 
             if (data) res.status(201).json({ message: 'Successfully added data' })
             else throw new Error({ code: 400, message: 'Bad request: invalid data supplied' })
         } catch (err) {
+            console.log(err)
             return next(err)
         }
     }
