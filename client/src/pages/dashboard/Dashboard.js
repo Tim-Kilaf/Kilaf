@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
+  const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(getItems())
