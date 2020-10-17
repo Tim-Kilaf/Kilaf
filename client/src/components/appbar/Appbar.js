@@ -9,10 +9,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import { MdShoppingCart } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-
-import { logout } from '../../store/actions/actionsUser';
-
-
+import { Link } from 'react-router-dom';
 import {
   AppBar, 
   Toolbar, 
@@ -22,7 +19,8 @@ import {
   MenuItem,
   Menu,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+
+import { logout } from '../../store/actions/actionsUser';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -193,6 +191,7 @@ export default function Appbar() {
           <Link to="/">
             <img src="https://i.imgur.com/DkXvWFJ.png" alt="logo" height="35px" />
           </Link>
+          <div className={classes.grow} />
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -206,10 +205,9 @@ export default function Appbar() {
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>
-          <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 products" color="primary">
-              <Badge badgeContent={4} color="secondary">
+            <IconButton aria-label="show 2 products" color="primary">
+              <Badge badgeContent={2} color="secondary">
                 <MdShoppingCart />
               </Badge>
             </IconButton>

@@ -12,6 +12,7 @@ import Login from './login/Login'
 import Register from './register/Register'
 import Appbar from '../components/appbar/Appbar'
 import CreateItem from './createItem/CreateItem'
+import Cart from './cart/Cart'
 
 export default function Index() {
   return (
@@ -19,22 +20,27 @@ export default function Index() {
       <Router>
         <Appbar />
         <Switch>
-        <Route
-          path={`/bid/:id`}
-          component={Detail}
-        />
-        <Route
-            path="/login"
-            component={Login}
+          <Route
+            path={`/bid/:id`}
+            component={Detail}
           />
           <Route
-            path="/register"
-            component={Register}
-          />
-          <Route path="/create" component={CreateItem} />
-          {/* <PrivateRoute path='/'> */}
-            <Dashboard />
-          {/* </PrivateRoute>           */}
+              path="/login"
+              component={Login}
+            />
+            <Route
+              path="/register"
+              component={Register}
+            />
+            <Route
+              path="/cart"
+              component={Cart}
+            />
+            <Route path="/create" component={CreateItem} />
+            {/* <PrivateRoute path='/'> */}
+              <Dashboard />
+            {/* </PrivateRoute>           */}
+          
         </Switch>
       </Router>
     </Provider>
