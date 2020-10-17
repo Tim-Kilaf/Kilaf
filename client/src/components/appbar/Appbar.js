@@ -18,6 +18,7 @@ import {
   Badge,
   MenuItem,
   Menu,
+  Button,
 } from '@material-ui/core';
 
 import { logout } from '../../store/actions/actionsUser';
@@ -155,7 +156,7 @@ export default function Appbar() {
         <p>Keranjang</p>
       </MenuItem>
       <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="primary">
+        <IconButton to="/cart" aria-label="show 11 new notifications" color="primary">
           <Badge badgeContent={11} color="secondary">
             <NotificationsIcon />
           </Badge>
@@ -206,11 +207,13 @@ export default function Appbar() {
             />
           </div>
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 2 products" color="primary">
-              <Badge badgeContent={2} color="secondary">
-                <MdShoppingCart />
-              </Badge>
-            </IconButton>
+            <Link to="/cart">
+              <IconButton aria-label="show 2 products" color="primary">
+                <Badge badgeContent={2} color="secondary">
+                  <MdShoppingCart />
+                </Badge>
+              </IconButton>
+            </Link>
             <IconButton aria-label="show 17 new notifications" color="primary">
               <Badge badgeContent={17} color="secondary">
                 <NotificationsIcon />
