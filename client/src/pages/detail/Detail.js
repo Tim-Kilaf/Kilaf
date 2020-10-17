@@ -98,7 +98,7 @@ export default function Detail() {
 
   useEffect(() => {
     if (data.item) {
-      if (bid < (data.item.current_price + data.item.bid_increment)) {
+      if (data.owner || bid < (data.item.current_price + data.item.bid_increment)) {
         setValid(false)
       } else if ((bid >= (data.item.current_price + data.item.bid_increment))) {
         setValid(true)
@@ -147,6 +147,7 @@ export default function Detail() {
                 End at  <Moment className={classes.priceDetail} format="YYYY/MM/DD HH:mm">{data.item.end_date}</Moment>
               </Box>
               <Box>
+              {!data.owner ? (
                 <form onSubmit={(e) => handleSubmit(e)}
                   style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', padding: '20px 0' }}>
                   <Box>
@@ -155,17 +156,22 @@ export default function Detail() {
                       step={data.item.bid_increment} onChange={setBid} />
                   </Box>
                   <Box style={{ marginTop: 10 }}>
-                    {valid ?
+                    {data.highestBidder ?
+                      <Button color="primary" variant="contained" disabled>
+                        You are leading
+                      </Button>
+                      :
+                      valid ?
                       <Button color="primary" type="submit" variant="contained">
                         Start Bid
                       </Button>
                       :
                       <Button color="primary" variant="contained" disabled>
                         The Minium Bid Is {(data.item.current_price + data.item.bid_increment)}
-                      </Button>
-                    }
+                        </Button>}
                   </Box>
                 </form>
+              ) : (<></>)}
               </Box>
             </Box>
           </Box>
