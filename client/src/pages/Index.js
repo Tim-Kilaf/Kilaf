@@ -10,12 +10,14 @@ import Dashboard from './dashboard/Dashboard'
 import Detail from './detail/Detail'
 import Login from './login/Login'
 import Register from './register/Register'
+import Appbar from '../components/appbar/Appbar'
 import CreateItem from './createItem/CreateItem'
 
 export default function Index() {
   return (
     <Provider store={store}>
       <Router>
+        <Appbar />
         <Switch>
         <Route
           path={`/bid/:id`}
