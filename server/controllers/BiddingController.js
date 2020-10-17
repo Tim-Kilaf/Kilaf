@@ -8,12 +8,12 @@ class BiddingController {
             const data = await Biddings.findAll(
                 {
                     where: { ItemId },
-                    order: ['price', 'DESC']
+                    order: [['price', 'DESC']]
                 }
             )
-
             res.status(200).json(data)
         } catch (err) {
+            console.log(err)
             return next(err)
         }
     }
@@ -28,12 +28,13 @@ class BiddingController {
                     attributes: [
                         [Sequelize.fn('DISTINCT', Sequelize.col('UserId')), 'UserId']
                     ],
-                    order: ['price', 'DESC']
+                    order: [['price', 'DESC']]
                 }
             )
 
             res.status(200).json(data)
         } catch (err) {
+            console.log(err)
             return next(err)
         }
     }
@@ -46,12 +47,13 @@ class BiddingController {
                 {
                     where: { ItemId },
                     group: ['UserId'],
-                    order: ['price', 'DESC']
+                    order: [['price', 'DESC']]
                 }
             )
 
             res.status(200).json(data)
         } catch (err) {
+            console.log(err)
             return next(err)
         }
     }
@@ -60,7 +62,7 @@ class BiddingController {
         try {
             const { ItemId, UserId } = req.params
 
-            const data = await Bindings.findAll({ where: { ItemId, UserId } })
+            const data = await Biddings.findAll({ where: { ItemId, UserId } })
 
             res.status(200).json(data)
         } catch (err) {
@@ -69,17 +71,22 @@ class BiddingController {
     }
 
     static create = async (req, res, next) => {
+        console.log('masuk')
         try {
+            // const user = {
+            //     id: 1
+            // }
             const { user } = req.middleware
             const { ItemId, price, date } = req.body
+            
+            const payload = { UserId: user.id, ItemId, price, date: new Date }
 
-            const payload = { UserId: user.id, ItemId, price, date }
-
-            const data = await Bindings.create(payload)
+            const data = await Biddings.create(payload)
 
             if (data) res.status(201).json({ message: 'Successfully added data' })
             else throw new Error({ code: 400, message: 'Bad request: invalid data supplied' })
         } catch (err) {
+            console.log(err)
             return next(err)
         }
     }
@@ -91,7 +98,7 @@ class BiddingController {
             const data = await Biddings.findOne({ where: id })
 
             if (data) {
-                const result = await Bindings.destroy({ where: id })
+                const result = await Biddings.destroy({ where: id })
 
                 if (result) res.status(201).json({ message: 'Successfully added data' })
             } else throw new Error({ code: 404, message: 'Not found: The bidding data is not found.' })

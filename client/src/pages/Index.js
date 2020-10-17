@@ -19,10 +19,10 @@ export default function Index() {
       <Router>
         <Appbar />
         <Switch>
-        <Route
+        {/* <Route
           path={`/bid/:id`}
           component={Detail}
-        />
+        /> */}
         <Route
             path="/login"
             component={Login}
@@ -31,10 +31,16 @@ export default function Index() {
             path="/register"
             component={Register}
           />
-          <Route path="/create" component={CreateItem} />
-          <PrivateRoute path='/'>
+          {/* <Route path="/create" component={CreateItem} /> */}
+          <PrivateRoute path='/' exact>
             <Dashboard />
-          </PrivateRoute>          
+          </PrivateRoute>       
+          <PrivateRoute path='/bid/:id'>
+            <Detail />
+          </PrivateRoute>   
+          <PrivateRoute path='/create'>
+            <CreateItem />
+          </PrivateRoute>   
         </Switch>
       </Router>
     </Provider>
@@ -48,7 +54,7 @@ function PrivateRoute({ children, ...rest }) {
     <Route
       {...rest}
       render={({ location }) =>
-        isLogin ? (
+        localStorage.getItem('access_token') ? (
           children
         ) : (
           <Redirect

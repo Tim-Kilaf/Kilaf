@@ -24,6 +24,8 @@ export default function Dashboard() {
   const classes = useStyles();
   const dispatch = useDispatch()
   const history = useHistory()
+  const islogin = useSelector((state) => state.isLogin)
+  console.log(islogin);
 
   function handleLogout() {
     dispatch(logout())
