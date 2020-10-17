@@ -1,6 +1,6 @@
 const errorHandler = (err, req, res, next) => {
     let { code, name, message, errors } = err
-
+    
     if (code) {
         message = [message]
     } else {
@@ -11,11 +11,11 @@ const errorHandler = (err, req, res, next) => {
             case 'SequelizeValidationError':
             case 'SequelizeUniqueConstraintError':
                 statusCode = 400
-                errors.forEach(err => errMessage.push(`${err.type}: ${err.message}`))
+                errors.forEach(err => message.push(`${err.type}: ${err.message}`))
                 break
             case 'JsonWebTokenError':
             default:
-                errMessage.push("Whoops, something happened on our end!")
+                message.push("Whoops, something happened on our end!")
                 break
         }
     }
