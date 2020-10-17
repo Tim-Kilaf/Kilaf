@@ -6,6 +6,9 @@ const route = require('./routes')
 const {errorHandler} = require('./middleware/errorHandler')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
+const cron = require('node-cron')
+const resolveBids = require('./cron/cronFunctions')
+
 
 app
 .use(cors())
@@ -14,5 +17,10 @@ app
 .use(express.json())
 .use(route)
 .use(errorHandler)
+
+// CRON Function (Runs every minute 00-59)
+cron.schedule('0-59 * * * *', () => {
+    resolveBids()
+})
 
 module.exports = app

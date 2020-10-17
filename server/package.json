@@ -10,6 +10,7 @@
     "express-fileupload": "^1.2.0",
     "ioredis": "^4.17.3",
     "jsonwebtoken": "^8.5.1",
+    "node-cron": "^2.0.3",
     "pg": "^8.4.1",
     "sequelize": "^6.3.5"
   },
