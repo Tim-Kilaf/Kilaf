@@ -22,15 +22,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
-  const dispatch = useDispatch()
-  const history = useHistory()
-  const islogin = useSelector((state) => state.isLogin)
-  console.log(islogin);
-
-  function handleLogout() {
-    dispatch(logout())
-    history.push('/')
-  }
 
   useEffect(() => {
     dispatch(getItems())
@@ -40,7 +31,6 @@ export default function Dashboard() {
 
   return (
     <Box>
-      <Button onClick={handleLogout}>Logout</Button>
       <Box className={classes.container}>
         {items && items.map(data => {
           return (

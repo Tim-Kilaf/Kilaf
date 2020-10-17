@@ -5,7 +5,11 @@ import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert'
+import MoreIcon from '@material-ui/icons/MoreVert';
+import { MdShoppingCart } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   AppBar, 
   Toolbar, 
@@ -15,7 +19,8 @@ import {
   MenuItem,
   Menu,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+
+import { logout } from '../../store/actions/actionsUser';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -81,8 +86,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+export default function Appbar() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -106,6 +113,11 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  function handleLogout() {
+    dispatch(logout());
+    history.push('/');
+  }
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -119,6 +131,7 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   );
 
@@ -139,7 +152,7 @@ export default function PrimarySearchAppBar() {
             <MailIcon />
           </Badge>
         </IconButton>
-        <p>Messages</p>
+        <p>Keranjang</p>
       </MenuItem>
       <MenuItem>
         <IconButton aria-label="show 11 new notifications" color="primary">
@@ -147,7 +160,7 @@ export default function PrimarySearchAppBar() {
             <NotificationsIcon />
           </Badge>
         </IconButton>
-        <p>Notifications</p>
+        <p>Pemberitahuan</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -158,7 +171,7 @@ export default function PrimarySearchAppBar() {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <p>Profil</p>
       </MenuItem>
     </Menu>
   );
@@ -178,9 +191,7 @@ export default function PrimarySearchAppBar() {
           <Link to="/">
             <img src="https://i.imgur.com/DkXvWFJ.png" alt="logo" height="35px" />
           </Link>
-          {/* <Typography className={classes.title} variant="h6" noWrap>
-            LOGO
-          </Typography> */}
+          <div className={classes.grow} />
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -194,13 +205,12 @@ export default function PrimarySearchAppBar() {
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>
-          <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            {/* <IconButton aria-label="show 4 new mails" color="primary">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
+            <IconButton aria-label="show 2 products" color="primary">
+              <Badge badgeContent={2} color="secondary">
+                <MdShoppingCart />
               </Badge>
-            </IconButton> */}
+            </IconButton>
             <IconButton aria-label="show 17 new notifications" color="primary">
               <Badge badgeContent={17} color="secondary">
                 <NotificationsIcon />
