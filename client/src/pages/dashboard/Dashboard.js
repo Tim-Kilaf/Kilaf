@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Box from '@material-ui/core/Box';
 import BiddingCard from '../../components/cards/BiddingCard'
 import { makeStyles } from '@material-ui/core/styles';
-
+import { useDispatch, useSelector } from 'react-redux'
+import { Button } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+import { logout } from '../../store/actions/actionsUser'
+import { getItems } from '../../store/actions/actionsItem'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -19,12 +23,20 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard() {
   const classes = useStyles();
 
+  useEffect(() => {
+    dispatch(getItems())
+  }, [dispatch])
+
+  const items = useSelector(state => state.reducerItem.items)
+
   return (
     <Box>
       <Box className={classes.container}>
-        <BiddingCard />
-        <BiddingCard />
-        <BiddingCard />
+        {items && items.map(data => {
+          return (
+            <BiddingCard data={data}/>                                
+          )
+        })}
       </Box>
     </Box>
   )

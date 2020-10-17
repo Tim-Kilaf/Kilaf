@@ -2,6 +2,7 @@ import React from 'react'
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
+import Moment from 'react-moment';
 
 const useStyles = makeStyles((theme) => ({
   cardContainer: {
@@ -29,8 +30,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   detailBox: {
-    padding: '10px 30px',
-    alignContent: 'flex-end',
+    padding: '10px 30px',    
+    [theme.breakpoints.down('xs')]: {
+      padding: '0px 10px',
+      textAlign: 'center',
+    }
+  },
+  dateBox: {
+    padding: '40px 30px',    
     [theme.breakpoints.down('xs')]: {
       padding: '0px 10px',
       textAlign: 'center',
@@ -49,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     marginTop: 40,
     [theme.breakpoints.down('xs')]: {
-      margin: 0
+      margin: '20px 0'
     },
   },
   currentPrice: {
@@ -82,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function BiddingCard() {
+export default function BiddingCard(props) {
   const classes = useStyles();
 
   return (
@@ -90,34 +97,36 @@ export default function BiddingCard() {
       <Box className={classes.cardContainer}>
         <Box>
           <img
-            src={'https://www.pcgamesn.com/wp-content/uploads/2017/09/cpu-upgrade-900x506.jpg'}
+            src={require("../../assets/images/" + props.data.ItemPictures[0].path)}
             className={classes.image}
           />
         </Box>
         <Box className={classes.detailBox}>
-          <p className={classes.namaBarang}>Nama Barang</p>
+          <p className={classes.namaBarang}> {props.data.name} </p>
           <Box className={classes.priceBox}>
             <Box>
               <p className={classes.priceDetail}>Starting Price</p>
-              <p className={classes.priceDetail}>Rp. 100.000,00</p>
+              <p className={classes.priceDetail}>Rp. {props.data.starting_price.toLocaleString()}</p>
             </Box>
             <Box>
               <p className={classes.priceDetail}>Buyout Price</p>
-              <p className={classes.priceDetail}>Rp. 100.000,00</p>
+              <p className={classes.priceDetail}>Rp. {props.data.buyout_price.toLocaleString()}</p>
             </Box>
             <Box>
               <p className={classes.priceDetail}>Kelipatan Bid</p>
-              <p className={classes.priceDetail}>Rp. 100.000,00</p>
+              <p className={classes.priceDetail}>Rp. {props.data.bid_increment.toLocaleString()}</p>
             </Box>
           </Box>
           <Box className={classes.currentPrice}>
             <p>Current Price</p>
-            <p className={classes.currentPriceText}>Rp. 250.000,00</p>
+            <p className={classes.currentPriceText}>Rp. {props.data.current_price.toLocaleString()}</p>
           </Box>
         </Box>
-        <Box className={classes.detailBox}>
+        <Box className={classes.dateBox}>
           <Box>
-            <p>08.00 - 09.00</p>
+            <Moment style={{ fontSize: 16 }} format="YYYY/MM/DD HH:mm">{props.data.start_date}</Moment> 
+            <p style={{ fontSize: 15, fontStyle: 'italic', textAlign: 'center', margin: '10px 0' }}>Until</p>
+            <Moment style={{ fontSize: 16 }} format="YYYY/MM/DD HH:mm">{props.data.end_date}</Moment>
           </Box>
           <Box className={classes.buttonBox}>
             <Button variant="contained" color="secondary">

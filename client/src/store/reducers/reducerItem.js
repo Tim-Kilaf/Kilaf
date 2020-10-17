@@ -1,8 +1,18 @@
-// if role payload is added, change state to object and add role
-function reducerItem(state = false, action) {
+let currentState = {
+  items: []
+}
+
+
+function reducerItem(state = currentState, action) {
   switch (action.type) {      
       case 'CREATE_ITEM':          
-          return state
+        return state
+      case 'FETCH_ITEM':
+        let newState = {
+          ...state,
+          items: action.payload.items
+        }
+        return newState
       default:
           return state
   }

@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Items.belongsTo(models.Users)
+      Items.hasMany(models.ItemPictures)
     }
   };
   Items.init({

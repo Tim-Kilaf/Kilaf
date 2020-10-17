@@ -3,60 +3,63 @@ const { generateToken } = require('../helpers/jwt')
 const {Users, Roles} = require('../models')
 
 class UserController {
-    static login(req,res){
-        console.log(req.body, 'controller login')
-        Users.findOne({
-            include: [Roles],
-            where:{
-                email: req.body.email
-            }
-        })
-        .then(user=>{
-            // console.log(user)
-            let valid = checkPassword(req.body.password, user.password)
-            // console.log(valid)
+    static login = async (req, res, next) => {
+        try {
+            const { email, password } = req.body
+            const user = await Users.findOne({
+                include: [Roles],
+                where: {
+                    email
+                }
+            })
+            const valid = checkPassword(password, user.password)
             if(valid){
                 let access_token = generateToken(user)
                 let role = user.Role.name
-                res.status(200).json({access_token, role})
-            } else{ 
-                res.status(400).json({message: 'Invalid Username or Password'})
+                return res.status(200).json({access_token, role})
+            }else{ 
+                return res.status(400).json({message: 'Invalid Username or Password'})
             }
-        })
-        .catch(err=>{
-            console.log(err)
-            res.status(400).json({message: 'Invalid Username or Password'})
-        })
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
     }
-    static register(req,res){
-        console.log('masuk 1')
-        Users.create({
-            fullname: req.body.fullname,
-            email: req.body.email,
-            password: req.body.password,
-            RoleId: '',
-            createdAt: new Date,
-            updatedAt: new Date
-        })
-        .then(user => {
-            console.log(user)
-            return Users.findOne({include: [Roles],where:{email: user.email}})
-        })
-        .then(user => {
-            let role = user.Role.name
-            return res.status(201).json({id:user.id, email:user.email, role})
-        })
-        .catch(err=>{
-            console.log(err.name)
-            if(err.name === 'SequelizeValidationError'){
-                let error = err.errors[0].message
-                return res.status(400).json({message: error})
-            } else if (err.name === 'SequelizeUniqueConstraintError') {
-                return res.status(400).json({message: 'Email has already exist'})
-            } else {
-                return res.status(500).json({message: 'Internal Server Error'})
+    static register = async (req,res, next) => {
+        try {
+            const { fullname, email, password } = req.body
+
+            const regist = await Users.create({
+                fullname,
+                email,
+                password,
+                RoleId: '',
+                createdAt: new Date,
+                updatedAt: new Date
+            })
+
+            const newUser = await Users.findOne({include: [Roles], where: {email: regist.email} })
+            let role = newUser.Role.name
+            return res.status(201).json({id: newUser.id, email: newUser.email, role})
+
+        } catch (error) {
+            console.log(error)
+            if(error.name === 'SequelizeValidationError'){
+            let err = {
+                code: 400,
+                message: error.errors[0].message
             }
-        })
+            next(err)
+            } else if (error.name === 'SequelizeUniqueConstraintError') {
+                let err = {
+                    code: 400,
+                    message: 'Email has already exist'
+                }
+                next(err)
+            } else {
+               next(error)
+            }
+        }
     }
 }
 
