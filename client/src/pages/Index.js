@@ -32,9 +32,9 @@ export default function Index() {
             component={Register}
           />
           <Route path="/create" component={CreateItem} />
-          <PrivateRoute path='/'>
+          {/* <PrivateRoute path='/'> */}
             <Dashboard />
-          </PrivateRoute>          
+          {/* </PrivateRoute>           */}
         </Switch>
       </Router>
     </Provider>
