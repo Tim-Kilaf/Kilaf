@@ -63,9 +63,9 @@ class ItemController {
         },
         include: [
           {
-            model:ItemPictures,
+            model: ItemPictures,
             attributes: [ 'id', 'path' ]
-          }, 
+          },
           {
             model: Users,
             attributes: [ 'fullname' ]
@@ -82,6 +82,8 @@ class ItemController {
         order: [[ Biddings, 'price', 'DESC' ]]
       })
 
+      let highestBidder = item.Biddings.length > 0 && req.user.id === item.Biddings[0].User.id
+
       let owner
 
       if (req.user.id === item.UserId) {
@@ -90,7 +92,7 @@ class ItemController {
         owner = false
       }
 
-      res.status(200).json({ item, owner })
+      res.status(200).json({ item, owner, highestBidder })
     } catch (errors) {
       console.log(errors)
       return next(errors)
