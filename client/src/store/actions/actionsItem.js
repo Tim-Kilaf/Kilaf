@@ -40,3 +40,50 @@ export function getItems() {
       })
   }
 }
+
+export function detailItem(id) {
+  return dispatch => {
+    fetch(`http://localhost:3001/item/${id}`, {
+      method: 'GET',
+      headers: {
+        access_token: localStorage.getItem('access_token')
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        dispatch({
+          type: 'FETCH_ITEM_DETAIL',
+          payload: data
+        })
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+}
+
+export function addBidding(payload, cb) {
+  console.log(payload)
+  return dispatch => {
+    fetch(`http://localhost:3001/biddings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        access_token: localStorage.getItem('access_token')
+      },
+      body: JSON.stringify(payload)
+    })
+      .then(res => res.json())
+      .then(data => {
+        dispatch({
+          type: 'ADD_BIDDING',
+          payload: data
+        })
+        cb('success')
+      })
+      .catch(err => {
+        cb('success', err)
+        console.log(err);
+      })
+  }
+}

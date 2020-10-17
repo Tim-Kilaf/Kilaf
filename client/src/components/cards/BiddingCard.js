@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import Moment from 'react-moment';
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   cardContainer: {
@@ -91,6 +92,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function BiddingCard(props) {
   const classes = useStyles();
+  const history = useHistory()
 
   return (
     <Box boxShadow={3} style={{ backgroundColor: '#f7f7f7', borderRadius: 20, margin: '20px 0 10px 0'}}>
@@ -128,8 +130,8 @@ export default function BiddingCard(props) {
             <p style={{ fontSize: 15, fontStyle: 'italic', textAlign: 'center', margin: '10px 0' }}>Until</p>
             <Moment style={{ fontSize: 16 }} format="YYYY/MM/DD HH:mm">{props.data.end_date}</Moment>
           </Box>
-          <Box className={classes.buttonBox}>
-            <Button variant="contained" color="secondary">
+          <Box className={classes.buttonBox}>            
+            <Button onClick={() => history.push(`bid/${props.data.id}`)} variant="contained" color="secondary">
               Details
             </Button>
           </Box>
