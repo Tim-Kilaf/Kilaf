@@ -46,7 +46,7 @@ class BiddingController {
             const data = await Biddings.findAll(
                 {
                     where: { ItemId },
-                    // group: ['UserId'],
+                    group: ['UserId'],
                     order: [['price', 'DESC']]
                 }
             )
@@ -73,10 +73,10 @@ class BiddingController {
     static create = async (req, res, next) => {
         console.log('masuk')
         try {
-            const user = {
-                id: 1
-            }
-            // const { user } = req.middleware
+            // const user = {
+            //     id: 1
+            // }
+            const { user } = req.middleware
             const { ItemId, price, date } = req.body
             
             const payload = { UserId: user.id, ItemId, price, date: new Date }

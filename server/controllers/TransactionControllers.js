@@ -12,6 +12,16 @@ class TransactionController {
         }
     }
 
+    static getUserTransactions = async (req,res,next) => {
+        try {
+            const {UserId} = req.params
+            const userTrx = await Transactions.findAll({where: { UserId }})
+            res.status(200).json(userTrx)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     static create = async (req,res, next) => {
         try {
             const {UserId, ItemId} = req.body
@@ -61,7 +71,7 @@ class TransactionController {
         }
     }
 
-    static update = async (req,res,next) => {
+    static paid = async (req,res,next) => {
         try {
             const { id } = req.params
             const edited = await Transactions.update({
@@ -69,6 +79,7 @@ class TransactionController {
             },{
                 where: { id }
             })
+            res.status(200).json({ message: 'Payment successfull'})
         } catch (error) {
             console.log(error)
             next(error)
