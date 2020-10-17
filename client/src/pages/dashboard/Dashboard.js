@@ -30,7 +30,7 @@ export default function Dashboard() {
   return (
     <Box>
       <Box className={classes.container}>
-        {items && items.map(data => {
+        {items.length > 0 && items.map(data => {
           return (
             <BiddingCard data={data}/>                                
           )
