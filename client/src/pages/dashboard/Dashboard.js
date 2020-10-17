@@ -2,7 +2,7 @@ import React from 'react'
 import Box from '@material-ui/core/Box';
 import BiddingCard from '../../components/cards/BiddingCard'
 import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Button } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { logout } from '../../store/actions/actionsUser'
@@ -23,6 +23,8 @@ export default function Dashboard() {
   const classes = useStyles();
   const dispatch = useDispatch()
   const history = useHistory()
+  const islogin = useSelector((state) => state.isLogin)
+  console.log(islogin);
 
   function handleLogout() {
     dispatch(logout())
