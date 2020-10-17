@@ -33,9 +33,7 @@ class UserController {
                 fullname,
                 email,
                 password,
-                RoleId: '',
-                createdAt: new Date,
-                updatedAt: new Date
+                RoleId: ''
             })
 
             const newUser = await Users.findOne({include: [Roles], where: {email: regist.email} })

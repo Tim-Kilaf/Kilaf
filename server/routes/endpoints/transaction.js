@@ -6,9 +6,9 @@ const transactionEndpoints = require('express').Router()
 transactionEndpoints
     .get('/', TransactionController.read)
     .get('/:UserId', TransactionController.getUserTransactions)
-    .post('/create', TransactionController.create)
-    .delete('/:id', TransactionController.delete)
-    .put('/paid/:id', TransactionController.paid)
+    .post('/create/:ItemId', TransactionController.create)
+    .delete('/:UserId', TransactionController.delete)
+    .put('/paid/:UserId', TransactionController.paid)
 
 
 module.exports = transactionEndpoints

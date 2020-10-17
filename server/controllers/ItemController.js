@@ -19,6 +19,7 @@ class ItemController {
 
   static async createItem(req, res, next) {
     try {
+      console.log(req.body)
       delete req.body.image
       const payload = {
         ...req.body,
