@@ -18,33 +18,46 @@ export default function Index() {
   return (
     <Provider store={store}>
       <Router>
-        <Appbar />
         <Switch>
-          <Route
-              path="/login"
-              component={Login}
-            />
-            <Route
-              path="/register"
-              component={Register}
-            />
-            <Route
-              path="/cart"
-              component={Cart}
-            />
-          <PrivateRoute path='/' exact>
-            <Dashboard />
-          </PrivateRoute>       
-          <PrivateRoute path='/bid/:id'>
-            <Detail />
-          </PrivateRoute>   
-          <PrivateRoute path='/create'>
-            <CreateItem />
-          </PrivateRoute>   
+          <Route exact path="/login" component={BeforeEnterContainer} />
+          <Route path="/register" component={Register} />
+          <Route component={DefaultContainer} />
         </Switch>
       </Router>
     </Provider>
     
+  )
+}
+
+function BeforeEnterContainer() {
+  return (
+    <div>
+      <Route
+        path="/login"
+        component={Login}
+      />
+    </div>
+  )
+}
+
+function DefaultContainer() {
+  return (
+    <div>
+      <Appbar />
+      <Route
+        path="/cart"
+        component={Cart}
+      />
+      <PrivateRoute path='/'>
+        <Dashboard />
+      </PrivateRoute>       
+      <PrivateRoute path='/bid/:id'>
+        <Detail />
+      </PrivateRoute>   
+      <PrivateRoute path='/create'>
+        <CreateItem />
+      </PrivateRoute> 
+    </div>
   )
 }
 
