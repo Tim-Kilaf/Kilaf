@@ -1,6 +1,7 @@
 let currentState = {
   items: [],
-  item: {}
+  item: {},
+  detailRefetch: ''
 }
 
 
@@ -14,20 +15,17 @@ function reducerItem(state = currentState, action) {
           items: action.payload.items
         }
         return newState
-      case 'FETCH_ITEM_DETAIL':
-        
-        return state
-      case 'ADD_BIDDING':
-
-        // console.log(action.payload)
-        return state
-      case 'REALTIME_BIDDING':
-        console.log(action.payload)
+      case 'FETCH_ITEM_DETAIL':        
         let newDetail = {
           ...state,
           item: action.payload
         }
-        return newDetail     
+
+        return newDetail
+      case 'ADD_BIDDING':
+
+        // console.log(action.payload)
+        return state       
       default:
           return state
   }
