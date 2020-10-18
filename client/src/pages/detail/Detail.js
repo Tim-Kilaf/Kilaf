@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { detailItem } from '../../store/actions/actionsItem';
 import { addBidding } from '../../store/actions/actionsItem'
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import Moment from 'react-moment';
 import NumericInput from 'react-numeric-input';
 import { Button } from '@material-ui/core';
@@ -87,6 +87,7 @@ export default function Detail() {
   const classes = useStyles();
   const dispatch = useDispatch()
   const param = useParams()
+  const history = useHistory()
 
   const [bid, setBid] = useState(0)
   const [valid, setValid] = useState(false)
@@ -134,6 +135,17 @@ export default function Detail() {
     }))
   }
 
+  const handleBuyout = async (e) => {
+    e.preventDefault()
+    const buyout = await fetch(`http://localhost:3001/transaction/buyout/${param.id}`, {
+      headers: {
+        access_token: localStorage.getItem('access_token')
+      }
+    })
+    console.log(buyout);
+    history.push('/')
+  }
+
   return (
     <Box className={classes.container}>
       {data.item && data.item.ItemPictures && data.item.User &&
@@ -179,7 +191,7 @@ export default function Detail() {
                       </Button>
                       :
                       <Button color="primary" variant="contained" disabled>
-                        The Minium Bid Is {(data.item.current_price + data.item.bid_increment)}
+                        The Minimum Bid Is {(data.item.current_price + data.item.bid_increment)}
                         </Button>}
                   </Box>
                 </form>

@@ -65,6 +65,57 @@ class TransactionController {
         }
     }
 
+    static createForBuyout = async (req,res, next) => {
+        try {
+            const { ItemId } = req.params
+
+            // const data = await Biddings.findAll(
+            //     {
+            //         where: { ItemId },
+            //         order: [['price', 'DESC']]
+            //     }
+            // )
+            // const amount = data[0].price
+            // const UserId = data[0].UserId
+            // console.log(UserId)
+
+            const item = await Items.findOne({
+                where: {
+                  id: ItemId
+                }
+            })
+
+            const buyoutPrice = item.dataValues.buyout_price
+            console.log(item.dataValues.buyout_price,'buyout price');
+
+            const payload = {
+                UserId: req.user.id,
+                ItemId,
+                status: 'pending',
+                amount: buyoutPrice,
+                date: new Date
+            }
+
+            console.log(payload, 'buyout trx payload');
+            const trx = await Transactions.create(payload)
+            console.log(trx)
+            const itemUpdate = await Items.update({
+                status: 'sold',
+                HighestBiddingId: req.user.id,
+                buyout_date: new Date
+            },{
+                where: {
+                    id: ItemId
+                }
+            })
+
+            res.status(201).json(trx)
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
+    }
+
     static createForCron = async (ItemId) => {
         try {
             // const { ItemId } = req.params
