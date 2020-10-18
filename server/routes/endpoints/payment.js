@@ -1,7 +1,8 @@
-const PaymentController = require('../../controllers/PaymentController')
+module.exports = (io) => {
+    const PaymentController = require('../../controllers/PaymentController')(io)
 const paymentEndpoint = require('express').Router()
 
-paymentEndpoint
+    return paymentEndpoint
     .get('/', PaymentController.read)
-    
-module.exports = paymentEndpoint
+}
+// module.exports = paymentEndpoint
