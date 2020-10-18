@@ -34,10 +34,7 @@ class CronController {
                 },
                 // order: [[ Biddings, 'price', 'DESC' ]]
             })
-            // const highestBidder = itemTimeOut[0].Biddings[0]
-            // const {UserId, ItemId, price} = highestBidder
-
-            // console.log(UserId, ItemId, price)
+            
             console.log({itemTimeOut}, 'contorller');
             return {itemTimeOut}.itemTimeOut
         } catch (error) {
