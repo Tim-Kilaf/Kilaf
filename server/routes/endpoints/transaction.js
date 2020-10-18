@@ -8,7 +8,7 @@ transactionEndpoints
     .get('/', TransactionController.read)
     .get('/:UserId', TransactionController.getUserTransactions)
     .post('/create/:ItemId', TransactionController.create)
-    .post('/buyout/:ItemId', authenticate, TransactionController.createForBuyout)
+    .get('/buyout/:ItemId', authenticate, TransactionController.createForBuyout)
     .delete('/:UserId', TransactionController.delete)
     .put('/paid/:UserId', TransactionController.paid)
 

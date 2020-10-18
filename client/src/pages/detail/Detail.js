@@ -148,29 +148,33 @@ export default function Detail() {
               </Box>
               <Box>
               {!data.owner ? (
-                <form onSubmit={(e) => handleSubmit(e)}
-                  style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', padding: '20px 0' }}>
-                  <Box>
-                    <NumericInput className="form-control" defaultValue={(data.item.current_price)}
-                      min={(data.item.current_price + data.item.bid_increment)} max={data.item.buyout_price}
-                      step={data.item.bid_increment} onChange={setBid} />
-                  </Box>
-                  <Box style={{ marginTop: 10 }}>
-                    {data.highestBidder ?
-                      <Button color="primary" variant="contained" disabled>
-                        You are leading
-                      </Button>
-                      :
-                      valid ?
-                      <Button color="primary" type="submit" variant="contained">
-                        Start Bid
-                      </Button>
-                      :
-                      <Button color="primary" variant="contained" disabled>
-                        The Minium Bid Is {(data.item.current_price + data.item.bid_increment)}
-                        </Button>}
-                  </Box>
-                </form>
+                <Box>
+                  <form onSubmit={(e) => handleSubmit(e)}
+                    style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', padding: '20px 0' }}>
+                    <Box>
+                      <NumericInput className="form-control" defaultValue={(data.item.current_price)}
+                        min={(data.item.current_price + data.item.bid_increment)} max={data.item.buyout_price}
+                        step={data.item.bid_increment} onChange={setBid} />
+                    </Box>
+                    <Box style={{ marginTop: 10 }}>
+                      {data.highestBidder ?
+                        <Button color="primary" variant="contained" disabled>
+                          You are leading
+                        </Button>
+                        :
+                        valid ?
+                        <Button color="primary" type="submit" variant="contained">
+                          Start Bid
+                        </Button>
+                        :
+                        <Button color="primary" variant="contained" disabled>
+                          The Minium Bid Is {(data.item.current_price + data.item.bid_increment)}
+                        </Button>
+                      }
+                    </Box>
+                  </form>
+                  <Button href={`http://localhost:3001/transaction/buyout/${param.id}`}>Buyout</Button>
+                </Box>
               ) : (<></>)}
               </Box>
             </Box>
