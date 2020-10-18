@@ -25,5 +25,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "directories": {
+    "test": "test"
+  },
   "description": ""
 }
