@@ -16,8 +16,9 @@ class ItemController {
       })
 
       res.status(200).json({ items })
-    } catch (errors) {
-      return next(errors)
+    } catch (err) {
+      console.log(err)
+      return next(err)
     }
   }
 
@@ -54,9 +55,9 @@ class ItemController {
       this.io.emit('newItem', item)
 
       res.status(201).json({ message: 'Sucessfully Created' })
-    } catch (errors) {
-      console.log('ini kalo pake arrow function', errors)
-      return next(errors)
+    } catch (err) {
+      console.log(err)
+      return next(err)
     }
   }
 
@@ -102,9 +103,9 @@ class ItemController {
         // io.emit('test', false)
         res.status(200).json({ item, highestBidder, owner })
         
-    } catch (errors) {
-      console.log(errors)
-      return next(errors)
+    } catch (err) {
+      console.log(err)
+      return next(err)
     }
   }
 }

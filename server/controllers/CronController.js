@@ -18,8 +18,9 @@ class CronController {
 
             // return res.status(200).json(itemTimeOut)
             return itemTimeOut
-        } catch (error) {
-            console.log(error)
+        } catch (err) {
+            console.log(err)
+            return next(err)
         }
     }
     static getWinningBids = async() => {
@@ -37,8 +38,9 @@ class CronController {
             
             console.log({itemTimeOut}, 'contorller');
             return {itemTimeOut}.itemTimeOut
-        } catch (error) {
-            console.log(error);
+        } catch (err) {
+            console.log(err)
+            return next(err)
         }
     }
 }

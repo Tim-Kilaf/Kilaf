@@ -10,9 +10,9 @@ class TransactionController {
             const dataTrx = await Transactions.findAll()
             // console.log(dataTrx)
             res.status(200).json(dataTrx)
-        } catch (error) {
-            console.log(error)
-            next(error)
+        } catch (err) {
+            console.log(err)
+            return next(err)
         }
     }
 
@@ -26,8 +26,8 @@ class TransactionController {
                 }
             )
             res.status(200).json(userTrx)
-        } catch (error) {
-            console.log(error)
+        } catch (err) {
+            console.log(err)
         }
     }
 
@@ -65,9 +65,9 @@ class TransactionController {
             })
 
             res.status(201).json(trx)
-        } catch (error) {
-            console.log(error)
-            next(error)
+        } catch (err) {
+            console.log(err)
+            return next(err)
         }
     }
 
@@ -119,9 +119,9 @@ class TransactionController {
             io.emit('buyout', true)
             res.status(201).json(trx)
             
-        } catch (error) {
-            console.log(error)
-            next(error)
+        } catch (err) {
+            console.log(err)
+            return next(err)
         }
     }
 
@@ -159,9 +159,9 @@ class TransactionController {
             })
             return trx
             // res.status(201).json(trx)
-        } catch (error) {
-            console.log(error)
-            next(error)
+        } catch (err) {
+            console.log(err)
+            return next(err)
         }
     }
     
@@ -176,9 +176,9 @@ class TransactionController {
 
                 if (result) res.status(200).json({ message: 'Successfully deleted data' })
             } else throw new Error({ code: 404, message: 'Not found: The bidding data is not found.' })
-        } catch (error) {
-            console.log(error)
-            return next(error)
+        } catch (err) {
+            console.log(err)
+            return next(err)
         }
     }
 
@@ -191,9 +191,9 @@ class TransactionController {
                 where: { UserId }
             })
             res.status(200).json({ message: 'Payment successfull'})
-        } catch (error) {
-            console.log(error)
-            next(error)
+        } catch (err) {
+            console.log(err)
+            return next(err)
         }
     }
 }
