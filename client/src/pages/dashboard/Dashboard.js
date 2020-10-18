@@ -31,7 +31,7 @@ export default function Dashboard() {
   }
 
   const items = useSelector(state => state.reducerItem.items)
-
+  console.log(items, 'items');
   return (
     <Box>
       <Box className={classes.container}>

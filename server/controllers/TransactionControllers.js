@@ -18,8 +18,13 @@ class TransactionController {
 
     getUserTransactions = async (req, res, next) => {
         try {
-            const {UserId} = req.params
-            const userTrx = await Transactions.findAll({where: { UserId }})
+            const {UserId} = req.user.id
+            const userTrx = await Transactions.findAll(
+                {
+                    where: { UserId },
+                    include: [Items]
+                }
+            )
             res.status(200).json(userTrx)
         } catch (error) {
             console.log(error)

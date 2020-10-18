@@ -1,7 +1,8 @@
 let currentState = {
   items: [],
   item: {},
-  detailRefetch: ''
+  detailRefetch: '',
+  carts: []
 }
 
 
@@ -25,7 +26,13 @@ function reducerItem(state = currentState, action) {
       case 'ADD_BIDDING':
 
         // console.log(action.payload)
-        return state       
+        return state  
+      case 'FETCH_CART':        
+      let newCart = {
+        ...state,
+        carts: action.payload
+      }
+      return newCart;
       default:
           return state
   }
