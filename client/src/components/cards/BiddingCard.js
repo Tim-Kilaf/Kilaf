@@ -96,7 +96,6 @@ export default function BiddingCard(props) {
 
   const navigate = (id) => {
     history.push(`/bid/${id}`)
-    props.joinRoom(id)
   }
 
   return props.data.ItemPictures.length > 0 && (

@@ -85,9 +85,11 @@ class BiddingController {
 
             const data = await Biddings.create(payload)
 
-            await Items.update({ current_price: price },{ where: { id: ItemId }})
             if (data) {
-                io.emit('test', true)                
+                await Items.update({ current_price: price },{ where: { id: ItemId }})
+
+                this.io.emit('newBid', `item-${ItemId}`)
+
                 res.status(201).json({ message: 'Successfully added data' })
             }
             else throw new Error({ code: 400, message: 'Bad request: invalid data supplied' })
