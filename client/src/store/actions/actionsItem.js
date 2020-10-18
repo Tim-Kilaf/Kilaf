@@ -63,7 +63,6 @@ export function detailItem(id) {
 }
 
 export function addBidding(payload, cb) {
-  console.log(payload)
   return dispatch => {
     fetch(`http://localhost:3001/biddings`, {
       method: 'POST',
@@ -83,7 +82,15 @@ export function addBidding(payload, cb) {
       })
       .catch(err => {
         cb('success', err)
-        console.log(err);
       })
+  }
+}
+
+export function realTimeBidding(payload) {
+  return dispatch => {
+    dispatch({
+      type: 'REALTIME_BIDDING',
+      payload: payload
+    })
   }
 }

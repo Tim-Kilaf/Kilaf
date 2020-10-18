@@ -1,4 +1,4 @@
-const { Biddings, Sequelize } = require('../models')
+const { Biddings, Sequelize, Items } = require('../models')
 const SocketHandler = require('../handlers/SocketHandler')
 const io = require('socket.io-emitter')({ host: '127.0.0.1', port: 6379 });
 
@@ -86,13 +86,14 @@ class BiddingController {
 
 
             const { id } = req.user
-            const { ItemId, price, date } = req.body
+            const { ItemId, price } = req.body
 
             
             const payload = { UserId: id, ItemId, price, date: new Date }
 
             const data = await Biddings.create(payload)
 
+            await Items.update({ current_price: price },{ where: { id: ItemId }})
             if (data) {
                 res.status(201).json({ message: 'Successfully added data' })
             }

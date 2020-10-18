@@ -95,17 +95,19 @@ class ItemController {
 
       let highestBidder = item.Biddings.length > 0 && req.user.id === item.Biddings[0].User.id
 
-      let owner
+      // let owner
 
-      if (req.user.id === item.UserId) {
-        owner = true
-      } else {
-        owner = false
-      }
+      // if (req.user.id === item.UserId) {
+      //   owner = true
+      // } else {
+      //   owner = false
+      // }
 
-      io.emit('test', { item, owner, highestBidder })
+      if(item) {
+        io.emit('test', { item, highestBidder })
 
-      res.status(200).json({ item, owner, highestBidder })
+        res.status(200).json({ item, highestBidder })
+      }      
     } catch (errors) {
       console.log(errors)
       return next(errors)
