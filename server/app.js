@@ -8,15 +8,11 @@ const {errorHandler} = require('./middleware/errorHandler')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
 const io = require('socket.io').listen(5000)
-const redisAdapter = require('socket.io-redis')
 const socket = require('./config/socket')
 const cron = require('node-cron')
 const resolveBids = require('./cron/cronFunctions')
 
-io.adapter(redisAdapter({ host: '127.0.0.1', port: 6379 }))
-
 socket.start(io)
-
 
 app
     .use(cors())
