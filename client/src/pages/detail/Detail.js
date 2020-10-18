@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { detailItem, realTimeBidding } from '../../store/actions/actionsItem';
+import { detailItem } from '../../store/actions/actionsItem';
 import { addBidding } from '../../store/actions/actionsItem'
 import { useParams } from 'react-router-dom';
 import Moment from 'react-moment';
@@ -90,29 +90,31 @@ export default function Detail() {
 
   const [bid, setBid] = useState(0)
   const [valid, setValid] = useState(false)
-
-  const leaveRoom = () => socket.emit('leaveRoom', param.id)
+  const [refetch, setRefetch] = useState(true)
 
   useEffect(() => {
-    dispatch(detailItem(param.id))
-    socket.on('test', (data) => {
-      dispatch(realTimeBidding(data))
-      console.log(data, '--> detail')
-    })
-    // return leaveRoom
+    dispatch(detailItem(param.id))   
+    socket.on('test', (data) => {      
+      setRefetch(data)
+    }) 
   }, [dispatch])
 
   const data = useSelector(state => state.reducerItem.item)
 
   useEffect(() => {
     if (data.item) {
-      if (bid < (data.item.current_price + data.item.bid_increment - 1)) {
+      if ( data.owner || bid < (data.item.current_price + data.item.bid_increment - 1)) {
         setValid(false)
       } else if ((bid >= (data.item.current_price + data.item.bid_increment))) {
         setValid(true)
       }
     }
-  }, [bid])
+
+    if(refetch) {
+      dispatch(detailItem(param.id))
+      setRefetch(false)
+    }
+  }, [bid, refetch])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -124,11 +126,10 @@ export default function Detail() {
     dispatch(addBidding(payload, (success, err) => {
       if (err) {
         console.log(err)
-      }
-      dispatch(detailItem(param.id))
+      }      
+
       socket.on('test', (data) => {
-        dispatch(realTimeBidding(data))
-        setBid(data.item.current_price)
+        setRefetch(data)
       })
     }))
   }
@@ -167,14 +168,19 @@ export default function Detail() {
                       step={data.item.bid_increment} onChange={setBid} />
                   </Box>
                   <Box style={{ marginTop: 10 }}>
-                    {valid ?
+                  {data.highestBidder ?
+                      <Button color="primary" variant="contained" disabled>
+                        You are leading
+                      </Button>
+                      :
+                      valid ?
                       <Button color="primary" type="submit" variant="contained">
                         Start Bid
                       </Button>
                       :
                       <Button color="primary" variant="contained" disabled>
                         The Minium Bid Is {(data.item.current_price + data.item.bid_increment)}
-                      </Button>}
+                        </Button>}
                   </Box>
                 </form>
               </Box>

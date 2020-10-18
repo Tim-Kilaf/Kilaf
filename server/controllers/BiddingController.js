@@ -1,6 +1,6 @@
 const { Biddings, Sequelize, Items } = require('../models')
 const SocketHandler = require('../handlers/SocketHandler')
-const io = require('socket.io-emitter')({ host: '127.0.0.1', port: 6379 });
+const io = require('../config/io-emitter');
 
 class BiddingController {
     constructor(io) {
@@ -78,16 +78,8 @@ class BiddingController {
 
     create = async (req, res, next) => {
         try {
-            console.log('masuk')
-            // const user = {
-            //     id: 1
-            // }
-
-
-
             const { id } = req.user
             const { ItemId, price } = req.body
-
             
             const payload = { UserId: id, ItemId, price, date: new Date }
 
@@ -95,6 +87,7 @@ class BiddingController {
 
             await Items.update({ current_price: price },{ where: { id: ItemId }})
             if (data) {
+                io.emit('test', true)                
                 res.status(201).json({ message: 'Successfully added data' })
             }
             else throw new Error({ code: 400, message: 'Bad request: invalid data supplied' })
