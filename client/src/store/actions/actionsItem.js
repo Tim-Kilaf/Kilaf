@@ -85,3 +85,24 @@ export function addBidding(payload, cb) {
       })
   }
 }
+
+export function getCart() {
+  return dispatch => {
+    fetch(`http://localhost:3001/transaction`, {
+      method: 'GET',
+      headers: {
+        access_token: localStorage.getItem('access_token')
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        dispatch({
+          type: 'FETCH_CART',
+          payload: data
+        })
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+}

@@ -1,82 +1,72 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Box, Container, makeStyles, Paper, Divider, Typography, Button } from '@material-ui/core';
-import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles"
-import { Switch as Switches } from '@material-ui/core';
+import { getCart, getItems } from '../../store/actions/actionsItem'
+
 
 import CartDetail from '../../components/cards/CartDetail'
 
-
-
 export default function Cart() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const [localAmount, setLocalAmount] = useState();
 
-  const [darkMode, setDarkMode] = useState(false)
-  const palletType = darkMode ? "dark" : "light";
+  useEffect(() => {
+    dispatch(getItems())
+  }, [dispatch])
 
-  const theme = createMuiTheme({
-    palette: {
-      type: palletType
-    } 
-  })
+  const carts = useSelector(state => state.reducerItem.carts);
+  console.log(carts, 'cart');
+
   return (
-    <ThemeProvider theme={theme}>
-      <Switches checked={darkMode} onChange={() => setDarkMode(!darkMode)} />
-      <Container>
-        <Container className={classes.container}>
-          <Box className={classes.contentLeft}>
-            <Paper elevation={2} className={classes.contentLeftTitle}>
-              Your Cart
-            </Paper>
-            <Box className={classes.contentLeftBody}>
-              <Box className={classes.contentLeftList}>
-                {/* <Box>
-                <Box style={{border: '1px red solid'}}>
-                  <img src="https://bit.ly/347oSxW" height="100em" />
-                </Box>
-                <Box>
-                  item detail
-                </Box> */}
-              </Box>
-              <CartDetail />
-              <Divider />
-              <CartDetail />
+    <Container>
+      <Container className={classes.container}>
+        <Box className={classes.contentLeft}>
+          <Paper elevation={2} className={classes.contentLeftTitle}>
+            Your Cart
+          </Paper>
+          <Box className={classes.contentLeftBody}>
+            {carts.map(cart => {
+              return (
+                <CartDetail cart={cart} />
+              )
+            })}
+          </Box>
+        </Box>
+        <Box className={classes.contentRight}>
+          <Paper className={classes.contentRightItem}>
+            <Typography style={{padding: 10}}>
+              Summary
+            </Typography>
+            <Divider />
+            <Box className={classes.boxItem}>
+              <Typography>Subtotal</Typography>
+              <Typography>Rp. {localAmount}</Typography>
             </Box>
-          </Box>
-          <Box className={classes.contentRight}>
-            <Paper className={classes.contentRightItem}>
-              <Typography style={{padding: 10}}>
-                Summary
-              </Typography>
-              <Divider />
-              <Box className={classes.boxItem}>
-                <Typography>Subtotal</Typography>
-                <Typography>Rp. 100.000</Typography>
-              </Box>
-              <Divider />
-              <Box className={classes.boxItem}>
-                <Typography>Biaya Pengiriman</Typography>
-                <Typography>Rp. 40.000</Typography>
-              </Box>
-              <Divider />
-              <Box className={classes.boxItem}>
-                <Typography>Tax</Typography>
-                <Typography>Rp. 40.000</Typography>
-              </Box>
-              <Divider />
-              <Box className={classes.boxItem}>
-                <Typography>Total</Typography>
-                <Typography>Rp. 180.000</Typography>
-              </Box>
-              <Box style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 20}}>
-                <Button variant="outlined" color="primary">
-                  CHECKOUT
-                </Button>
-              </Box>
-            </Paper>
-          </Box>
-        </Container>
+            <Divider />
+            <Box className={classes.boxItem}>
+              <Typography>Biaya Pengiriman</Typography>
+              <Typography>Rp. 0</Typography>
+            </Box>
+            <Divider />
+            <Box className={classes.boxItem}>
+              <Typography>Tax</Typography>
+              <Typography>Rp. 0</Typography>
+            </Box>
+            <Divider />
+            <Box className={classes.boxItem}>
+              <Typography>Total</Typography>
+              <Typography>Rp. 180.000</Typography>
+            </Box>
+            <Box style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 20}}>
+              <Button variant="outlined" color="primary">
+                CHECKOUT
+              </Button>
+            </Box>
+          </Paper>
+        </Box>
       </Container>
-    </ThemeProvider>
+    </Container>
   )
 }
 
