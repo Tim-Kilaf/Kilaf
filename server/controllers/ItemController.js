@@ -1,6 +1,5 @@
 const { Items, ItemPictures, Users, Biddings } = require('../models')
 const path = require('path')
-const SocketHandler = require('../handlers/SocketHandler')
 const io = require('../config/io-emitter');
 
 class ItemController {
@@ -95,19 +94,16 @@ class ItemController {
 
       let highestBidder = item.Biddings.length > 0 && req.user.id === item.Biddings[0].User.id
 
-      // let owner
+      let owner
 
-      // if (req.user.id === item.UserId) {
-      //   owner = true
-      // } else {
-      //   owner = false
-      // }
-
-      if(item) {
-        io.emit('test', { item, highestBidder })
-
-        res.status(200).json({ item, highestBidder })
-      }      
+      if (req.user.id === item.UserId) {
+        owner = true
+      } else {
+        owner = false
+      }
+        io.emit('test', false)
+        res.status(200).json({ item, highestBidder, owner })
+        
     } catch (errors) {
       console.log(errors)
       return next(errors)

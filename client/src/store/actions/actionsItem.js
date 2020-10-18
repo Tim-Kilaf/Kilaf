@@ -85,12 +85,3 @@ export function addBidding(payload, cb) {
       })
   }
 }
-
-export function realTimeBidding(payload) {
-  return dispatch => {
-    dispatch({
-      type: 'REALTIME_BIDDING',
-      payload: payload
-    })
-  }
-}
