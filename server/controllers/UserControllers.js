@@ -40,10 +40,9 @@ class UserController {
                 RoleId: ''
             })
 
-            // ardy was here
             const newUser = await Users.findOne({include: [Roles], where: {email: regist.email} })
             let role = newUser.Role.name
-            this.io.emit('newUser', SocketHandler.newUser(newUser))
+
             return res.status(201).json({id: newUser.id, email: newUser.email, role})
 
         } catch (error) {
