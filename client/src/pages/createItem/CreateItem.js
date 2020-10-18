@@ -78,35 +78,36 @@ export default function CreateItem() {
       <h1>Create New Item</h1>
       <form onSubmit={(e) => onSubmitHandler(e)} className={clasess.form}>
         <Box className={clasess.inputBox}>
-          <TextField style={{ width: '100%' }} onChange={(e) => onTextHandler(e)} name="name" id="outlined-basic" label="Item's Name" variant="outlined" />
+          <TextField style={{ width: '100%' }} onChange={(e) => onTextHandler(e)} name="name" id="outlined-basic" label="Item's Name" variant="outlined" required />
         </Box>
         <Box className={clasess.inputBox}>
-          <TextField name="description" onChange={(e) => onTextHandler(e)} style={{ width: '100%' }} id="outlined-basic" label="Description" variant="outlined" />
+          <TextField name="description" onChange={(e) => onTextHandler(e)} style={{ width: '100%' }} id="outlined-basic" label="Description" variant="outlined" required />
         </Box>
         <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Box><TextField name="starting_price" onChange={(e) => onTextHandler(e)} type="number" id="outlined-basic" label="Starting Price" variant="outlined" /></Box>
-          <Box><TextField name="buyout_price" onChange={(e) => onTextHandler(e)} type="number" id="outlined-basic" label="Buyout Price" variant="outlined" /></Box>
+          <Box><TextField name="starting_price" onChange={(e) => onTextHandler(e)} type="number" id="outlined-basic" label="Starting Price" variant="outlined" required /></Box>
+          <Box><TextField name="buyout_price" onChange={(e) => onTextHandler(e)} type="number" id="outlined-basic" label="Buyout Price" variant="outlined" required /></Box>
         </Box>
         <Box className={clasess.inputBox} style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box>
             <InputLabel id="demo-simple-select-helper-label">Item Condition</InputLabel>
             <Select onChange={(e) => onTextHandler(e)} name="condition" style={{ width: '100%' }} 
-             defaultValue={payload.condition} id="demo-simple-select-helper">
+              defaultValue={payload.condition} id="demo-simple-select-helper">
               <MenuItem value='Bekas'>Bekas</MenuItem>
               <MenuItem value='Baru'>Baru</MenuItem>
             </Select>
           </Box>
-          <Box><TextField name="bid_increment" onChange={(e) => onTextHandler(e)} type="number" label="Bid Increment" variant="outlined" /></Box>
+          <Box><TextField name="bid_increment" onChange={(e) => onTextHandler(e)} type="number" label="Bid Increment" variant="outlined" required /></Box>
         </Box>
         <Box className={clasess.inputBox}>
-          <TextField name="start_date" onChange={(e) => onTextHandler(e)} label="Start Date" type="datetime-local" InputLabelProps={{ shrink: true }} />
-          <TextField name="end_date" onChange={(e) => onTextHandler(e)} label="End Date" type="datetime-local" InputLabelProps={{ shrink: true }} />
+          <TextField name="start_date" onChange={(e) => onTextHandler(e)} label="Start Date" type="datetime-local" InputLabelProps={{ shrink: true }} required />
+          <TextField name="end_date" onChange={(e) => onTextHandler(e)} label="End Date" type="datetime-local" InputLabelProps={{ shrink: true }} required />
         </Box>
         <input
           className={clasess.inputBox}
           onChange={(e) => onChangeHandler(e)}
           type="file"
           multiple
+          required
         />
         <Box className={clasess.inputBox}>
           <Button color="secondary" type="submit" variant="contained" style={{ width: '100%' }}>
