@@ -24,9 +24,9 @@ class UserController {
             }else{ 
                 return res.status(400).json({message: 'Invalid Username or Password'})
             }
-        } catch (error) {
-            console.log(error)
-            next(error)
+        } catch (err) {
+            console.log(err)
+            return next(err)
         }
     }
     register = async (req, res, next) => {
@@ -45,23 +45,9 @@ class UserController {
 
             return res.status(201).json({id: newUser.id, email: newUser.email, role})
 
-        } catch (error) {
-            console.log(error)
-            if(error.name === 'SequelizeValidationError'){
-            let err = {
-                code: 400,
-                message: error.errors[0].message
-            }
-            next(err)
-            } else if (error.name === 'SequelizeUniqueConstraintError') {
-                let err = {
-                    code: 400,
-                    message: 'Email has already exist'
-                }
-                next(err)
-            } else {
-               next(error)
-            }
+        } catch (err) {
+            console.log(err)
+            return next(err)
         }
     }
 }

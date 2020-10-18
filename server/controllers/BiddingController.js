@@ -72,6 +72,7 @@ class BiddingController {
 
             res.status(200).json(data)
         } catch (err) {
+            console.log(err)
             return next(err)
         }
     }
@@ -86,6 +87,7 @@ class BiddingController {
             const data = await Biddings.create(payload)
 
             if (data) {
+                console.log(err)
                 await Items.update({ current_price: price },{ where: { id: ItemId }})
 
                 this.io.emit('newBid', `item-${ItemId}`)
@@ -111,6 +113,7 @@ class BiddingController {
                 if (result) res.status(201).json({ message: 'Successfully added data' })
             } else throw new Error({ code: 404, message: 'Not found: The bidding data is not found.' })
         } catch (err) {
+            console.log(err)
             return next(err)
         }
     }
