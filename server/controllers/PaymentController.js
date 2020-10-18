@@ -1,7 +1,10 @@
 const { Payments } = require('../models')
 
 class PaymentController {
-    static read = async (req,res,next) => {
+    constructor(io) {
+        this.io = io
+    }
+    read = async (req, res, next) => {
         try {
             const payment = await Payments.findAll()
             return res.sttaus(200).json(payment)
@@ -12,4 +15,4 @@ class PaymentController {
     }
 }
 
-module.exports = PaymentController
+module.exports = (io) => new PaymentController(io)

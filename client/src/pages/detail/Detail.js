@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import Moment from 'react-moment';
 import NumericInput from 'react-numeric-input';
 import { Button } from '@material-ui/core';
+import socket from '../../config/socket-io'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -92,9 +93,27 @@ export default function Detail() {
 
   useEffect(() => {
     dispatch(detailItem(param.id))
+
+    return leaveRoom
   }, [dispatch])
 
   const data = useSelector(state => state.reducerItem.item)
+
+  const handle = () => {
+    const payload = param.id
+    socket.emit('newBid', payload)
+    socket.on('test', (data) => {
+      console.log(data)
+    })
+  }
+
+  const leaveRoom = () => socket.emit('leaveRoom', param.id)
+
+  // useEffect(() => {
+  //   socket.on('cek', data => {
+  //     console.log(data)
+  //   })
+  // }, [socket])
 
   useEffect(() => {
     if (data.item) {
@@ -173,6 +192,7 @@ export default function Detail() {
                 </form>
               ) : (<></>)}
               </Box>
+            <Button onClick={() => handle()}>Waddiawda</Button>
             </Box>
           </Box>
           <Box style={{ padding: '0 2em' }}>

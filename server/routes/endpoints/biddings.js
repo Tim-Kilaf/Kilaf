@@ -1,10 +1,10 @@
-const biddingEndpoints = require('express').Router()
+module.exports = (io) => {
+    const biddingEndpoints = require('express').Router()
 
-const BiddingController = require('../../controllers/BiddingController')
-const authenticate = require('../../middleware/authentication')
+    const BiddingController = require('../../controllers/BiddingController')(io)
+    const authenticate = require('../../middleware/authentication')
 
-
-biddingEndpoints
+    biddingEndpoints
     .get('/distinct/:ItemId', BiddingController.readDistinct)
     .get('/group/:ItemId', BiddingController.readGroupBy)
     .get('/:ItemId/:UserId', BiddingController.readUser) // test dulu yang ini
@@ -13,4 +13,6 @@ biddingEndpoints
     // .put('/:id', BiddingController.update) // gk ada update
     .delete('/:id', BiddingController.delete)
 
-module.exports = biddingEndpoints
+    return biddingEndpoints
+}
+// module.exports = biddingEndpoints

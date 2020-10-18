@@ -1,8 +1,8 @@
-const authEndpoints = require('express').Router()
-const UserController = require('../../controllers/UserControllers')
+module.exports = (io) => {
+    const authEndpoints = require('express').Router()
+    const UserController = require('../../controllers/UserControllers')(io)
 
-authEndpoints
-    .post('/login', UserController.login)
-    .post('/register', UserController.register)
-
-module.exports = authEndpoints
+    return authEndpoints
+        .post('/login', UserController.login)
+        .post('/register', UserController.register)
+}

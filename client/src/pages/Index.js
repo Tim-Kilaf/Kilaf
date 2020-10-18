@@ -48,7 +48,7 @@ function DefaultContainer() {
         path="/cart"
         component={Cart}
       />
-      <PrivateRoute path='/'>
+      <PrivateRoute path='/' exact>
         <Dashboard />
       </PrivateRoute>       
       <PrivateRoute path='/bid/:id'>

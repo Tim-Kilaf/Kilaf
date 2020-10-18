@@ -1,7 +1,12 @@
 const { Biddings, Sequelize } = require('../models')
+const SocketHandler = require('../handlers/SocketHandler')
+const io = require('socket.io-emitter')({ host: '127.0.0.1', port: 6379 });
 
 class BiddingController {
-    static read = async (req, res, next) => {
+    constructor(io) {
+        this.io = io
+    }
+    read = async (req, res, next) => {
         try {
             const { ItemId } = req.params
 
@@ -11,6 +16,7 @@ class BiddingController {
                     order: [['price', 'DESC']]
                 }
             )
+
             res.status(200).json(data)
         } catch (err) {
             console.log(err)
@@ -18,7 +24,7 @@ class BiddingController {
         }
     }
 
-    static readDistinct = async (req, res, next) => {
+    readDistinct = async (req, res, next) => {
         try {
             const { ItemId } = req.params
 
@@ -39,7 +45,7 @@ class BiddingController {
         }
     }
 
-    static readGroupBy = async (req, res, next) => {
+    readGroupBy = async (req, res, next) => {
         try {
             const { ItemId } = req.params
 
@@ -58,7 +64,7 @@ class BiddingController {
         }
     }
 
-    static readUser = async (req, res, next) => {
+    readUser = async (req, res, next) => {
         try {
             const { ItemId, UserId } = req.params
 
@@ -70,12 +76,15 @@ class BiddingController {
         }
     }
 
-    static create = async (req, res, next) => {
-        console.log('masuk')
+    create = async (req, res, next) => {
         try {
+            console.log('masuk')
             // const user = {
             //     id: 1
             // }
+
+
+
             const { id } = req.user
             const { ItemId, price, date } = req.body
 
@@ -84,7 +93,9 @@ class BiddingController {
 
             const data = await Biddings.create(payload)
 
-            if (data) res.status(201).json({ message: 'Successfully added data' })
+            if (data) {
+                res.status(201).json({ message: 'Successfully added data' })
+            }
             else throw new Error({ code: 400, message: 'Bad request: invalid data supplied' })
         } catch (err) {
             console.log(err)
@@ -92,7 +103,7 @@ class BiddingController {
         }
     }
 
-    static delete = async (req, res, next) => {
+    delete = async (req, res, next) => {
         try {
             const { id } = req.params
 
@@ -109,4 +120,4 @@ class BiddingController {
     }
 }
 
-module.exports = BiddingController
+module.exports = (io) => new BiddingController(io)

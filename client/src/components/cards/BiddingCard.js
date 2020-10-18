@@ -94,6 +94,11 @@ export default function BiddingCard(props) {
   const classes = useStyles();
   const history = useHistory()
 
+  const navigate = (id) => {
+    history.push(`/bid/${id}`)
+    props.joinRoom(id)
+  }
+
   return props.data.ItemPictures.length > 0 && (
     <Box boxShadow={3} style={{ backgroundColor: '#f7f7f7', borderRadius: 20, margin: '20px 0 10px 0'}}>
       <Box className={classes.cardContainer}>
@@ -130,8 +135,8 @@ export default function BiddingCard(props) {
             <p style={{ fontSize: 15, fontStyle: 'italic', textAlign: 'center', margin: '10px 0' }}>Until</p>
             <Moment style={{ fontSize: 16 }} format="YYYY/MM/DD HH:mm">{props.data.end_date}</Moment>
           </Box>
-          <Box className={classes.buttonBox}>            
-            <Button onClick={() => history.push(`bid/${props.data.id}`)} variant="contained" color="secondary">
+          <Box className={classes.buttonBox}>     
+            <Button onClick={() => navigate(props.data.id)} variant="contained" color="secondary">
               Details
             </Button>
           </Box>

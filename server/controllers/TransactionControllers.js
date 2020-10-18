@@ -1,7 +1,10 @@
 const { Transactions, Biddings, Items } = require('../models')
 
 class TransactionController {
-    static read = async (req,res,next) => {
+    constructor(io) {
+        this.io = io
+    }
+    read = async (req, res, next) => {
         try {
             const dataTrx = await Transactions.findAll()
             // console.log(dataTrx)
@@ -12,7 +15,7 @@ class TransactionController {
         }
     }
 
-    static getUserTransactions = async (req,res,next) => {
+    getUserTransactions = async (req, res, next) => {
         try {
             const {UserId} = req.params
             const userTrx = await Transactions.findAll({where: { UserId }})
@@ -22,7 +25,7 @@ class TransactionController {
         }
     }
 
-    static create = async (req,res, next) => {
+    create = async (req, res, next) => {
         try {
             const { ItemId } = req.params
 
@@ -62,7 +65,7 @@ class TransactionController {
         }
     }
     
-    static delete = async (req, res, next) => {
+    delete = async (req, res, next) => {
         try {
             const { UserId } = req.params
 
@@ -79,7 +82,7 @@ class TransactionController {
         }
     }
 
-    static paid = async (req,res,next) => {
+    paid = async (req, res, next) => {
         try {
             const { UserId } = req.params
             const edited = await Transactions.update({
@@ -95,4 +98,4 @@ class TransactionController {
     }
 }
 
-module.exports = TransactionController
+module.exports = (io) => new TransactionController(io)
