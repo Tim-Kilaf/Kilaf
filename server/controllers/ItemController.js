@@ -1,8 +1,14 @@
 const { Items, ItemPictures, Users, Biddings } = require('../models')
 const path = require('path')
+const SocketHandler = require('../handlers/SocketHandler')
+const io = require('../config/io-emitter');
 
 class ItemController {
-  static async listItem(req, res, next) {
+  constructor(io) {
+    this.io = io
+  }
+
+  listItem = async (req, res, next) => {
     try {
       const items = await Items.findAll({
         where: {
@@ -17,7 +23,7 @@ class ItemController {
     }
   }
 
-  static async createItem(req, res, next) {
+  createItem = async (req, res, next) => {
     try {
       console.log(req.body)
       delete req.body.image
@@ -47,16 +53,18 @@ class ItemController {
         images.mv(path.join(__dirname, `../../client/src/assets/images/${images.name}`))
       }
 
+      // this.io.emit('bid', (socket) => SocketHandler.newBid(data, socket))
 
       res.status(201).json({ message: 'Sucessfully Created' })
     } catch (errors) {
-      console.log(errors)
+      console.log('ini kalo pake arrow function', errors)
       return next(errors)
     }
   }
 
-  static async detailItem(req, res, next) {
+  detailItem = async (req, res, next) => {
     try {
+      console.log(req.params.id)
       const item = await Items.findOne({
         where: {
           id: req.params.id
@@ -82,6 +90,9 @@ class ItemController {
         order: [[ Biddings, 'price', 'DESC' ]]
       })
 
+      // this.io.emit('bid', (socket) => SocketHandler.newBid(item, socket))
+      // this.op
+
       let highestBidder = item.Biddings.length > 0 && req.user.id === item.Biddings[0].User.id
 
       let owner
@@ -92,6 +103,8 @@ class ItemController {
         owner = false
       }
 
+      io.emit('test', { item, owner, highestBidder })
+
       res.status(200).json({ item, owner, highestBidder })
     } catch (errors) {
       console.log(errors)
@@ -100,4 +113,4 @@ class ItemController {
   }
 }
 
-module.exports = ItemController
+module.exports = (io) => new ItemController(io)

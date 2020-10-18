@@ -1,9 +1,13 @@
+const SocketHandler = require('../handlers/SocketHandler')
 const { checkPassword } = require('../helpers/bcrypt')
 const { generateToken } = require('../helpers/jwt')
 const {Users, Roles} = require('../models')
 
 class UserController {
-    static login = async (req, res, next) => {
+    constructor(io) {
+        this.io = io
+    }
+    login = async (req, res, next) => {
         try {
             const { email, password } = req.body
             const user = await Users.findOne({
@@ -25,7 +29,7 @@ class UserController {
             next(error)
         }
     }
-    static register = async (req,res, next) => {
+    register = async (req, res, next) => {
         try {
             const { fullname, email, password } = req.body
 
@@ -36,8 +40,10 @@ class UserController {
                 RoleId: ''
             })
 
+            // ardy was here
             const newUser = await Users.findOne({include: [Roles], where: {email: regist.email} })
             let role = newUser.Role.name
+            this.io.emit('newUser', SocketHandler.newUser(newUser))
             return res.status(201).json({id: newUser.id, email: newUser.email, role})
 
         } catch (error) {
@@ -61,4 +67,4 @@ class UserController {
     }
 }
 
-module.exports = UserController
+module.exports = (io) => new UserController(io)
