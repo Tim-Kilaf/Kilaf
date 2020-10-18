@@ -64,6 +64,46 @@ class TransactionController {
             next(error)
         }
     }
+
+    static createForCron = async (ItemId) => {
+        try {
+            // const { ItemId } = req.params
+
+            const data = await Biddings.findAll(
+                {
+                    where: { ItemId: ItemId },
+                    order: [['price', 'DESC']]
+                }
+            )
+            const amount = data[0].price
+            const UserId = data[0].UserId
+            console.log(UserId)
+
+            const payload = {
+                UserId,
+                ItemId,
+                status: 'pending',
+                amount,
+                date: new Date
+            }
+            const trx = await Transactions.create(payload)
+            // console.log(trx)
+            const itemUpdate = await Items.update({
+                status: 'sold',
+                HighestBiddingId: UserId,
+                buyout_date: new Date
+            },{
+                where: {
+                    id: ItemId
+                }
+            })
+            return trx
+            // res.status(201).json(trx)
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
+    }
     
     delete = async (req, res, next) => {
         try {
