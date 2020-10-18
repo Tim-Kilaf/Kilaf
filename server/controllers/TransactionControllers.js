@@ -1,4 +1,5 @@
 const { Transactions, Biddings, Items } = require('../models')
+const io = require('../config/io-emitter');
 
 class TransactionController {
     constructor(io) {
@@ -109,7 +110,8 @@ class TransactionController {
                 }
             })
 
-            io.emit('test',true)
+            io.emit('test', true)
+            io.emit('buyout', true)
             res.status(201).json(trx)
             
         } catch (error) {

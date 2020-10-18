@@ -29,8 +29,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   image: {
-    width: '450px',
-    height: '384px',
+    width: '100%',
+    height: '100%',
     objectFit: 'cover',
     borderRadius: 20,
     [theme.breakpoints.down('xs')]: {
@@ -92,38 +92,38 @@ export default function Detail() {
   const [bid, setBid] = useState(0)
   const [valid, setValid] = useState(false)
   const [refetch, setRefetch] = useState(true)
-  const [buyout,setBuyout] = useState(false)
+  const [buyout, setBuyout] = useState(false)
 
   useEffect(() => {
-    dispatch(detailItem(param.id))   
-    socket.on('test', (data) => {      
+    dispatch(detailItem(param.id))
+    socket.on('test', (data) => {
       setRefetch(data)
-    }) 
+    })
   }, [dispatch])
 
   const data = useSelector(state => state.reducerItem.item)
 
   useEffect(() => {
     if (data.item) {
-      if ( data.owner || bid < (data.item.current_price + data.item.bid_increment - 1)) {
+      if (data.owner || bid < (data.item.current_price + data.item.bid_increment - 1)) {
         setValid(false)
       } else if ((bid >= (data.item.current_price + data.item.bid_increment))) {
         setValid(true)
       }
     }
 
-    if(refetch) {
+    if (refetch) {
       dispatch(detailItem(param.id))
       setRefetch(false)
     }
     if (data.item) {
-      if(data.item.status === 'sold') {
+      if (data.item.status === 'sold') {
         setBuyout(true)
       } else {
         setBuyout(false)
       }
     }
-  }, [bid, refetch, data.item ])
+  }, [bid, refetch, data.item])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -135,7 +135,7 @@ export default function Detail() {
     dispatch(addBidding(payload, (success, err) => {
       if (err) {
         console.log(err)
-      }      
+      }
 
       socket.on('test', (data) => {
         setRefetch(data)
@@ -150,18 +150,20 @@ export default function Detail() {
         access_token: localStorage.getItem('access_token')
       }
     })
-    .then(res => {
-      console.log('success buyout');
-      socket.on('test', (data) => {
-        setRefetch(data)
+      .then(res => {
+        console.log('success buyout');
       })
+      .catch(err => {
+        console.log(err);
+      })
+
+    socket.on('test', (data) => {
+      setRefetch(data)
     })
-    .catch(err => {
-      console.log(err);
+    socket.on('buyout', (data) => {
+      console.log(data)
+      setBuyout(data)
     })
-    setBuyout(true)
-    console.log(buyout);
-    
     // history.push('/')
   }
 
@@ -191,35 +193,38 @@ export default function Detail() {
                 End at  <Moment className={classes.priceDetail} format="YYYY/MM/DD HH:mm">{data.item.end_date}</Moment>
               </Box>
               <Box>
-                <form onSubmit={(e) => handleSubmit(e)}
-                  style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', padding: '20px 0' }}>
-                  <Box>
-                    <NumericInput className="form-control" defaultValue={(data.item.current_price)}
-                      min={(data.item.current_price + data.item.bid_increment)} max={data.item.buyout_price}
-                      step={data.item.bid_increment} onChange={setBid} />
-                  </Box>
-                  <Box style={{ marginTop: 10 }}>
-                  {data.highestBidder ?
-                      <Button color="primary" variant="contained" disabled>
-                        You are leading
+                {
+                  !data.owner &&
+                  <form onSubmit={(e) => handleSubmit(e)}
+                    style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', padding: '20px 0' }}>
+                    <Box>
+                      <NumericInput className="form-control" defaultValue={(data.item.current_price)}
+                        min={(data.item.current_price + data.item.bid_increment)} max={data.item.buyout_price}
+                        step={data.item.bid_increment} onChange={setBid} />
+                    </Box>
+                    <Box style={{ marginTop: 10 }}>
+                      {data.highestBidder ?
+                        <Button color="primary" variant="contained" disabled>
+                          You are leading
                       </Button>
-                      :
-                      valid ?
-                      <Button color="primary" type="submit" variant="contained">
-                        Start Bid
+                        :
+                        valid ?
+                          <Button color="primary" type="submit" variant="contained">
+                            Start Bid
                       </Button>
-                      :
-                      <Button color="primary" variant="contained" disabled>
-                        The Minimum Bid Is {(data.item.current_price + data.item.bid_increment)}
-                        </Button>}
-                  </Box>
-                </form>
-                {!buyout ? 
-                  <Button onClick={handleBuyout}>Buyout</Button>
-                  :
-                  <Button disabled>Buyout</Button>
+                          :
+                          <Button color="primary" variant="contained" disabled>
+                            The Minimum Bid Is {(data.item.current_price + data.item.bid_increment)}
+                          </Button>}
+                      <Box style={{ textAlign: 'center', marginTop: 10 }}>
+                        {!buyout ?
+                          <Button color="primary" variant="contained" onClick={handleBuyout}>Buyout</Button>
+                          :
+                          <Button disabled>Sold Out</Button> }
+                      </Box>                      
+                    </Box>
+                  </form>
                 }
-                {/* <Button onClick={handleBuyout}>Buyout</Button> */}
               </Box>
             </Box>
           </Box>
