@@ -65,7 +65,7 @@ class TransactionController {
         }
     }
 
-    static createForBuyout = async (req,res, next) => {
+    createForBuyout = async (req,res, next) => {
         try {
             const { ItemId } = req.params
 
@@ -109,7 +109,9 @@ class TransactionController {
                 }
             })
 
+            io.emit('test',true)
             res.status(201).json(trx)
+            
         } catch (error) {
             console.log(error)
             next(error)
