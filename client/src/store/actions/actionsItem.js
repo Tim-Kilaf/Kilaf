@@ -78,10 +78,9 @@ export function addBidding(payload, cb) {
           type: 'ADD_BIDDING',
           payload: data
         })
-        cb('success')
       })
       .catch(err => {
-        cb('success', err)
+        console.log(err)
       })
   }
 }
