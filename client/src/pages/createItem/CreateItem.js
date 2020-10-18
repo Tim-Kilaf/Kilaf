@@ -4,12 +4,19 @@ import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { createItem } from '../../store/actions/actionsItem'
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'red',
+      }
+    }
+  },
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -26,6 +33,15 @@ const useStyles = makeStyles((theme) => ({
     margin: '1em 0'
   }
 }))
+
+const ValidationTextField = withStyles({
+  root: {
+    '& input: invalid + fieldset': {
+      borderColor: 'red',
+      borderWidth: 2
+    }
+  }
+})(TextField)
 
 export default function CreateItem() {
   const dispatch = useDispatch()
@@ -78,7 +94,13 @@ export default function CreateItem() {
       <h1>Create New Item</h1>
       <form onSubmit={(e) => onSubmitHandler(e)} className={clasess.form}>
         <Box className={clasess.inputBox}>
-          <TextField style={{ width: '100%' }} onChange={(e) => onTextHandler(e)} name="name" id="outlined-basic" label="Item's Name" variant="outlined" required />
+          <ValidationTextField
+            label="CSS validation style"
+            required
+            variant="outlined"
+            id="validation-outlined-input"
+          />
+          <ValidationTextField id="validation-outlined-input" style={{ width: '100%' }} onChange={(e) => onTextHandler(e)} name="name" id="outlined-basic" label="Item's Name" variant="outlined" required />
         </Box>
         <Box className={clasess.inputBox}>
           <TextField name="description" onChange={(e) => onTextHandler(e)} style={{ width: '100%' }} id="outlined-basic" label="Description" variant="outlined" required />
