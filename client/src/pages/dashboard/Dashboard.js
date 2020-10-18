@@ -4,6 +4,7 @@ import BiddingCard from '../../components/cards/BiddingCard'
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux'
 import { getItems } from '../../store/actions/actionsItem'
+import socket from '../../config/socket-io';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -22,8 +23,12 @@ export default function Dashboard() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getItems())
+    dispatch(getItems())    
   }, [dispatch])
+
+  const joinRoom = (id) => {
+    socket.emit('joinRoom', id)
+  }
 
   const items = useSelector(state => state.reducerItem.items)
 
@@ -32,7 +37,7 @@ export default function Dashboard() {
       <Box className={classes.container}>
         {items.length > 0 && items.map(data => {
           return (
-            <BiddingCard data={data}/>                                
+            <BiddingCard joinRoom={joinRoom} data={data} />                                
           )
         })}
       </Box>
