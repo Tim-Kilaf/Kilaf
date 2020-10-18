@@ -94,20 +94,14 @@ export default function CreateItem() {
       <h1>Create New Item</h1>
       <form onSubmit={(e) => onSubmitHandler(e)} className={clasess.form}>
         <Box className={clasess.inputBox}>
-          <ValidationTextField
-            label="CSS validation style"
-            required
-            variant="outlined"
-            id="validation-outlined-input"
-          />
           <ValidationTextField id="validation-outlined-input" style={{ width: '100%' }} onChange={(e) => onTextHandler(e)} name="name" id="outlined-basic" label="Item's Name" variant="outlined" required />
         </Box>
         <Box className={clasess.inputBox}>
-          <TextField name="description" onChange={(e) => onTextHandler(e)} style={{ width: '100%' }} id="outlined-basic" label="Description" variant="outlined" required />
+          <ValidationTextField name="description" onChange={(e) => onTextHandler(e)} style={{ width: '100%' }} id="outlined-basic" label="Description" variant="outlined" required />
         </Box>
         <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Box><TextField name="starting_price" onChange={(e) => onTextHandler(e)} type="number" id="outlined-basic" label="Starting Price" variant="outlined" required /></Box>
-          <Box><TextField name="buyout_price" onChange={(e) => onTextHandler(e)} type="number" id="outlined-basic" label="Buyout Price" variant="outlined" required /></Box>
+          <Box><ValidationTextField name="starting_price" onChange={(e) => onTextHandler(e)} type="number" id="outlined-basic" label="Starting Price" variant="outlined" required /></Box>
+          <Box><ValidationTextField name="buyout_price" onChange={(e) => onTextHandler(e)} type="number" id="outlined-basic" label="Buyout Price" variant="outlined" required /></Box>
         </Box>
         <Box className={clasess.inputBox} style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box>
@@ -118,11 +112,11 @@ export default function CreateItem() {
               <MenuItem value='Baru'>Baru</MenuItem>
             </Select>
           </Box>
-          <Box><TextField name="bid_increment" onChange={(e) => onTextHandler(e)} type="number" label="Bid Increment" variant="outlined" required /></Box>
+          <Box><ValidationTextField name="bid_increment" onChange={(e) => onTextHandler(e)} type="number" label="Bid Increment" variant="outlined" required /></Box>
         </Box>
         <Box className={clasess.inputBox}>
-          <TextField name="start_date" onChange={(e) => onTextHandler(e)} label="Start Date" type="datetime-local" InputLabelProps={{ shrink: true }} required />
-          <TextField name="end_date" onChange={(e) => onTextHandler(e)} label="End Date" type="datetime-local" InputLabelProps={{ shrink: true }} required />
+          <ValidationTextField name="start_date" onChange={(e) => onTextHandler(e)} label="Start Date" type="datetime-local" InputLabelProps={{ shrink: true }} required />
+          <ValidationTextField name="end_date" onChange={(e) => onTextHandler(e)} label="End Date" type="datetime-local" InputLabelProps={{ shrink: true }} required />
         </Box>
         <input
           className={clasess.inputBox}
