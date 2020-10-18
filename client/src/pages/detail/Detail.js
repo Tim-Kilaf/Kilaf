@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { detailItem } from '../../store/actions/actionsItem';
-import { addBidding } from '../../store/actions/actionsItem'
+import { detailItem, addBidding } from '../../store/actions/actionsItem'; // merge line 5-6 to one
 import { useHistory, useParams } from 'react-router-dom';
 import Moment from 'react-moment';
 import NumericInput from 'react-numeric-input';
 import { Button } from '@material-ui/core';
 import socket from '../../config/socket-io'
+import { disconnectSocket, initiateSocket, subscribeToBidding } from '../../sockets/biddingSocket';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -89,19 +89,31 @@ export default function Detail() {
   const param = useParams()
   const history = useHistory()
 
+  const [room, setRoom] = useState(`item-${param.id}`)
   const [bid, setBid] = useState(0)
   const [valid, setValid] = useState(false)
-  const [refetch, setRefetch] = useState(true)
   const [buyout, setBuyout] = useState(false)
+
+  const data = useSelector(state => state.reducerItem.item)
+
+  useEffect(() => {
+    if (room) initiateSocket(room)
+
+    subscribeToBidding(dispatch, param.id)
+
+    return () => {
+      disconnectSocket()
+    }
+  }, [room])
 
   useEffect(() => {
     dispatch(detailItem(param.id))
-    socket.on('test', (data) => {
-      setRefetch(data)
-    })
   }, [dispatch])
 
-  const data = useSelector(state => state.reducerItem.item)
+  socket.on('buyout', (data) => {
+    console.log(data)
+    setBuyout(data)
+  })
 
   useEffect(() => {
     if (data.item) {
@@ -112,10 +124,6 @@ export default function Detail() {
       }
     }
 
-    if (refetch) {
-      dispatch(detailItem(param.id))
-      setRefetch(false)
-    }
     if (data.item) {
       if (data.item.status === 'sold') {
         setBuyout(true)
@@ -123,7 +131,7 @@ export default function Detail() {
         setBuyout(false)
       }
     }
-  }, [bid, refetch, data.item])
+  }, [bid, data.item])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -132,20 +140,12 @@ export default function Detail() {
       ItemId: param.id
     }
 
-    dispatch(addBidding(payload, (success, err) => {
-      if (err) {
-        console.log(err)
-      }
-
-      socket.on('test', (data) => {
-        setRefetch(data)
-      })
-    }))
+    dispatch(addBidding(payload))
   }
 
   const handleBuyout = async (e) => {
     e.preventDefault()
-    const fetchBuyout = await fetch(`http://localhost:3001/transaction/buyout/${param.id}`, {
+    await fetch(`http://localhost:3001/transaction/buyout/${param.id}`, {
       headers: {
         access_token: localStorage.getItem('access_token')
       }
@@ -156,14 +156,6 @@ export default function Detail() {
       .catch(err => {
         console.log(err);
       })
-
-    socket.on('test', (data) => {
-      setRefetch(data)
-    })
-    socket.on('buyout', (data) => {
-      console.log(data)
-      setBuyout(data)
-    })
     // history.push('/')
   }
 
