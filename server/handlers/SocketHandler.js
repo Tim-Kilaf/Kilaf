@@ -18,7 +18,7 @@ class SocketHandler {
     }
 
     static test = (payload, socket) => {
-        socket.emit('test', payload)
+        socket.emit('test', 'wadidaw')
     }
 }
 

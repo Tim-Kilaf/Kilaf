@@ -15,15 +15,19 @@ function reducerItem(state = currentState, action) {
         }
         return newState
       case 'FETCH_ITEM_DETAIL':
-        let detail = {
+        
+        return state
+      case 'ADD_BIDDING':
+
+        // console.log(action.payload)
+        return state
+      case 'REALTIME_BIDDING':
+        console.log(action.payload)
+        let newDetail = {
           ...state,
           item: action.payload
         }
-        return detail
-      case 'ADD_BIDDING':
-
-        console.log(action.payload)
-        return state
+        return newDetail     
       default:
           return state
   }

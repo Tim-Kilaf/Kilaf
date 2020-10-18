@@ -23,7 +23,7 @@ export default function Dashboard() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getItems())    
+    dispatch(getItems())       
   }, [dispatch])
 
   const joinRoom = (id) => {
