@@ -92,6 +92,7 @@ export default function Detail() {
   const [bid, setBid] = useState(0)
   const [valid, setValid] = useState(false)
   const [refetch, setRefetch] = useState(true)
+  const [buyout,setBuyout] = useState(false)
 
   useEffect(() => {
     dispatch(detailItem(param.id))   
@@ -115,7 +116,14 @@ export default function Detail() {
       dispatch(detailItem(param.id))
       setRefetch(false)
     }
-  }, [bid, refetch])
+    if (data.item) {
+      if(data.item.status === 'sold') {
+        setBuyout(true)
+      } else {
+        setBuyout(false)
+      }
+    }
+  }, [bid, refetch, data.item ])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -137,13 +145,24 @@ export default function Detail() {
 
   const handleBuyout = async (e) => {
     e.preventDefault()
-    const buyout = await fetch(`http://localhost:3001/transaction/buyout/${param.id}`, {
+    const fetchBuyout = await fetch(`http://localhost:3001/transaction/buyout/${param.id}`, {
       headers: {
         access_token: localStorage.getItem('access_token')
       }
     })
+    .then(res => {
+      console.log('success buyout');
+      socket.on('test', (data) => {
+        setRefetch(data)
+      })
+    })
+    .catch(err => {
+      console.log(err);
+    })
+    setBuyout(true)
     console.log(buyout);
-    history.push('/')
+    
+    // history.push('/')
   }
 
   return (
@@ -195,6 +214,12 @@ export default function Detail() {
                         </Button>}
                   </Box>
                 </form>
+                {!buyout ? 
+                  <Button onClick={handleBuyout}>Buyout</Button>
+                  :
+                  <Button disabled>Buyout</Button>
+                }
+                {/* <Button onClick={handleBuyout}>Buyout</Button> */}
               </Box>
             </Box>
           </Box>
