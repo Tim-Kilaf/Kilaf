@@ -16,7 +16,8 @@
     "socket.io": "^2.3.0",
     "socket.io-adapter-postgres": "^1.2.1",
     "socket.io-emitter": "^3.1.1",
-    "socket.io-redis": "^5.4.0"
+    "socket.io-redis": "^5.4.0",
+    "stripe": "^8.114.0"
   },
   "devDependencies": {
     "jest": "^26.5.3",
