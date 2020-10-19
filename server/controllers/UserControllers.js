@@ -4,10 +4,10 @@ const { generateToken } = require('../helpers/jwt')
 const {Users, Roles} = require('../models')
 
 class UserController {
-    constructor(io) {
-        this.io = io
-    }
-    login = async (req, res, next) => {
+    // constructor(io) {
+    //     this.io = io
+    // }
+   static login = async (req, res, next) => {
         try {
             const { email, password } = req.body
             const user = await Users.findOne({
@@ -29,7 +29,7 @@ class UserController {
             return next(err)
         }
     }
-    register = async (req, res, next) => {
+  static  register = async (req, res, next) => {
         try {
             const { fullname, email, password } = req.body
 
@@ -51,4 +51,4 @@ class UserController {
     }
 }
 
-module.exports = (io) => new UserController(io)
+module.exports = UserController

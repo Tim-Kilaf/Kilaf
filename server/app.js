@@ -24,7 +24,7 @@ app
     .use(express.urlencoded({ extended: false }))
     .use(express.json())
     .use(route(io))
-    .use(errorHandler)
+    // .use(errorHandler)
 
 
 // CRON Function (Runs every minute 00-59)
