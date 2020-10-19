@@ -1,4 +1,4 @@
-const { Payments } = require('../models')
+const { Payments, Transactions } = require('../models')
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 const { v4: uuidv4 } = require('uuid')
 
@@ -50,6 +50,7 @@ class PaymentController {
         }
         
     }
+
     read = async (req, res, next) => {
         console.log('masuk read')
         try {
@@ -58,6 +59,33 @@ class PaymentController {
         } catch (err) {
             console.log(err)
             return next(err)
+        }
+    }
+
+    create = async (req,res,next) => {
+        console.log(req.params)
+        try {
+            const { TrxId, amount } = req.params
+            // console.log(payload)
+            const data = await Payments.create({
+                TransactionId: +TrxId,
+                amount: +amount,
+                date: new Date
+            })
+            console.log(data)
+            
+            // console.log(req.user)
+            const UserId = req.user.id
+            const paid = await Transactions.update({
+                status: 'paid'
+            },{
+                where: { UserId }
+            })
+
+            res.status(200).json({ message: 'Payment successfull'})
+        } catch (error) {
+            console.log(error)
+            next(error)
         }
     }
 }
