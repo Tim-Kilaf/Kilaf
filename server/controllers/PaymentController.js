@@ -22,8 +22,8 @@ class PaymentController {
                 console.log(customer)
                 return stripe.invoiceItems.create({
                     customer: customer.id,
-                    amount: price,
-                    currency: 'usd'
+                    amount: price * 100,
+                    currency: 'idr'
                 },{idempotencyKey})
             })
             .then((invoiceItem) => {

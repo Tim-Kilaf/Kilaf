@@ -107,7 +107,8 @@ export default function Cart() {
               <StripeCheckout 
               stripeKey="pk_test_51HdtTKAh63sGgRSDPUu44eUiZVFR5paJ77eJReP9VP2tgmyGkrlwm9NOXCavLUSSQN0Xdl6W65Ju1geL0ucsfx6u00K3WTaPRq"
               token={makePayment}
-              amount={amountForPaymentGateway}>
+              currency='idr'
+              amount={amountForPaymentGateway * 100}>
                   <button variant="outlined" color="primary">CHECKOUT</button>
               </StripeCheckout>
             </Box>
