@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       Items.belongsTo(models.Users)
       Items.hasMany(models.ItemPictures)
       Items.hasMany(models.Biddings)
+      Items.hasMany(models.Transactions)
     }
   };
   Items.init({
