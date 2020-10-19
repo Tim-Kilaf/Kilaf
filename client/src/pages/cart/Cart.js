@@ -26,7 +26,7 @@ export default function Cart() {
       // setLocalAmount(formatted)
       // console.log(cart, 'watch cart');
     })
-    console.log(value)
+    // console.log(value)
     setAmountForPaymentGateway(value)
     const formatted = new Intl.NumberFormat('id', { currency: 'IDR', style: 'currency'}).format(value)
     setLocalAmount(formatted)
@@ -56,6 +56,23 @@ export default function Cart() {
       console.log(response, "ini response")
       const {status} = response
       console.log(status, 'ini status')
+
+      //mindahin item dari tabel transaction ke tabel payment
+      carts.map(cart => {
+        // console.log(cart, 'hasil looping')
+        
+        fetch(`http://localhost:3001/payment/create/${cart.id}/${cart.amount}`, {
+          method: 'POST',
+          headers: {
+            access_token: localStorage.getItem('access_token')
+          }
+        })
+        .then(() => {
+          console.log('berhasil nambah payment history')
+          dispatch(getCarts())
+        })
+        .catch((err) => console.log(err))
+      })
     })
     .catch(err => console.log(err, 'ini error'))
   }
