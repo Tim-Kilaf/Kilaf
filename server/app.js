@@ -7,7 +7,7 @@ const route = require('./routes')
 const {errorHandler} = require('./middleware/errorHandler')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
-const io = require('socket.io').listen(5000)
+const io = require('socket.io').listen()
 const redisAdapter = require('socket.io-redis')
 const socket = require('./config/socket')
 const cron = require('node-cron')
@@ -24,7 +24,7 @@ app
     .use(express.urlencoded({ extended: false }))
     .use(express.json())
     .use(route(io))
-    // .use(errorHandler)
+    .use(errorHandler)
 
 
 // CRON Function (Runs every minute 00-59)

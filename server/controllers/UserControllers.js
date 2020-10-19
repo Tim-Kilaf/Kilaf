@@ -22,10 +22,14 @@ class UserController {
                 let role = user.Role.name
                 return res.status(200).json({access_token, role})
             }else{ 
-                return res.status(400).json({message: 'Invalid Username or Password'})
+                let err = {
+                    code: 400,
+                    message: 'Invalid email or password'
+                }
+                return next(err)
             }
         } catch (err) {
-            console.log(err)
+            console.log(err, 'catch login')
             return next(err)
         }
     }
@@ -45,7 +49,7 @@ class UserController {
             return res.status(201).json({id: newUser.id, email: newUser.email, role})
 
         } catch (err) {
-            console.log(err)
+            console.log(err, 'catch register')
             return next(err)
         }
     }
