@@ -129,45 +129,46 @@ class TransactionController {
         }
     }
 
-    static createForCron = async (ItemId) => {
-        try {
-            // const { ItemId } = req.params
+    // createForCron = async (ItemId) => {
+    //     try {
+    //         // const { ItemId } = req.params
 
-            const data = await Biddings.findAll(
-                {
-                    where: { ItemId: ItemId },
-                    order: [['price', 'DESC']]
-                }
-            )
-            const amount = data[0].price
-            const UserId = data[0].UserId
-            console.log(UserId)
+    //         const data = await Biddings.findAll(
+    //             {
+    //                 where: { ItemId: ItemId },
+    //                 order: [['price', 'DESC']]
+    //             }
+    //         )
+    //         const amount = data[0].price
+    //         const UserId = data[0].UserId
+    //         console.log(UserId)
 
-            const payload = {
-                UserId,
-                ItemId,
-                status: 'pending',
-                amount,
-                date: new Date
-            }
-            const trx = await Transactions.create(payload)
-            // console.log(trx)
-            const itemUpdate = await Items.update({
-                status: 'sold',
-                HighestBiddingId: UserId,
-                buyout_date: new Date
-            },{
-                where: {
-                    id: ItemId
-                }
-            })
-            return trx
-            // res.status(201).json(trx)
-        } catch (err) {
-            console.log(err)
-            return next(err)
-        }
-    }
+    //         const payload = {
+    //             UserId,
+    //             ItemId,
+    //             status: 'pending',
+    //             amount,
+    //             date: new Date
+    //         }
+    //         const trx = await Transactions.create(payload)
+    //         // console.log(trx)
+    //         const itemUpdate = await Items.update({
+    //             status: 'sold',
+    //             HighestBiddingId: UserId,
+    //             buyout_date: new Date
+    //         },{
+    //             where: {
+    //                 id: ItemId
+    //             }
+    //         })
+    //         io.emit('test',true)
+    //         return trx
+    //         // res.status(201).json(trx)
+    //     } catch (err) {
+    //         console.log(err)
+    //         return next(err)
+    //     }
+    // }
     
     delete = async (req, res, next) => {
         try {
