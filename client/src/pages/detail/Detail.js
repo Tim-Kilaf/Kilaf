@@ -127,7 +127,8 @@ export default function Detail() {
     }
 
     if (data.item) {
-      if (data.item.current_price >= data.item.buyout_price) {
+      if (data.item.current_price >= data.item.buyout_price && buyout === false) {
+        console.log('buyout max price');
         handleBuyoutMaxPrice()
         setBuyout(true)
       }
