@@ -22,7 +22,10 @@ class TransactionController {
             const UserId = req.user.id
             const userTrx = await Transactions.findAll(
                 {
-                    where: { UserId },
+                    where: { 
+                        UserId,
+                        status: 'pending'
+                     },
                     include: {
                         model: Items,
                         include: [ItemPictures]

@@ -7,5 +7,6 @@ const paymentEndpoint = require('express').Router()
     return paymentEndpoint
     .get('/', PaymentController.read)
     .post('/', authenticate, PaymentController.stripe)
+    .post('/create/:TrxId/:amount', authenticate, PaymentController.create)
 }
 // module.exports = paymentEndpoint
