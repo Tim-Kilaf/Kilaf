@@ -115,6 +115,7 @@ export default function Detail() {
     setBuyout(data)
   })
 
+  
   useEffect(() => {
     if (data.item) {
       if (data.owner || bid < (data.item.current_price + data.item.bid_increment - 1)) {
@@ -131,6 +132,13 @@ export default function Detail() {
         setBuyout(false)
       }
     }
+
+    if (data.item) {
+      if (data.item.current_price >= data.item.buyout_price) {
+        handleBuyoutMaxPrice()
+        setBuyout(true)
+      }
+    }
   }, [bid, data.item])
 
   const handleSubmit = (e) => {
@@ -145,6 +153,22 @@ export default function Detail() {
 
   const handleBuyout = async (e) => {
     e.preventDefault()
+    await fetch(`http://localhost:3001/transaction/buyout/${param.id}`, {
+      headers: {
+        access_token: localStorage.getItem('access_token')
+      }
+    })
+      .then(res => {
+        console.log('success buyout');
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    // history.push('/')
+  }
+
+  const handleBuyoutMaxPrice = async() => {
+    // e.preventDefault()
     await fetch(`http://localhost:3001/transaction/buyout/${param.id}`, {
       headers: {
         access_token: localStorage.getItem('access_token')
