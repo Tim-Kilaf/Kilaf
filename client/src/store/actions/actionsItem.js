@@ -85,7 +85,7 @@ export function addBidding(payload, cb) {
   }
 }
 
-export function getCart() {
+export function getCarts() {
   return dispatch => {
     fetch(`http://localhost:3001/transaction`, {
       method: 'GET',
