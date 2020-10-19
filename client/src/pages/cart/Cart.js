@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Box, Container, makeStyles, Paper, Divider, Typography, Button } from '@material-ui/core';
-import { getCart, getItems } from '../../store/actions/actionsItem'
+import { Box, Container, makeStyles, Paper, Divider, Typography, Button, Grid } from '@material-ui/core';
+import { getCarts } from '../../store/actions/actionsItem'
 
 
 import CartDetail from '../../components/cards/CartDetail'
@@ -9,19 +9,30 @@ import CartDetail from '../../components/cards/CartDetail'
 export default function Cart() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [localAmount, setLocalAmount] = useState();
-
-  useEffect(() => {
-    dispatch(getItems())
-  }, [dispatch])
+  const [localAmount, setLocalAmount] = useState('');
+  const [deliveryPrice, setDeliveryPrice] = useState('0');
+  const [tax, setTax] = useState('0');
 
   const carts = useSelector(state => state.reducerItem.carts);
-  console.log(carts, 'cart');
+  console.log(carts,'carts');
+
+  useEffect(() => {
+    carts.map(cart => {
+      let value = cart.amount + localAmount
+      const formatted = new Intl.NumberFormat('id', { currency: 'IDR', style: 'currency'}).format(value)
+      setLocalAmount(formatted)
+      // console.log(cart, 'watch cart');
+    })
+  },[carts])
+
+  useEffect(() => {
+    dispatch(getCarts())
+  }, [dispatch])
 
   return (
     <Container>
-      <Container className={classes.container}>
-        <Box className={classes.contentLeft}>
+      <Grid container className={classes.container}>
+        <Grid item xs={12} sm={12} md={8}>
           <Paper elevation={2} className={classes.contentLeftTitle}>
             Your Cart
           </Paper>
@@ -32,8 +43,8 @@ export default function Cart() {
               )
             })}
           </Box>
-        </Box>
-        <Box className={classes.contentRight}>
+        </Grid>
+        <Grid item xs={12} sm={12} md={4}>
           <Paper className={classes.contentRightItem}>
             <Typography style={{padding: 10}}>
               Summary
@@ -41,22 +52,22 @@ export default function Cart() {
             <Divider />
             <Box className={classes.boxItem}>
               <Typography>Subtotal</Typography>
-              <Typography>Rp. {localAmount}</Typography>
+              <Typography>{localAmount}</Typography>
             </Box>
             <Divider />
             <Box className={classes.boxItem}>
               <Typography>Biaya Pengiriman</Typography>
-              <Typography>Rp. 0</Typography>
+              <Typography>{deliveryPrice}</Typography>
             </Box>
             <Divider />
             <Box className={classes.boxItem}>
               <Typography>Tax</Typography>
-              <Typography>Rp. 0</Typography>
+              <Typography>{tax}</Typography>
             </Box>
             <Divider />
             <Box className={classes.boxItem}>
               <Typography>Total</Typography>
-              <Typography>Rp. 180.000</Typography>
+              <Typography>{localAmount}</Typography>
             </Box>
             <Box style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 20}}>
               <Button variant="outlined" color="primary">
@@ -64,8 +75,8 @@ export default function Cart() {
               </Button>
             </Box>
           </Paper>
-        </Box>
-      </Container>
+        </Grid>
+      </Grid>
     </Container>
   )
 }
