@@ -110,6 +110,7 @@ export default function Detail() {
     dispatch(detailItem(param.id))
   }, [dispatch])  
 
+  
   useEffect(() => {
     if (data.item) {
       if (data.owner || bid < (data.item.current_price + data.item.bid_increment - 1)) {
@@ -123,9 +124,15 @@ export default function Detail() {
       if (data.item.status === 'sold') {
         setBuyout(true)
       }
-    }  
-  }, [bid, data.item, buyout])
+    }
 
+    if (data.item) {
+      if (data.item.current_price >= data.item.buyout_price) {
+        handleBuyoutMaxPrice()
+        setBuyout(true)
+      }
+    }
+  }, [bid, data.item])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -145,7 +152,23 @@ export default function Detail() {
       }
     })     
   }
- 
+
+  const handleBuyoutMaxPrice = async() => {
+    // e.preventDefault()
+    await fetch(`http://localhost:3001/transaction/buyout/${param.id}`, {
+      headers: {
+        access_token: localStorage.getItem('access_token')
+      }
+    })
+      .then(res => {
+        console.log('success buyout');
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    // history.push('/')
+  }
+
   return (
     <Box className={classes.container}>
       {data.item && data.item.ItemPictures && data.item.User &&

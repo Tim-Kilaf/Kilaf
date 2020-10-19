@@ -84,6 +84,8 @@ class BiddingController {
             
             const payload = { UserId: id, ItemId, price, date: new Date }
 
+            console.log(payload);
+
             const data = await Biddings.create(payload)
 
             if (data) {

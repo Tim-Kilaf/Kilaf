@@ -1,4 +1,4 @@
-const { Items, Biddings } = require('../models')
+const { Transactions, Items, Biddings } = require('../models')
 const {Op} = require('sequelize')
 
 class CronController {
@@ -26,7 +26,7 @@ class CronController {
     static getWinningBids = async() => {
         try {
             const itemTimeOut = await Items.findAll({
-                // include: [Biddings],
+                include: [Biddings],
                 where: {
                     end_date: {
                         [Op.lte]: new Date() 
@@ -38,6 +38,63 @@ class CronController {
             
             console.log({itemTimeOut}, 'contorller');
             return {itemTimeOut}.itemTimeOut
+        } catch (err) {
+            console.log(err)
+            return next(err)
+        }
+    }
+    static noBids = async(ItemId) => {
+        try {
+            const itemUpdate = await Items.update({
+                status: 'closed',
+            },
+            {
+                where: {
+                    id: ItemId
+                }
+            })
+            console.log(itemUpdate, 'controller no bids');
+            return itemUpdate
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    static bidTransaction = async (ItemId) => {
+        try {
+            // const { ItemId } = req.params
+
+            const data = await Biddings.findAll(
+                {
+                    where: { ItemId: ItemId },
+                    order: [['price', 'DESC']]
+                }
+            )
+            const amount = data[0].price
+            const UserId = data[0].UserId
+            console.log(UserId)
+
+            const payload = {
+                UserId,
+                ItemId,
+                status: 'pending',
+                amount,
+                date: new Date
+            }
+            const trx = await Transactions.create(payload)
+            // console.log(trx)
+            const itemUpdate = await Items.update({
+                status: 'sold',
+                HighestBiddingId: UserId,
+                buyout_date: new Date
+            },{
+                where: {
+                    id: ItemId
+                }
+            })
+            // io.emit('test',true)
+            return trx
+            // res.status(201).json(trx)
         } catch (err) {
             console.log(err)
             return next(err)
