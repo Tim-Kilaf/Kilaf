@@ -1,6 +1,5 @@
 const { Items, ItemPictures, Users, Biddings } = require('../models')
 const path = require('path')
-const io = require('../config/io-emitter');
 
 class ItemController {
   constructor(io) {
@@ -17,8 +16,9 @@ class ItemController {
       })
 
       res.status(200).json({ items })
-    } catch (errors) {
-      return next(errors)
+    } catch (err) {
+      console.log(err)
+      return next(err)
     }
   }
 
@@ -52,18 +52,17 @@ class ItemController {
         images.mv(path.join(__dirname, `../../client/src/assets/images/${images.name}`))
       }
 
-      // this.io.emit('bid', (socket) => SocketHandler.newBid(data, socket))
+      this.io.emit('newItem', item)
 
       res.status(201).json({ message: 'Sucessfully Created' })
-    } catch (errors) {
-      console.log('ini kalo pake arrow function', errors)
-      return next(errors)
+    } catch (err) {
+      console.log(err)
+      return next(err)
     }
   }
 
   detailItem = async (req, res, next) => {
     try {
-      console.log(req.params.id)
       const item = await Items.findOne({
         where: {
           id: req.params.id
@@ -89,7 +88,7 @@ class ItemController {
         order: [[ Biddings, 'price', 'DESC' ]]
       })
 
-      // this.io.emit('bid', (socket) => SocketHandler.newBid(item, socket))
+      this.io.emit('joinRoom', `item-${req.params.id}`)
       // this.op
 
       let highestBidder = item.Biddings.length > 0 && req.user.id === item.Biddings[0].User.id
@@ -101,12 +100,12 @@ class ItemController {
       } else {
         owner = false
       }
-        io.emit('test', false)
+        // io.emit('test', false)
         res.status(200).json({ item, highestBidder, owner })
         
-    } catch (errors) {
-      console.log(errors)
-      return next(errors)
+    } catch (err) {
+      console.log(err)
+      return next(err)
     }
   }
 }

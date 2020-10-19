@@ -8,9 +8,9 @@ class PaymentController {
         try {
             const payment = await Payments.findAll()
             return res.sttaus(200).json(payment)
-        } catch (error) {
-            console.log(error)
-            next(error)
+        } catch (err) {
+            console.log(err)
+            return next(err)
         }
     }
 }

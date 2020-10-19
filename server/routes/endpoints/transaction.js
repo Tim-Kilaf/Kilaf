@@ -6,7 +6,7 @@ module.exports = (io) => {
 
     return transactionEndpoints
     .get('/', TransactionController.read)
-    .get('/:UserId', TransactionController.getUserTransactions)
+    .get('/', TransactionController.getUserTransactions)
     .post('/create/:ItemId', TransactionController.create)
     .get('/buyout/:ItemId', authenticate, TransactionController.createForBuyout)
     .delete('/:UserId', TransactionController.delete)

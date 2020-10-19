@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
+import Moment from 'react-moment';
 
 const useStyles = makeStyles((theme) => ({
   cardContainer: {
@@ -68,8 +69,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function BiddingCard() {
+export default function CartCard(props) {
   const classes = useStyles();
+  const { cart } = props;
 
   return (
     <Box boxShadow={3} style={{ backgroundColor: '#f7f7f7', borderRadius: 20, margin: '20px 0 10px 0'}}>
@@ -81,15 +83,15 @@ export default function BiddingCard() {
           />
         </Box>
         <Box className={classes.detailBox}>
-          <p className={classes.namaBarang}>Nama Barang</p>
+          <p className={classes.namaBarang}>Id barang: {cart.ItemId}</p>
           <Box className={classes.priceBox}>
             <Box>
-              <p className={classes.priceDetail}>Deskripsi barang</p>
-              <p>We are your relatives pass the mayo, appeal to the client, sue the vice president yet i'll pay you in a week we don't tonight pay upfront i hope you understand. The website doesn't theme i was going for. </p>
+              <p className={classes.priceDetail}>Status: {cart.status}</p>
+              <Moment format="MMMM Do YYYY HH:mm">{cart.date}</Moment>
             </Box>
           </Box>
           <Box className={classes.currentPrice}>
-            <p className={classes.currentPriceText}>Rp. 250.000,00</p>
+            <p className={classes.currentPriceText}>Rp {cart.amount.toLocaleString('id-ID')}</p>
           </Box>
         </Box>
       </Box>
