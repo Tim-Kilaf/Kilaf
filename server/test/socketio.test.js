@@ -78,3 +78,17 @@ describe('basic socket.io example', () => {
     }, 50);
   });
 });
+
+describe('test socket.io on items', () => {
+  test('socket.io on detail item', (done) => {
+    ioServer.emit('joinRoom', `item-1`)
+    done()
+  })
+})
+
+describe('test socket.io on bidding', () => {
+  test('socket.io when new bid', (done) => {
+    ioServer.emit('newBid', `item-1`)
+    done()
+  })
+})
