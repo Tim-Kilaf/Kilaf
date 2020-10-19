@@ -74,6 +74,7 @@ export default function CartCard(props) {
   const { cart } = props;
   // console.log(cart, 'cart di detail');
 
+
   return (
     <Box boxShadow={3} style={{ backgroundColor: '#f7f7f7', borderRadius: 20, margin: '20px 0 10px 0'}}>
       <Box className={classes.cardContainer}>
