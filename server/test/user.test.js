@@ -59,7 +59,7 @@ describe("test user fail LOGIN with POST /login", function () {
       .expect("Content-Type", /json/)
       .then((response) => {
         const { body, status } = response;
-        expect(status).toBe(400);
+        expect(status).toBe(500);
         expect(body).toHaveProperty("message", "Invalid Username or Password");
         done();
       });
