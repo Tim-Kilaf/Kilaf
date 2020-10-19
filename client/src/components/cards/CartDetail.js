@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
       fontSize: 17
     },
   },
-  priceDetail: {
+  descDetail: {
     marginRight: 40,
     [theme.breakpoints.down('xs')]: {
       marginRight: 10,
@@ -72,21 +72,24 @@ const useStyles = makeStyles((theme) => ({
 export default function CartCard(props) {
   const classes = useStyles();
   const { cart } = props;
+  // console.log(cart, 'cart di detail');
 
   return (
     <Box boxShadow={3} style={{ backgroundColor: '#f7f7f7', borderRadius: 20, margin: '20px 0 10px 0'}}>
       <Box className={classes.cardContainer}>
         <Box>
           <img
-            src={'https://www.pcgamesn.com/wp-content/uploads/2017/09/cpu-upgrade-900x506.jpg'}
+            src={require("../../assets/images/" + cart.Item.ItemPictures[0].path)}
             className={classes.image}
           />
         </Box>
         <Box className={classes.detailBox}>
-          <p className={classes.namaBarang}>Id barang: {cart.ItemId}</p>
+          <p className={classes.namaBarang}>{cart.Item.name}</p>
           <Box className={classes.priceBox}>
             <Box>
-              <p className={classes.priceDetail}>Status: {cart.status}</p>
+              <p className={classes.descDetail}>kondisi: {cart.Item.condition}</p>
+              <p className={classes.descDetail}>Status: {cart.Item.status}</p>
+              <p className={classes.descDetail}>Deskripsi: {cart.Item.description}</p>
               <Moment format="MMMM Do YYYY HH:mm">{cart.date}</Moment>
             </Box>
           </Box>
