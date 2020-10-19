@@ -5,8 +5,8 @@ module.exports = (io) => {
     const transactionEndpoints = require('express').Router()
 
     return transactionEndpoints
-    .get('/', TransactionController.read)
-    .get('/', TransactionController.getUserTransactions)
+    .get('/test-transaction', TransactionController.read)
+    .get('/', authenticate, TransactionController.getUserTransactions)
     .post('/create/:ItemId', TransactionController.create)
     .get('/buyout/:ItemId', authenticate, TransactionController.createForBuyout)
     .delete('/:UserId', TransactionController.delete)

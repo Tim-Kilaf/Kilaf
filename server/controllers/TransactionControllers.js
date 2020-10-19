@@ -18,7 +18,8 @@ class TransactionController {
 
     getUserTransactions = async (req, res, next) => {
         try {
-            const {UserId} = req.user.id
+            // console.log(req.user)
+            const UserId = req.user.id
             const userTrx = await Transactions.findAll(
                 {
                     where: { UserId },
