@@ -119,8 +119,8 @@ class TransactionController {
                 }
             })
 
-            io.emit('test', true)
-            io.emit('buyout', true)
+            this.io.emit('buyout', `item-${ItemId}`)
+
             res.status(201).json(trx)
             
         } catch (err) {
