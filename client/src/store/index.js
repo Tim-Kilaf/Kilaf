@@ -4,7 +4,7 @@ import reducerLogin from './reducers/reducerLogin'
 import reducerItem from './reducers/reducerItem'
 
 const reducer = combineReducers({
-    isLogin: reducerLogin,
+    reducerLogin,
     reducerItem
 })
 

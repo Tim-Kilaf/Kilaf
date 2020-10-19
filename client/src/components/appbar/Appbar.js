@@ -1,13 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { MdShoppingCart } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import {
@@ -18,10 +15,11 @@ import {
   Badge,
   MenuItem,
   Menu,
-  Button,
+  Container,
+  Avatar
 } from '@material-ui/core';
 
-import { logout } from '../../store/actions/actionsUser';
+import { logout, login } from '../../store/actions/actionsUser';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -93,23 +91,19 @@ export default function Appbar() {
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
-
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
-
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
@@ -118,6 +112,15 @@ export default function Appbar() {
     dispatch(logout());
     history.push('/');
   }
+
+  const user = useSelector((state)  => state.reducerLogin.user);
+  const email = useSelector((state)  => state.reducerLogin.email);
+  console.log(email, 'email');
+  console.log(user, 'user');
+
+  useEffect(() => {
+    console.log(user);
+  }, [user])
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -129,10 +132,11 @@ export default function Appbar() {
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      >
+      <MenuItem>{email}</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
       <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      {/* <MenuItem><p>username</p></MenuItem> */}
     </Menu>
   );
 
@@ -150,29 +154,19 @@ export default function Appbar() {
       <MenuItem>
         <IconButton aria-label="show 4 new mails" color="primary">
           <Badge badgeContent={4} color="secondary">
-            <MailIcon />
+            <MdShoppingCart />
           </Badge>
         </IconButton>
         <p>Keranjang</p>
       </MenuItem>
-      <MenuItem>
-        <IconButton to="/cart" aria-label="show 11 new notifications" color="primary">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Pemberitahuan</p>
-      </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
+        <Avatar 
           color="primary"
+          style={{marginRight: 10}}
         >
-          <AccountCircle />
-        </IconButton>
-        <p>Profil</p>
+          {user ? user[0].toUpperCase() : 'A'}
+        </Avatar>
+        <p>{user}</p>
       </MenuItem>
     </Menu>
   );
@@ -180,68 +174,63 @@ export default function Appbar() {
   return (
     <div className={classes.grow}>
       <AppBar style={{backgroundColor: '#fff'}} position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="primary"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Link to="/">
-            <img src="https://i.imgur.com/DkXvWFJ.png" alt="logo" height="35px" />
-          </Link>
-          <div className={classes.grow} />
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
-          <div className={classes.sectionDesktop}>
-            <Link to="/cart">
-              <IconButton aria-label="show 2 products" color="primary">
-                <Badge badgeContent={2} color="secondary">
-                  <MdShoppingCart />
-                </Badge>
-              </IconButton>
+        <Container>
+          <Toolbar>
+            {/* <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="primary"
+              aria-label="open drawer"
+            >
+              <MenuIcon />
+            </IconButton> */}
+            <Link style={{marginRight: 20}} to="/">
+              <img src="https://i.imgur.com/DkXvWFJ.png" alt="logo" height="35px" />
             </Link>
-            <IconButton aria-label="show 17 new notifications" color="primary">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="primary"
-            >
-              <AccountCircle />
-            </IconButton>
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="primary"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
-        </Toolbar>
+            <div className={classes.grow} />
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+              />
+            </div>
+            <div className={classes.sectionDesktop}>
+              <Link to="/cart">
+                <IconButton aria-label="show 2 products" color="primary">
+                  <Badge badgeContent={2} color="secondary">
+                    <MdShoppingCart />
+                  </Badge>
+                </IconButton>
+              </Link>
+              <MenuItem style={{color: 'black'}}>
+                <Avatar 
+                  onClick={handleProfileMenuOpen}
+                  color="primary"
+                >
+                  {user ? user[0].toUpperCase() : 'A'}
+                </Avatar>
+              </MenuItem>
+            </div>
+            <div className={classes.sectionMobile}>
+              <IconButton
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="primary"
+              >
+                <MoreIcon />
+              </IconButton>
+            </div>
+          </Toolbar>
+        </Container>
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
