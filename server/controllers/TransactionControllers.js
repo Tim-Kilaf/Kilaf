@@ -1,4 +1,4 @@
-const { Transactions, Biddings, Items } = require('../models')
+const { Transactions, Biddings, Items, ItemPictures } = require('../models')
 const io = require('../config/io-emitter');
 
 class TransactionController {
@@ -23,7 +23,10 @@ class TransactionController {
             const userTrx = await Transactions.findAll(
                 {
                     where: { UserId },
-                    include: [Items]
+                    include: {
+                        model: Items,
+                        include: [ItemPictures]
+                      }
                 }
             )
             res.status(200).json(userTrx)
