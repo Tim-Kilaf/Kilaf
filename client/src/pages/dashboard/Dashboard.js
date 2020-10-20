@@ -3,7 +3,7 @@ import Box from '@material-ui/core/Box';
 import { DashboardCarousel } from '../../components/carousel/DashboardCarousel'
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux'
-import { getItems, getHottestItems } from '../../store/actions/actionsItem'
+import { getItems, getHottestItems, getCategory } from '../../store/actions/actionsItem'
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -41,8 +41,6 @@ export default function Dashboard() {
   const hottest = useSelector(state => state.reducerItem.hottestItems)
   const category = useSelector(state => state.reducerItem.category.result)
 
-  console.log(category)
-
   const imageUrl = [
     'https://img.freepik.com/free-photo/woman-green-dress-hat-yellow-background_1303-10554.jpg?size=626&ext=jpg',
     'https://image.freepik.com/free-photo/toys-model-plane-airplane-colorful-model-blue-background_40163-49.jpg',
@@ -54,13 +52,16 @@ export default function Dashboard() {
   useEffect(() => {
     dispatch(getItems())
     dispatch(getHottestItems())
+    dispatch(getCategory())
   }, [dispatch])
+
+  console.log(category)
 
   return (
     <Box class={classes.mainContainer}>
       <Box style={{ margin: '3em 0' }}>        
         <h1>What Are You Looking For?</h1>
-        <Box style={{ display: 'flex', overflowX: 'auto' }}>
+        <Box style={{ display: 'flex', overflow: 'auto' }}>
           {category && category.map((el, i) => {
             return(
               <Box>

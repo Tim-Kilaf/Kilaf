@@ -20,6 +20,7 @@ import {
 } from '@material-ui/core';
 
 import { logout, login } from '../../store/actions/actionsUser';
+import { getCategory } from '../../store/actions/actionsItem';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -114,13 +115,7 @@ export default function Appbar() {
   }
 
   const user = useSelector((state)  => state.reducerLogin.user);
-  const email = useSelector((state)  => state.reducerLogin.email);
-  console.log(email, 'email');
-  console.log(user, 'user');
-
-  useEffect(() => {
-    console.log(user);
-  }, [user])
+  const email = useSelector((state)  => state.reducerLogin.email);  
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (

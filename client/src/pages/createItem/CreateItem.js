@@ -24,13 +24,19 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '3em',
     margin: '0 auto',
     alignItems: 'center',
-    borderRadius: 20
+    borderRadius: 20,
+    [theme.breakpoints.down('xs')]: {
+      width: '90%',
+      padding: '0 15px'
+    },
   },
   form: {
     padding: '2em 0'
   },
   inputBox: {
-    margin: '1em 0'
+    margin: '1em 0',
+    // display: 'flex',
+    // justifyContent: 'space-between'
   }
 }))
 
@@ -104,11 +110,11 @@ export default function CreateItem() {
         <Box className={clasess.inputBox}>
           <ValidationTextField name="description" onChange={(e) => onTextHandler(e)} style={{ width: '100%' }} id="outlined-basic" label="Description" variant="outlined" required />
         </Box>
-        <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Box><ValidationTextField name="starting_price" onChange={(e) => onTextHandler(e)} type="number" id="outlined-basic" label="Starting Price" variant="outlined" required /></Box>
-          <Box><ValidationTextField name="buyout_price" onChange={(e) => onTextHandler(e)} type="number" id="outlined-basic" label="Buyout Price" variant="outlined" required /></Box>
+        <Box>
+          <ValidationTextField style={{ width: '45%' }} name="starting_price" onChange={(e) => onTextHandler(e)} type="number" id="outlined-basic" label="Starting Price" variant="outlined" required />
+          <ValidationTextField style={{ width: '45%', float: 'right' }} name="buyout_price" onChange={(e) => onTextHandler(e)} type="number" id="outlined-basic" label="Buyout Price" variant="outlined" required />
         </Box>
-        <Box className={clasess.inputBox}>
+        <Box style={{ margin: '20px 0' }}>
           <InputLabel id="demo-simple-select-helper-label">Item Category</InputLabel>
           <Select onChange={(e) => onTextHandler(e)} name="CategoryId" style={{ width: '100%' }}
             id="demo-simple-select-helper" defaultValue="Pilih">
@@ -120,20 +126,18 @@ export default function CreateItem() {
               })}            
           </Select>
         </Box>
-        <Box className={clasess.inputBox} style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Box>
+        <Box className={clasess.inputBox}>
             <InputLabel id="demo-simple-select-helper-label">Item Condition</InputLabel>
-            <Select onChange={(e) => onTextHandler(e)} name="condition" style={{ width: '100%' }}
+            <Select onChange={(e) => onTextHandler(e)} name="condition" style={{ width: '100%', marginBottom: 25 }}
               defaultValue={payload.condition} id="demo-simple-select-helper">
               <MenuItem value='Bekas'>Bekas</MenuItem>
               <MenuItem value='Baru'>Baru</MenuItem>
             </Select>
-          </Box>
-          <Box><ValidationTextField name="bid_increment" onChange={(e) => onTextHandler(e)} type="number" label="Bid Increment" variant="outlined" required /></Box>
+            <ValidationTextField style={{ width: '100%' }} name="bid_increment" onChange={(e) => onTextHandler(e)} type="number" label="Bid Increment" variant="outlined" required />
         </Box>
-        <Box className={clasess.inputBox}>
-          <ValidationTextField name="start_date" onChange={(e) => onTextHandler(e)} label="Start Date" type="datetime-local" InputLabelProps={{ shrink: true }} required />
-          <ValidationTextField name="end_date" onChange={(e) => onTextHandler(e)} label="End Date" type="datetime-local" InputLabelProps={{ shrink: true }} required />
+        <Box>
+          <ValidationTextField style={{ width: '45%' }} name="start_date" onChange={(e) => onTextHandler(e)} label="Start Date" type="datetime-local" InputLabelProps={{ shrink: true }} required />
+          <ValidationTextField style={{ width: '45%', float:'right' }} name="end_date" onChange={(e) => onTextHandler(e)} label="End Date" type="datetime-local" InputLabelProps={{ shrink: true }} required />
         </Box>
         <input
           className={clasess.inputBox}
