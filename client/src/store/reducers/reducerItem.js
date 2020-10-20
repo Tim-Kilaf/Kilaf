@@ -1,5 +1,6 @@
 let currentState = {
   items: [],
+  hottestItems: [],
   item: {},
   detailRefetch: '',
   carts: [],
@@ -18,6 +19,13 @@ function reducerItem(state = currentState, action) {
           items: action.payload.items
         }
         return newState
+    case 'FETCH_HOTTEST_ITEM':
+      let hottestState = {
+        ...state,
+        hottestItems: action.payload.items
+      }
+      console.log(action.payload.items)
+      return hottestState
       case 'FETCH_ITEM_DETAIL':        
         let newDetail = {
           ...state,
