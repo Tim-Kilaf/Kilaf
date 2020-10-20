@@ -111,7 +111,7 @@ describe('success create payment stripe', () => {
 })
 
 describe('fail create payment stripe', () => {
-  it('test fail create payment stipe', (done) => {
+  it('test fail create payment stipe wrong email', (done) => {
     request(app)
       .post('/payment')
       .set("Accept", "application/json")
@@ -127,6 +127,68 @@ describe('fail create payment stripe', () => {
         // console.log(response, 'ini body')
         const { body, status } = response
         expect(status).toBe(400)
+        const expected = {foo: 'bar'}
+        expect(body).toEqual(expect.not.objectContaining(expected))
+        done()
+      })
+  })
+})
+
+describe('fail create payment stripe', () => {
+  it('test fail create payment stipe no access-token', (done) => {
+    request(app)
+      .post('/payment')
+      .set("Accept", "application/json")
+      .set("access_token", access_token)
+      .send({
+        price: 50000,
+        token: {
+          email: 'user@mail.com',
+          id: 'as'
+        }
+      })
+      // .expect("Content-Type", /json/)
+      .then((response) => {
+        // console.log(response, 'ini body')
+        const { body, status } = response
+        expect(status).toBe(500)
+        const expected = {foo: 'bar'}
+        expect(body).toEqual(expect.not.objectContaining(expected))
+        done()
+      })
+  })
+})
+
+describe('fail read paymment histories', () => {
+  it('test fail read paymment histories', (done) => {
+    request(app)
+      .get('/payment')
+      .set("Accept", "application/json")
+      // .set("access_token", access_token)
+      .expect("Content-Type", /json/)
+      .then((response) => {
+        console.log(response)
+        const { body, status } = response
+        // console.log(body, 'dari test')
+        expect(status).toBe(500)
+        const expected = {foo: 'bar'}
+        expect(body).toEqual(expect.not.objectContaining(expected))
+        done()
+      })
+  })
+})
+
+describe('fail create payment history', () => {
+  it('test fail create payment history', (done) => {
+    request(app)
+      .post('/payment/create/1/20000')
+      .set("Accept", "application/json")
+      // .set("access_token", access_token)
+      .expect("Content-Type", /json/)
+      .then((response) => {
+        // console.log(response, 'ini body')
+        const { body, status } = response
+        expect(status).toBe(500)
         const expected = {foo: 'bar'}
         expect(body).toEqual(expect.not.objectContaining(expected))
         done()

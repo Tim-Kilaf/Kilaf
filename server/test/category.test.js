@@ -57,6 +57,7 @@ describe('success get category list', () => {
       .then((response) => {
         const { body, status } = response
         // console.log(body, 'dari test')
+        expect(status).toBe(200)
         const expected = {foo: 'bar'}
         expect(body).toEqual(expect.not.objectContaining(expected))
         done()
@@ -74,6 +75,43 @@ describe('success get category by id', () => {
         .then((response) => {
           const { body, status } = response
           // console.log(body, 'dari test')
+          expect(status).toBe(200)
+          const expected = {foo: 'bar'}
+          expect(body).toEqual(expect.not.objectContaining(expected))
+          done()
+        })
+    })
+})
+
+describe('fail get category by id', () => {
+    it('test success get category by id', (done) => {
+      request(app)
+        .get('/category/1')
+        .set("Accept", "application/json")
+        // .set("access_token", access_token)
+        .expect("Content-Type", /json/)
+        .then((response) => {
+          const { body, status } = response
+          // console.log(body, 'dari test')
+          expect(status).toBe(500)
+          const expected = {foo: 'bar'}
+          expect(body).toEqual(expect.not.objectContaining(expected))
+          done()
+        })
+    })
+})
+
+describe('fail get category list', () => {
+    it('test success get categories', (done) => {
+      request(app)
+        .get('/category')
+        .set("Accept", "application/json")
+        // .set("access_token", access_token)
+        .expect("Content-Type", /json/)
+        .then((response) => {
+          const { body, status } = response
+          // console.log(body, 'dari test')
+          expect(status).toBe(500)
           const expected = {foo: 'bar'}
           expect(body).toEqual(expect.not.objectContaining(expected))
           done()

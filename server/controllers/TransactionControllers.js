@@ -5,16 +5,16 @@ class TransactionController {
     constructor(io) {
         this.io = io
     }
-    read = async (req, res, next) => {
-        try {
-            const dataTrx = await Transactions.findAll()
-            // console.log(dataTrx)
-            res.status(200).json(dataTrx)
-        } catch (err) {
-            console.log(err)
-            return next(err)
-        }
-    }
+    // read = async (req, res, next) => {
+    //     try {
+    //         const dataTrx = await Transactions.findAll()
+    //         // console.log(dataTrx)
+    //         res.status(200).json(dataTrx)
+    //     } catch (err) {
+    //         console.log(err)
+    //         return next(err)
+    //     }
+    // }
 
     getUserTransactions = async (req, res, next) => {
         try {
@@ -34,7 +34,7 @@ class TransactionController {
             )
             res.status(200).json(userTrx)
         } catch (err) {
-            console.log(err)
+            // console.log(err)
         }
     }
 
@@ -61,7 +61,7 @@ class TransactionController {
                 date: new Date
             }
             const trx = await Transactions.create(payload)
-            // console.log(trx)
+            console.log(trx)
             const itemUpdate = await Items.update({
                 status: 'sold',
                 HighestBiddingId: UserId,
@@ -74,7 +74,7 @@ class TransactionController {
 
             res.status(201).json(trx)
         } catch (err) {
-            console.log(err)
+            // console.log(err)
             return next(err)
         }
     }
@@ -128,8 +128,8 @@ class TransactionController {
             res.status(201).json(trx)
             
         } catch (err) {
-            console.log(err)
-            return next(err)
+            // console.log(err)
+            next(err)
         }
     }
 
@@ -174,22 +174,22 @@ class TransactionController {
     //     }
     // }
     
-    delete = async (req, res, next) => {
-        try {
-            const { UserId } = req.params
+    // delete = async (req, res, next) => {
+    //     try {
+    //         const { UserId } = req.params
 
-            const data = await Transactions.findAll({ where: { UserId }})
+    //         const data = await Transactions.findAll({ where: { UserId }})
 
-            if (data) {
-                const result = await Transactions.destroy({ where: { UserId } })
+    //         if (data) {
+    //             const result = await Transactions.destroy({ where: { UserId } })
 
-                if (result) res.status(200).json({ message: 'Successfully deleted data' })
-            } else throw new Error({ code: 404, message: 'Not found: The bidding data is not found.' })
-        } catch (err) {
-            console.log(err)
-            return next(err)
-        }
-    }
+    //             if (result) res.status(200).json({ message: 'Successfully deleted data' })
+    //         } else throw new Error({ code: 404, message: 'Not found: The bidding data is not found.' })
+    //     } catch (err) {
+    //         console.log(err)
+    //         return next(err)
+    //     }
+    // }
 
     paid = async (req, res, next) => {
         try {
@@ -201,7 +201,7 @@ class TransactionController {
             })
             res.status(200).json({ message: 'Payment successfull'})
         } catch (err) {
-            console.log(err)
+            // console.log(err)
             return next(err)
         }
     }

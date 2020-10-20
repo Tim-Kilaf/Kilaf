@@ -1,7 +1,7 @@
 
 const errorHandler = (err, req, res, next) => {
     let { code, name, message, errors } = err
-    console.log(err, 'dari error handler')
+    // console.log(err, 'dari error handler')
     if (code) {
         message = [message]
     } else {
@@ -9,10 +9,6 @@ const errorHandler = (err, req, res, next) => {
         message = []
 
         switch(name){
-            case "Cannot read property 'password' of null":
-                code = 400
-                message.push(`Invalid username or password`)
-                break
             case 'SequelizeValidationError':
                 code = 400
             case 'SequelizeUniqueConstraintError':
@@ -25,7 +21,6 @@ const errorHandler = (err, req, res, next) => {
                 break
         }
     }
-
     res.status(code).json(message)
 }
 

@@ -1,6 +1,7 @@
 const io = require('socket.io-client');
 const http = require('http');
 const ioBack = require('socket.io');
+const SocketHandler = require('../handlers/SocketHandler');
 
 let socket;
 let httpServer;
@@ -107,3 +108,38 @@ describe('test socket.io on bidding', () => {
     done()
   })
 })
+
+describe('start io', () =>{
+  test('start', (done) => {
+    start: (ioServer) => ioServer.on('connection', (socket) => {
+      socket.on('joinRoom', payload => {
+        SocketHandler.joinRoom(payload, socket)
+      })
+    })
+    done()
+  })
+})
+
+// describe('test sockethandler', () =>{
+//   test('test socket join', (done) => {
+//     SocketHandler.joinRoom.on((payload, socket) => {
+//       socket.join(payload)
+//     })
+//     done()
+//   })
+// })
+
+/**
+ * start: (io) => io.on('connection', (socket) => {
+        // console.log('connected')
+        socket.on('joinRoom', payload => {
+            SocketHandler.joinRoom(payload, socket)
+        })          
+    })
+
+ * static joinRoom = (payload, socket) => {
+        socket.join(payload)
+        // console.log(`${payload}`)
+    }
+    
+ */

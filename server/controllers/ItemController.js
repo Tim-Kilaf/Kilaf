@@ -17,7 +17,7 @@ class ItemController {
 
       res.status(200).json({ items })
     } catch (err) {
-      console.log(err)
+      // console.log(err)
       return next(err)
     }
   }
@@ -39,11 +39,11 @@ class ItemController {
         return item
       }).sort((a, b) => b.bids - a.bids).slice(0, 10)
 
-      console.log(items.length)
+      // console.log(items.length)
 
       res.status(200).json({ items })
     } catch (err) {
-      console.log(err)
+      // console.log(err)
       return next(err)
     }
   }
@@ -59,12 +59,12 @@ class ItemController {
         status: 'unsold',
         UserId: req.user.id
       }
-      console.log(payload, '=================payload================')
+      // console.log(payload, '=================payload================')
       const item = await Items.create(payload)
-      console.log(item, '=================item================')
+      // console.log(item, '=================item================')
 
       if(req.files){
-        console.log(req.files.images)
+        // console.log(req.files.images)
         const images = req.files.images
   
         if (Array.isArray(req.files.images)) {
@@ -88,14 +88,14 @@ class ItemController {
 
       res.status(201).json({ message: 'Sucessfully Created', id: item.id })
     } catch (err) {
-      console.log(err, 'error dari controller')
+      // console.log(err, 'error dari controller')
       return next(err)
     }
   }
 
   detailItem = async (req, res, next) => {
-    console.log('masuk detail item')
-    console.log(req.params)
+    // console.log('masuk detail item')
+    // console.log(req.params)
     try {
       const item = await Items.findOne({
         where: {
@@ -138,7 +138,7 @@ class ItemController {
         res.status(200).json({ item, highestBidder, owner })
         
     } catch (err) {
-      console.log(err)
+      // console.log(err)
       return next(err)
     }
   }

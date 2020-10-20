@@ -7,9 +7,9 @@ class PaymentController {
         this.io = io
     }
     stripe = async (req,res,next) => {
-        console.log('masuk stripe')
+        // console.log('masuk stripe')
         const { price, token } = req.body
-        console.log(token, '==============================================')
+        // console.log(token, '==============================================')
 
         if(req.user.email === token.email){
            
@@ -39,7 +39,7 @@ class PaymentController {
                 return res.status(200).json(invoice)
             })
             .catch(error => {
-                console.error(error)
+                // console.error(error)
                 next(error)
             });
         }else{
@@ -58,7 +58,7 @@ class PaymentController {
             const payment = await Payments.findAll()
             return res.status(200).json(payment)
         } catch (err) {
-            console.log(err)
+            // console.log(err)
             return next(err)
         }
     }
@@ -85,7 +85,7 @@ class PaymentController {
 
             return res.status(201).json({ message: 'Payment successfull'})
         } catch (error) {
-            console.log(error)
+            // console.log(error)
             next(error)
         }
     }

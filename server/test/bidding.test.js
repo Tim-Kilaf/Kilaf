@@ -58,7 +58,7 @@ beforeAll((done) => {
             console.log(user);
             userId = user.id
             console.log(userId);
-            access_token = jwt.sign({ id: user.id, email: user.email }, 'kopiliong')
+            access_token = jwt.sign({ id: user.id, email: user.email }, process.env.SECRET)
             wrong_access_token = access_token + 'bbbbbb'
             return Items.create(items)
         })
@@ -89,7 +89,6 @@ describe("test bid on Item", function() {
             done()
         })
     })
-
     it("test fail bid on item: price = string", function (done) {
         request(app)
         .post('/biddings')
@@ -100,7 +99,7 @@ describe("test bid on Item", function() {
         .then((response) => {
             const { body, status } = response
             expect(status).toBe(500)
-            // expect(body).toHaveProperty("message", expect.any(String))
+            expect(body).toContain("Whoops, something happened on our end!")
             done()
         })
     })
@@ -115,7 +114,7 @@ describe("test bid on Item", function() {
         .then((response) => {
             const { body, status } = response
             expect(status).toBe(500)
-            // expect(body).toHaveProperty("message", expect.any(String))
+            expect(body).toContain("Whoops, something happened on our end!")
             done()
         })
     })
@@ -130,7 +129,7 @@ describe("test bid on Item", function() {
         .then((response) => {
             const { body, status } = response
             expect(status).toBe(500)
-            // expect(body).toHaveProperty("message", expect.any(String))
+            expect(body).toContain("Whoops, something happened on our end!")
             done()
         })
     })

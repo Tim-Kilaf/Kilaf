@@ -9,8 +9,7 @@ class SocketHandler {
 
     static joinRoom = (payload, socket) => {
         socket.join(payload)
-
-        console.log(`${payload}`)
+        // console.log(`${payload}`)
     }
 }
 

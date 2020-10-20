@@ -2,7 +2,7 @@ const request = require('supertest')
 const app = require('../app')
 const { Users, Items, sequelize } = require("../models");
 const { queryInterface } = sequelize;
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 let userId = ''
 let itemId = ''
@@ -53,7 +53,7 @@ beforeAll((done) => {
             console.log(user);
             userId = user.id
             console.log(userId);
-            access_token = jwt.sign({ id: user.id, email: user.email }, 'kopiliong')
+            access_token = jwt.sign({ id: user.id, email: user.email }, process.env.SECRET)
             wrong_access_token = access_token + 'bbbbbb'
             return Items.create(item)
         })
@@ -95,7 +95,7 @@ afterAll((done) => {
 });
 
 // this endpoint to create transaction is the exact same as te on eused in CRON job to resolve winning bids
-describe("create transaction", function() {
+describe("create transaction from buyout", function() {
     it("create transaction", function (done) {
         request(app)
         .post('/biddings')
@@ -111,7 +111,7 @@ describe("create transaction", function() {
 
             return request(app)
             .post(`/transaction/create/${itemId}`)
-            .set('access_token', access_token)
+            // .set('access_token', access_token)
             // .send({ ItemId: itemId, price: 11000, UserId: userId })
             .set("Accept", "application/json")
             .expect("Content-Type", /json/)
@@ -120,7 +120,8 @@ describe("create transaction", function() {
             const { body, status } = response
             expect(status).toBe(201)
             console.log(body);
-            // expect(body).toHaveProperty("message", expect.any(String))
+            const expected = {foo: 'bar'}
+            expect(body).toEqual(expect.not.objectContaining(expected))
             done()
         })
     })
@@ -138,7 +139,8 @@ describe("test buyout function", function() {
             const { body, status } = response
             expect(status).toBe(201)
             console.log(body);
-            // expect(body).toHaveProperty("message", expect.any(String))
+            const expected = {foo: 'bar'}
+            expect(body).toEqual(expect.not.objectContaining(expected))
             done()
         })
     })
@@ -156,7 +158,81 @@ describe("read transaction", function() {
             const { body, status } = response
             expect(status).toBe(200)
             console.log(body);
-            // expect(body).toHaveProperty("message", expect.any(String))
+            const expected = {foo: 'bar'}
+            expect(body).toEqual(expect.not.objectContaining(expected))
+            done()
+        })
+    })
+})
+
+describe("fail create transaction", function() {
+    it("fail create transaction", function (done) {
+        let bidding = { ItemId: 1, price: 11000, UserId: userId }
+        request(app)
+        .post(`/transaction/create/1`)
+        .set('access_token', access_token)
+        .set("Accept", "application/json")
+        .expect("Content-Type", /json/)
+        .then((response) => {
+            const { body, status } = response
+            expect(status).toBe(500)
+            console.log(body);
+            const expected = {foo: 'bar'}
+            expect(body).toEqual(expect.not.objectContaining(expected))
+            done()
+        })
+    })
+})
+
+describe("fail read transaction", function() {
+    it("get user cart", function (done) {
+        request(app)
+        .get('/transaction')
+        // .set('access_token', access_token)
+        .set("Accept", "application/json")
+        .expect("Content-Type", /json/)
+        .then((response) => {
+            const { body, status } = response
+            expect(status).toBe(500)
+            console.log(body);
+            const expected = {foo: 'bar'}
+            expect(body).toEqual(expect.not.objectContaining(expected))
+            done()
+        })
+    })
+})
+
+describe("fail buyout function", function() {
+    it("user hits buyout", function (done) {
+        request(app)
+        .get(`/transaction/buyout/${buyoutItemId}`)
+        // .set('access_token', access_token)
+        // .send({ ItemId: itemId, price: 11000, UserId: userId })
+        .set("Accept", "application/json")
+        .expect("Content-Type", /json/)
+        .then((response) => {
+            const { body, status } = response
+            expect(status).toBe(500)
+            console.log(body);
+            const expected = {foo: 'bar'}
+            expect(body).toContain("Whoops, something happened on our end!")
+            // expect(body).toEqual(expect.not.objectContaining(expected))
+            done()
+        })
+    })
+})
+
+describe('success paid', () => {
+    test('success paid', (done) => {
+        request(app)
+        .put(`/transaction/paid/${userId}`)
+        .set('access_token', access_token)
+        .set("Accept", "application/json")
+        .expect("Content-Type", /json/)
+        .then((response) => {
+            const { body, status } = response
+            expect(status).toBe(200)
+            expect(body).toEqual({message: 'Payment successfull'})
             done()
         })
     })

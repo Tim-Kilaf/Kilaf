@@ -90,6 +90,19 @@ describe("test user fail LOGIN with POST /login", function () {
         done();
       });
   });
+  it("test fail LOGIN because wrong password responds with json", function (done) {
+    request(app)
+      .post("/auth/login")
+      .send({ email: "alitong2@mail.com", password: "12345" })
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(400);
+        expect(body).toEqual(["Invalid email or password"]);
+        done();
+      });
+  });
 });
 
 describe("test user fail REGISTER with POST /register", function () {
@@ -172,4 +185,3 @@ describe("test user fail REGISTER with POST /register", function () {
         });
     });
 });
-

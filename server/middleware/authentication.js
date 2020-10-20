@@ -11,9 +11,9 @@ const authenticate = async (req, res, next) => {
             console.log(user)
             req.user = user
             return next()
-        } else throw new Error({ code: 401, message: "Unauthenticated user." })
+        }
     } catch (err) {
-        console.log(err)
+        console.log(err, '====auth====')
         return next(err)
     }
 }

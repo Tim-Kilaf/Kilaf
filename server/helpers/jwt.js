@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
-// secret = process.env.SECRET
-secret = 'kopiliong'
+secret = process.env.SECRET
+// secret = 'kopiliong'
 
 function generateToken(user){
     let token = jwt.sign({id:user.id,email:user.email}, secret);
