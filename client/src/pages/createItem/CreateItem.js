@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
-import { createItem } from '../../store/actions/actionsItem'
+import { useDispatch, useSelector } from 'react-redux';
+import { createItem, getCategory } from '../../store/actions/actionsItem'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -56,8 +56,13 @@ export default function CreateItem() {
     bid_increment: '',
     start_date: '',
     end_date: '',
+    CategoryId: 0,
     image: []
   })
+
+  const category = useSelector(state => state.reducerItem.category)
+
+  console.log(category)
 
   const onChangeHandler = (e) => {
     setPayload({
@@ -103,10 +108,22 @@ export default function CreateItem() {
           <Box><ValidationTextField name="starting_price" onChange={(e) => onTextHandler(e)} type="number" id="outlined-basic" label="Starting Price" variant="outlined" required /></Box>
           <Box><ValidationTextField name="buyout_price" onChange={(e) => onTextHandler(e)} type="number" id="outlined-basic" label="Buyout Price" variant="outlined" required /></Box>
         </Box>
+        <Box className={clasess.inputBox}>
+          <InputLabel id="demo-simple-select-helper-label">Item Category</InputLabel>
+          <Select onChange={(e) => onTextHandler(e)} name="CategoryId" style={{ width: '100%' }}
+            id="demo-simple-select-helper" defaultValue="Pilih">
+              <MenuItem value="Pilih" disabled> Pilih Salah Satu </MenuItem>
+              {category.result && category.result.map(el => {
+                return (
+                  <MenuItem value={el.id}> {el.name} </MenuItem>
+                )
+              })}            
+          </Select>
+        </Box>
         <Box className={clasess.inputBox} style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box>
             <InputLabel id="demo-simple-select-helper-label">Item Condition</InputLabel>
-            <Select onChange={(e) => onTextHandler(e)} name="condition" style={{ width: '100%' }} 
+            <Select onChange={(e) => onTextHandler(e)} name="condition" style={{ width: '100%' }}
               defaultValue={payload.condition} id="demo-simple-select-helper">
               <MenuItem value='Bekas'>Bekas</MenuItem>
               <MenuItem value='Baru'>Baru</MenuItem>

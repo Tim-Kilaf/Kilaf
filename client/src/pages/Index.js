@@ -13,6 +13,7 @@ import Register from './register/Register'
 import Appbar from '../components/appbar/Appbar'
 import CreateItem from './createItem/CreateItem'
 import Cart from './cart/Cart'
+import Category from './category/category'
 
 export default function Index() {
   return (
@@ -56,6 +57,9 @@ function DefaultContainer() {
       </PrivateRoute>   
       <PrivateRoute path='/create'>
         <CreateItem />
+      </PrivateRoute> 
+      <PrivateRoute path='/category/:id'>
+        <Category />
       </PrivateRoute> 
     </div>
   )

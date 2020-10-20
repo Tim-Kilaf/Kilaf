@@ -2,7 +2,9 @@ let currentState = {
   items: [],
   item: {},
   detailRefetch: '',
-  carts: []
+  carts: [],
+  categorized: [],
+  category: []
 }
 
 
@@ -28,11 +30,24 @@ function reducerItem(state = currentState, action) {
         // console.log(action.payload)
         return state  
       case 'FETCH_CART':        
-      let newCart = {
-        ...state,
-        carts: action.payload
-      }
+        let newCart = {
+          ...state,
+          carts: action.payload
+        }
       return newCart;
+      case 'FETCH_CATEGORY':        
+        let category = {
+          ...state,
+          category: action.payload
+        }
+      return category;
+      case 'FETCH_ITEM_CATEGORY':
+        console.log(action.payload)
+        let categorized = {
+          ...state,
+          categorized: action.payload
+        }
+      return categorized;
       default:
           return state
   }
