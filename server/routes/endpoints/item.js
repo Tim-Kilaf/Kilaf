@@ -1,10 +1,11 @@
 module.exports = (io) => {
-    const itemEndPoints = require('express').Router()
-    const ItemController = require('../../controllers/ItemController')(io)
+const itemEndPoints = require('express').Router()
+const ItemController = require('../../controllers/ItemController')(io)
 const authenticate = require('../../middleware/authentication')
 
-    return itemEndPoints
+return itemEndPoints
     .get('/', authenticate, ItemController.listItem)
+    .get('/hottest', authenticate, ItemController.listHottest)
     .get('/:id', authenticate, ItemController.detailItem)
     .post('/create', authenticate ,ItemController.createItem)    
 }
