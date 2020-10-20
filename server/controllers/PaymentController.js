@@ -74,7 +74,7 @@ class PaymentController {
             })
             console.log(data)
             
-            // console.log(req.user)
+            console.log(req.user)
             const UserId = req.user.id
             const paid = await Transactions.update({
                 status: 'paid'
@@ -82,7 +82,7 @@ class PaymentController {
                 where: { UserId }
             })
 
-            res.status(200).json({ message: 'Payment successfull'})
+            return res.status(201).json({ message: 'Payment successfull'})
         } catch (error) {
             console.log(error)
             next(error)

@@ -3,6 +3,7 @@ const app = require("../app");
 const { generateToken } = require("../helpers/jwt");
 const { sequelize, Users } = require("../models");
 const { queryInterface } = sequelize;
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 
 const userData = {email: 'user@mail.com', password: '123456'}
@@ -10,7 +11,7 @@ let access_token
 
 afterAll((done) => {
     queryInterface
-      .bulkDelete("Items")
+      .bulkDelete("Categories")
       .then(() => done())
       .catch((err) => {
         console.log(err);
@@ -32,7 +33,7 @@ beforeAll((done) => {
       password: '123456'
     })
     .then((data) => {
-      console.log(data)
+    //   console.log(data)
       return Users.findOne({ where: { email: userData.email } })
     })
     .then((user) => {
@@ -45,64 +46,67 @@ beforeAll((done) => {
     });
 })
 
-describe('success create item', () => {
-  it('test success create item', (done) => {
+// .get('/', authenticate, PaymentController.read)
+// .post('/', authenticate, PaymentController.stripe)
+// .post('/create/:TrxId/:amount', authenticate, PaymentController.create)
+
+describe('success read paymment histories', () => {
+  it('test success read paymment histories', (done) => {
     request(app)
-      .post('/item/create')
+      .get('/payment')
       .set("Accept", "application/json")
       .set("access_token", access_token)
-      .send({
-        name: "Lea Jeans",
-        condition: 'Bekas',
-        description: 'dilelang buat beli motor',
-        starting_price: 50000,
-        buyout_price: 1000000,
-        bid_increment: 5000,
-        start_date: new Date,
-        end_date: new Date
-      })
       .expect("Content-Type", /json/)
       .then((response) => {
+        console.log(response)
         const { body, status } = response
-        productId = body.id
         // console.log(body, 'dari test')
-        expect(status).toBe(201)
-        expect(body).toHaveProperty('message', 'Sucessfully Created')
+        expect(status).toBe(200)
+        const expected = {foo: 'bar'}
+        expect(body).toEqual(expect.not.objectContaining(expected))
         done()
       })
   })
 })
 
-describe('success get detail item', () => {
-  it('test success get detail item', (done) => {
+describe('success create payment history', () => {
+  it('test success create payment history', (done) => {
     request(app)
-      .get(`/item/${productId}`)
+      .post('/payment/create/1/20000')
       .set("Accept", "application/json")
       .set("access_token", access_token)
       .expect("Content-Type", /json/)
       .then((response) => {
-        const { body, status } = response;
-        expect(status).toBe(200);
-        const expected = {foo: 'bar'}
-        expect(body).toEqual(expect.not.objectContaining(expected))
-        done();
-      });
+        console.log(response, 'ini body')
+        const { body, status } = response
+        expect(status).toBe(201)
+        expect(body).toHaveProperty('message', 'Payment successfull')
+        done()
+      })
   })
 })
 
-describe('success get all item', () => {
-  it('test success get all item', (done) => {
+describe.only('success create payment stripe', () => {
+  it('test success create payment stipe', (done) => {
     request(app)
-      .get(`/item`)
+      .post('/payment')
       .set("Accept", "application/json")
       .set("access_token", access_token)
+      .send({
+        price: 50000,
+        token: {
+          id: createToken(),
+          email: 'user@mail.com'
+        }
+      })
       .expect("Content-Type", /json/)
       .then((response) => {
-        const { body, status } = response;
-        expect(status).toBe(200);
+        console.log(response, 'ini body')
+        const { body, status } = response
+        expect(status).toBe(200)
         const expected = {foo: 'bar'}
         expect(body).toEqual(expect.not.objectContaining(expected))
-        done();
-      });
+        done()
+      })
   })
 })

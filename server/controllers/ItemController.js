@@ -33,9 +33,9 @@ class ItemController {
         status: 'unsold',
         UserId: req.user.id
       }
-      // console.log(payload, '=================payload================')
+      console.log(payload, '=================payload================')
       const item = await Items.create(payload)
-      // console.log(item, '=================item================')
+      console.log(item, '=================item================')
 
       if(req.files){
         console.log(req.files.images)
@@ -60,7 +60,7 @@ class ItemController {
 
       this.io.emit('newItem', item)
 
-      res.status(201).json({ message: 'Sucessfully Created' })
+      res.status(201).json({ message: 'Sucessfully Created', id: item.id })
     } catch (err) {
       console.log(err, 'error dari controller')
       return next(err)
@@ -68,6 +68,8 @@ class ItemController {
   }
 
   detailItem = async (req, res, next) => {
+    console.log('masuk detail item')
+    console.log(req.params)
     try {
       const item = await Items.findOne({
         where: {

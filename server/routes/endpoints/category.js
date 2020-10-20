@@ -4,7 +4,7 @@ module.exports = (io) => {
     const authenticate = require('../../middleware/authentication')
 
     return categoryEndPoints
-    .get('/', CategoryController.listCategories)
+    .get('/', authenticate, CategoryController.listCategories)
     .get('/:categoryId', authenticate, CategoryController.getItemByCategory)
     // .post('/create', authenticate ,ItemController.createItem)    
 }

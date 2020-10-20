@@ -79,6 +79,21 @@ describe('basic socket.io example', () => {
   });
 });
 
+
+// describe('test socket.io emit start', () => {
+//   ioServer.emit('connection', (socket) => {
+//     socket.emit('joinRoom', 'payload')
+//   })
+// })
+
+// describe('test socket.io on start', () => {
+//   ioServer.on('connection', (socket) => {
+//     socket.on('joinRoom', payload => {
+//       expect(SocketHandler.joinRoom).toBeDefined()
+//     })
+//   })
+// })
+
 describe('test socket.io on items', () => {
   test('socket.io on detail item', (done) => {
     ioServer.emit('joinRoom', `item-1`)
