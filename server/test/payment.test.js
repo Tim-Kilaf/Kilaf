@@ -109,3 +109,27 @@ describe('success create payment stripe', () => {
       })
   })
 })
+
+describe('fail create payment stripe', () => {
+  it('test fail create payment stipe', (done) => {
+    request(app)
+      .post('/payment')
+      .set("Accept", "application/json")
+      .set("access_token", access_token)
+      .send({
+        price: 50000,
+        token: {
+          email: 'uday@mail.com'
+        }
+      })
+      .expect("Content-Type", /json/)
+      .then((response) => {
+        // console.log(response, 'ini body')
+        const { body, status } = response
+        expect(status).toBe(400)
+        const expected = {foo: 'bar'}
+        expect(body).toEqual(expect.not.objectContaining(expected))
+        done()
+      })
+  })
+})
