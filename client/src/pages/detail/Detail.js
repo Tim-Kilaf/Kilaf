@@ -8,7 +8,8 @@ import Moment from 'react-moment';
 import NumericInput from 'react-numeric-input';
 import { Button } from '@material-ui/core';
 import socket from '../../config/socket-io'
-import { disconnectSocket, initiateSocket, subscribeToBidding } from '../../sockets/biddingSocket';
+import { disconnectSocket, initiateSocket, subscribeToBidding, buyout } from '../../sockets/biddingSocket';
+
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -99,7 +100,7 @@ export default function Detail() {
   useEffect(() => {
     if (room) initiateSocket(room)
 
-    subscribeToBidding(dispatch, param.id)
+    subscribeToBidding(dispatch, param.id)    
 
     return () => {
       disconnectSocket()
@@ -108,13 +109,9 @@ export default function Detail() {
 
   useEffect(() => {
     dispatch(detailItem(param.id))
-  }, [dispatch])
+  }, [dispatch])  
 
-  socket.on('buyout', (data) => {
-    console.log(data)
-    setBuyout(data)
-  })
-
+  
   useEffect(() => {
     if (data.item) {
       if (data.owner || bid < (data.item.current_price + data.item.bid_increment - 1)) {
@@ -127,8 +124,14 @@ export default function Detail() {
     if (data.item) {
       if (data.item.status === 'sold') {
         setBuyout(true)
-      } else {
-        setBuyout(false)
+      }
+    }
+
+    if (data.item) {
+      if (data.item.current_price >= data.item.buyout_price && buyout === false) {
+        console.log('buyout max price');
+        handleBuyoutMaxPrice()
+        setBuyout(true)
       }
     }
   }, [bid, data.item])
@@ -144,7 +147,16 @@ export default function Detail() {
   }
 
   const handleBuyout = async (e) => {
-    e.preventDefault()
+    e.preventDefault()       
+    await fetch(`http://localhost:3001/transaction/buyout/${param.id}`, {
+      headers: {
+        access_token: localStorage.getItem('access_token')
+      }
+    })     
+  }
+
+  const handleBuyoutMaxPrice = async() => {
+    // e.preventDefault()
     await fetch(`http://localhost:3001/transaction/buyout/${param.id}`, {
       headers: {
         access_token: localStorage.getItem('access_token')

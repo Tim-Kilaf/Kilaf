@@ -1,27 +1,86 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Box, Container, makeStyles, Paper, Divider, Typography, Button } from '@material-ui/core';
-import { getCart, getItems } from '../../store/actions/actionsItem'
-
+import { Box, Container, makeStyles, Paper, Divider, Typography, Button, Grid } from '@material-ui/core';
+import { getCarts } from '../../store/actions/actionsItem'
+import StripeCheckout from 'react-stripe-checkout'
 
 import CartDetail from '../../components/cards/CartDetail'
 
 export default function Cart() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [localAmount, setLocalAmount] = useState();
-
-  useEffect(() => {
-    dispatch(getItems())
-  }, [dispatch])
+  const [localAmount, setLocalAmount] = useState(0);
+  const [deliveryPrice, setDeliveryPrice] = useState('0');
+  const [tax, setTax] = useState('0');
+  const [amountForPaymentGateway, setAmountForPaymentGateway] = useState(0)
 
   const carts = useSelector(state => state.reducerItem.carts);
-  console.log(carts, 'cart');
+  console.log(carts,'carts');
+
+  useEffect(() => {
+    let value = 0
+    carts.map(cart => {
+      value = value + cart.amount
+      // console.log(value)
+      // const formatted = new Intl.NumberFormat('id', { currency: 'IDR', style: 'currency'}).format(value)
+      // setLocalAmount(formatted)
+      // console.log(cart, 'watch cart');
+    })
+    // console.log(value)
+    setAmountForPaymentGateway(value)
+    const formatted = new Intl.NumberFormat('id', { currency: 'IDR', style: 'currency'}).format(value)
+    setLocalAmount(formatted)
+  },[carts])
+
+  useEffect(() => {
+    dispatch(getCarts())
+  }, [dispatch])
+
+  const makePayment = (token) => {
+    console.log('masuk payment')
+    const body = {
+      token,
+      price: amountForPaymentGateway
+    }
+    const headers = {
+      "Content-Type": "application/json",
+      access_token: localStorage.getItem('access_token')
+    }
+    
+    fetch(`http://localhost:3001/payment`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(body)
+    })
+    .then(response => {
+      console.log(response, "ini response")
+      const {status} = response
+      console.log(status, 'ini status')
+
+      //mindahin item dari tabel transaction ke tabel payment
+      carts.map(cart => {
+        // console.log(cart, 'hasil looping')
+        
+        fetch(`http://localhost:3001/payment/create/${cart.id}/${cart.amount}`, {
+          method: 'POST',
+          headers: {
+            access_token: localStorage.getItem('access_token')
+          }
+        })
+        .then(() => {
+          console.log('berhasil nambah payment history')
+          dispatch(getCarts())
+        })
+        .catch((err) => console.log(err))
+      })
+    })
+    .catch(err => console.log(err, 'ini error'))
+  }
 
   return (
     <Container>
-      <Container className={classes.container}>
-        <Box className={classes.contentLeft}>
+      <Grid container className={classes.container}>
+        <Grid item xs={12} sm={12} md={8}>
           <Paper elevation={2} className={classes.contentLeftTitle}>
             Your Cart
           </Paper>
@@ -32,8 +91,8 @@ export default function Cart() {
               )
             })}
           </Box>
-        </Box>
-        <Box className={classes.contentRight}>
+        </Grid>
+        <Grid item xs={12} sm={12} md={4}>
           <Paper className={classes.contentRightItem}>
             <Typography style={{padding: 10}}>
               Summary
@@ -41,31 +100,38 @@ export default function Cart() {
             <Divider />
             <Box className={classes.boxItem}>
               <Typography>Subtotal</Typography>
-              <Typography>Rp. {localAmount}</Typography>
+              <Typography>{localAmount}</Typography>
             </Box>
             <Divider />
             <Box className={classes.boxItem}>
               <Typography>Biaya Pengiriman</Typography>
-              <Typography>Rp. 0</Typography>
+              <Typography>{deliveryPrice}</Typography>
             </Box>
             <Divider />
             <Box className={classes.boxItem}>
               <Typography>Tax</Typography>
-              <Typography>Rp. 0</Typography>
+              <Typography>{tax}</Typography>
             </Box>
             <Divider />
             <Box className={classes.boxItem}>
               <Typography>Total</Typography>
-              <Typography>Rp. 180.000</Typography>
+              <Typography>{localAmount}</Typography>
             </Box>
             <Box style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 20}}>
-              <Button variant="outlined" color="primary">
+              {/* <Button variant="outlined" color="primary">
                 CHECKOUT
-              </Button>
+              </Button> */}
+              <StripeCheckout 
+              stripeKey="pk_test_51HdtTKAh63sGgRSDPUu44eUiZVFR5paJ77eJReP9VP2tgmyGkrlwm9NOXCavLUSSQN0Xdl6W65Ju1geL0ucsfx6u00K3WTaPRq"
+              token={makePayment}
+              currency='idr'
+              amount={amountForPaymentGateway * 100}>
+                  <button variant="outlined" color="primary">CHECKOUT</button>
+              </StripeCheckout>
             </Box>
           </Paper>
-        </Box>
-      </Container>
+        </Grid>
+      </Grid>
     </Container>
   )
 }

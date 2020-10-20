@@ -25,6 +25,11 @@ export const subscribeToBidding = (dispatch, id) => {
         console.log(`New data received!`)
         dispatch(detailItem(id))
     })
+
+    socket.on('buyout', () => {
+        console.log(`New data received!`)
+        dispatch(detailItem(id))
+    })
 }
 
 // export const addBid = (room, data) => {

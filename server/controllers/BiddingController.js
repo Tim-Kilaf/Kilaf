@@ -84,10 +84,11 @@ class BiddingController {
             
             const payload = { UserId: id, ItemId, price, date: new Date }
 
+            console.log(payload);
+
             const data = await Biddings.create(payload)
 
             if (data) {
-                console.log(err)
                 await Items.update({ current_price: price },{ where: { id: ItemId }})
 
                 this.io.emit('newBid', `item-${ItemId}`)
