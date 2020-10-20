@@ -52,13 +52,12 @@ export default function Dashboard() {
   useEffect(() => {
     dispatch(getItems())
     dispatch(getHottestItems())
-    dispatch(getCategory())
   }, [dispatch])
 
-  console.log(category)
+  console.log(process.env.PUBLIC_URL)
 
   return (
-    <Box class={classes.mainContainer}>
+    <Box className={classes.mainContainer}>
       <Box style={{ margin: '3em 0' }}>        
         <h1>What Are You Looking For?</h1>
         <Box style={{ display: 'flex', overflow: 'auto' }}>

@@ -139,6 +139,10 @@ export default function Appbar() {
     </Menu>
   );
 
+  useEffect(() => {
+    dispatch(getCategory())
+  }, [dispatch])
+
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu

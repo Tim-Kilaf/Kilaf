@@ -31,6 +31,15 @@ const useStyles = makeStyles((theme) => ({
   date: {
     fontSize: 14,
     fontWeight: 600
+  },
+  image: {
+    width: '100%',
+    height: '16em',
+    objectFit: 'cover',
+    borderRadius: 5,
+    [theme.breakpoints.down('xs')]: {
+      width: '100%'
+    },
   }
 }));
 
@@ -45,12 +54,16 @@ export default function BiddingCard(props) {
   return props.data.ItemPictures.length > 0 && (
     <Card className={classes.root}>
       <CardActionArea>
-        <CardMedia
+        {/* <CardMedia
           component="img"
           alt="Contemplative Reptile"
           height="200"
-          image={require("../../assets/images/" + props.data.ItemPictures[0].path)}
+          image={process.env.PUBLIC_URL + `uploads/${props.data.ItemPictures[0].path}`}
           title="Contemplative Reptile"
+        /> */}
+        <img
+          src={process.env.PUBLIC_URL + `../uploads/${props.data.ItemPictures[0].path}`}
+          className={classes.image}
         />
         <CardContent>
           <Typography gutterBottom component="h1" variant="h6" style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}>

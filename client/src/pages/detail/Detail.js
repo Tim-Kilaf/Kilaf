@@ -159,11 +159,9 @@ export default function Detail() {
 
   const settings = {
     dots: true,
-    // infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    // autoplay: true
   };
 
   return (
@@ -173,11 +171,11 @@ export default function Detail() {
           <Grid container className={classes.containerDetail}>
             <Grid item md={5}>
               <Slider {...settings}>
-                {data.item.ItemPictures.length > 0 && data.item.ItemPictures.map(item => {
+                {data.item.ItemPictures.map(item => {
                   return (
                     <Box style={{display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 200}}>
                       <img
-                        src={require("../../assets/images/" + item.path)}
+                        src={process.env.PUBLIC_URL + `../uploads/${item.path}`}
                         className={classes.image}
                       />
                     </Box>

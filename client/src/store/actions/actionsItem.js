@@ -1,4 +1,4 @@
-export function createItem(payload) {
+export function createItem(payload, cb) {
   return dispatch => {
     fetch('http://localhost:3001/item/create', {
       method: 'POST',
@@ -9,13 +9,14 @@ export function createItem(payload) {
     })
       .then(res => res.json())
       .then(data => {
+        cb(null, 'success')
         dispatch({
           type: 'CREATE_ITEM',
           payload: data
         })
       })
       .catch(err => {
-        console.log(err);
+        cb(err, null)
       })
   }
 }

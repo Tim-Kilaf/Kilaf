@@ -8,6 +8,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,6 +53,7 @@ const ValidationTextField = withStyles({
 export default function CreateItem() {
   const dispatch = useDispatch()
   const clasess = useStyles()
+  const history = useHistory()
 
   const [payload, setPayload] = useState({
     name: '',
@@ -97,13 +99,17 @@ export default function CreateItem() {
       formData.append('images', payload.image[i], payload.image[i].name)
     }
 
-    dispatch(createItem(formData))
+    dispatch(createItem(formData, (err => {
+      if(!err) {
+        history.push('/')
+      }
+    })))
   }
 
   return (
     <Box className={clasess.container} boxShadow={3}>
       <h1>Create New Item</h1>
-      <form onSubmit={(e) => onSubmitHandler(e)} className={clasess.form}>
+      <form className={clasess.form}>
         <Box className={clasess.inputBox}>
           <ValidationTextField id="validation-outlined-input" style={{ width: '100%' }} onChange={(e) => onTextHandler(e)} name="name" id="outlined-basic" label="Item's Name" variant="outlined" required />
         </Box>
@@ -114,25 +120,29 @@ export default function CreateItem() {
           <ValidationTextField style={{ width: '45%' }} name="starting_price" onChange={(e) => onTextHandler(e)} type="number" id="outlined-basic" label="Starting Price" variant="outlined" required />
           <ValidationTextField style={{ width: '45%', float: 'right' }} name="buyout_price" onChange={(e) => onTextHandler(e)} type="number" id="outlined-basic" label="Buyout Price" variant="outlined" required />
         </Box>
-        <Box style={{ margin: '20px 0' }}>
-          <InputLabel id="demo-simple-select-helper-label">Item Category</InputLabel>
-          <Select onChange={(e) => onTextHandler(e)} name="CategoryId" style={{ width: '100%' }}
-            id="demo-simple-select-helper" defaultValue="Pilih">
-              <MenuItem value="Pilih" disabled> Pilih Salah Satu </MenuItem>
-              {category.result && category.result.map(el => {
-                return (
-                  <MenuItem value={el.id}> {el.name} </MenuItem>
-                )
-              })}            
-          </Select>
+        <Box style={{ margin: '20px 0', color: 'gray' }}>
+          <label>
+            Item Category
+            <select onChange={onTextHandler} name="CategoryId" style={{ width: '100%', padding: '15px 10px', fontSize: 17 }}
+              defaultValue="Pilih">
+                <option value="Pilih" disabled> Pilih Salah Satu </option>
+                {category.result && category.result.map(el => {
+                  return (
+                    <option value={el.id}> {el.name} </option>
+                  )
+                })}            
+            </select>
+          </label>          
         </Box>
         <Box className={clasess.inputBox}>
-            <InputLabel id="demo-simple-select-helper-label">Item Condition</InputLabel>
-            <Select onChange={(e) => onTextHandler(e)} name="condition" style={{ width: '100%', marginBottom: 25 }}
-              defaultValue={payload.condition} id="demo-simple-select-helper">
-              <MenuItem value='Bekas'>Bekas</MenuItem>
-              <MenuItem value='Baru'>Baru</MenuItem>
-            </Select>
+            <label style={{ color: 'gray' }}>
+              Item Condition
+              <select onChange={onTextHandler} name="condition" style={{ width: '100%', marginBottom: 25, padding: '15px 10px', fontSize: 17  }}
+                defaultValue={payload.condition}>
+                <option value='Bekas'>Bekas</option>
+                <option value='Baru'>Baru</option>
+              </select>
+            </label>            
             <ValidationTextField style={{ width: '100%' }} name="bid_increment" onChange={(e) => onTextHandler(e)} type="number" label="Bid Increment" variant="outlined" required />
         </Box>
         <Box>
@@ -147,7 +157,7 @@ export default function CreateItem() {
           required
         />
         <Box className={clasess.inputBox}>
-          <Button color="secondary" type="submit" variant="contained" style={{ width: '100%' }}>
+          <Button color="secondary" onClick={onSubmitHandler} type="button" variant="contained" style={{ width: '100%' }}>
             Create New
           </Button>
         </Box>
