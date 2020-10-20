@@ -24,18 +24,6 @@ export default function Dashboard() {
 
   const items = useSelector(state => state.reducerItem.items)
 
-  const [room, useRoom] = useState('dashboard')
-
-  useEffect(() => {
-    if (room) initiateSocket(room)
-
-    subscribeToDashboard(dispatch)
-
-    return () => {
-      disconnectSocket()
-    }
-  }, [room])
-
   useEffect(() => {
     dispatch(getItems())
   }, [dispatch])
