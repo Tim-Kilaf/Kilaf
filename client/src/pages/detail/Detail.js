@@ -3,94 +3,77 @@ import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { detailItem, addBidding } from '../../store/actions/actionsItem'; // merge line 5-6 to one
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Moment from 'react-moment';
 import NumericInput from 'react-numeric-input';
-import { Button } from '@material-ui/core';
-import socket from '../../config/socket-io'
-import { disconnectSocket, initiateSocket, subscribeToBidding, buyout } from '../../sockets/biddingSocket';
+import { Button, Divider, Container, Grid, Avatar } from '@material-ui/core';
+import LocalOfferOutlinedIcon from '@material-ui/icons/LocalOfferOutlined';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import { disconnectSocket, initiateSocket, subscribeToBidding } from '../../sockets/biddingSocket';
 
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    width: '70%',
-    marginTop: 50,
-    marginBottom: 50,
-    margin: '0 auto',
+    margin: '100 100',
     [theme.breakpoints.down('xs')]: {
       width: '90%',
     },
   },
   containerDetail: {
     display: 'flex',
-    flexWrap: 'wrap',
-    padding: '0 2em',
-    [theme.breakpoints.down('xs')]: {
-      padding: 0
-    },
+    padding: '3em 3em',
   },
   image: {
     width: '100%',
     height: '100%',
     objectFit: 'cover',
-    borderRadius: 20,
+    marginRight: 30,
+    borderRadius: 5,
     [theme.breakpoints.down('xs')]: {
       width: '100%'
     },
   },
-  title: {
-    fontSize: 35
+  containerDesc: { 
+    display: 'flex', 
+    flexDirection: 'row'
   },
-  auctioneer: {
-    fontSize: 20,
-    marginTop: -30,
-    fontStyle: 'italic',
-    color: '#2191fb'
+  descValue: {
+    marginLeft: 30,
+    fontSize: '1.2rem',
+    fontWeight: 'bold',
+    color: 'rgba(0,0,0,.7)'
   },
-  price: {
-    fontSize: 26,
-    margin: '-10px 0',
-    color: '#BA274A',
-    fontWeight: 600
-  },
-  containerText: {
-    marginLeft: 25
-  },
-  descriptionTitle: {
-    fontSize: 25
+  descTitle: {
+    color: 'rgba(0,0,0,.5)',
+    fontWeight: 'bold'
   },
   description: {
     fontSize: 18,
-  },
-  priceDetailBox: {
-    fontSize: 17,
-    margin: '30px 0'
-  },
-  priceDetail: {
-    fontSize: 17
-  },
-  hr: {
-    margin: '3em 0',
-    border: '1px solid gray',
-    borderRadius: 20
+    color: 'rgba(0,0,0,.6)'
   },
   bidder: {
-    borderRadius: 25,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '15px 30px'
-  }
+    marginLeft: 10, 
+    display: 'flex', 
+    flexDirection: 'column'
+  },
+  biddingDetail: {
+    display: 'flex', 
+    flexDirection: 'column', 
+    paddingLeft: '.5em'
+  },
+  boxDetail :{
+    display:'flex', 
+    padding: '1em', 
+    borderRadius: 10
+  },
 }));
 
 export default function Detail() {
   const classes = useStyles();
   const dispatch = useDispatch()
   const param = useParams()
-  const history = useHistory()
 
-  const [room, setRoom] = useState(`item-${param.id}`)
+  const [room] = useState(`item-${param.id}`)
   const [bid, setBid] = useState(0)
   const [valid, setValid] = useState(false)
   const [buyout, setBuyout] = useState(false)
@@ -162,7 +145,7 @@ export default function Detail() {
         access_token: localStorage.getItem('access_token')
       }
     })
-      .then(res => {
+      .then(() => {
         console.log('success buyout');
       })
       .catch(err => {
@@ -172,89 +155,159 @@ export default function Detail() {
   }
 
   return (
-    <Box className={classes.container}>
+    <Container classname={classes.container}>
       {data.item && data.item.ItemPictures && data.item.User &&
         <Box>
-          <Box className={classes.containerDetail}>
-            <Box style={{ width: '450px', borderRadius: 20 }} boxShadow={2}>
-              <img
-                src={require("../../assets/images/" + data.item.ItemPictures[0].path)}
-                className={classes.image}
-              />
-            </Box>
-            <Box className={classes.containerText}>
-              <p className={classes.title}>{data.item.name}</p>
-              <p className={classes.auctioneer}> {data.item.User.fullname} </p>
-              <p className={classes.price}>Rp. {data.item.current_price.toLocaleString()} </p>
-              <Box className={classes.priceDetailBox}>
-                <p className={classes.priceDetail}>Buyout at Rp. {data.item.buyout_price.toLocaleString()} </p>
-                <p className={classes.priceDetail}>Bid Multiplication Rp. {data.item.bid_increment.toLocaleString()} </p>
+          <Grid container className={classes.containerDetail}>
+            <Grid item md={5}>
+              <Box style={{maxWidth: 586, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                <img
+                  src={require("../../assets/images/" + data.item.ItemPictures[0].path)}
+                  className={classes.image}
+                />
               </Box>
-              <Box>
-                Start at <Moment className={classes.priceDetail} format="YYYY/MM/DD HH:mm">{data.item.start_date}</Moment>
-              </Box>
-              <Box>
-                End at  <Moment className={classes.priceDetail} format="YYYY/MM/DD HH:mm">{data.item.end_date}</Moment>
-              </Box>
-              <Box>
-                {
-                  !data.owner &&
-                  <form onSubmit={(e) => handleSubmit(e)}
-                    style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', padding: '20px 0' }}>
-                    <Box>
-                      <NumericInput className="form-control" defaultValue={(data.item.current_price)}
-                        min={(data.item.current_price + data.item.bid_increment)} max={data.item.buyout_price}
-                        step={data.item.bid_increment} onChange={setBid} />
-                    </Box>
-                    <Box style={{ marginTop: 10 }}>
-                      {data.highestBidder ?
-                        <Button color="primary" variant="contained" disabled>
-                          You are leading
-                      </Button>
-                        :
-                        valid ?
-                          <Button color="primary" type="submit" variant="contained">
-                            Start Bid
-                      </Button>
-                          :
+            </Grid>
+            <Grid item md={7}>
+              <Box className={classes.containerText}>
+                <Box style={{fontSize: '1.3rem', fontWeight: 'bold'}}>
+                  <span>{data.item.name.toUpperCase()}</span>
+                </Box>
+                <Divider />
+                <Box className={classes.containerDesc}>
+                  <Grid item xs={3} sm={3} md={2}>
+                    <p className={classes.descTitle}>CURRENT PRICE</p>
+                  </Grid>
+                  <Grid className={classes.descValue} item md={10}>
+                    <p style={{color: '#BA274A', fontSize: '1.5rem', fontWeight: 'bold'}}>Rp {data.item.current_price.toLocaleString('id-ID')} </p>
+                  </Grid>
+                </Box>
+                <Divider />
+                <Box className={classes.containerDesc}>
+                  <Grid item xs={3} sm={3} md={2}>
+                    <p className={classes.descTitle}>BUYOUT</p>
+                  </Grid>
+                  <Grid className={classes.descValue} item md={10}>
+                    <p>Rp {data.item.buyout_price.toLocaleString('id-ID')} </p>
+                  </Grid>
+                </Box>
+                <Divider />
+                <Box className={classes.containerDesc}>
+                  <Grid item xs={3} sm={3} md={2}>
+                    <p className={classes.descTitle}>BID PRODUCT</p>
+                  </Grid>
+                  <Grid className={classes.descValue} item md={10}>
+                    <p>Rp {data.item.bid_increment.toLocaleString('id-ID')} </p>
+                  </Grid>
+                </Box>
+                <Divider />
+                <Box className={classes.containerDesc}>
+                  <Grid item xs={3} sm={3} md={2}>
+                    <p className={classes.descTitle}>START AT</p>
+                  </Grid>
+                  <Grid className={classes.descValue} item md={10}>
+                    <p><Moment format="MMMM Do YYYY HH:mm">{data.item.start_date}</Moment> </p>
+                  </Grid>
+                </Box>
+                <Divider />
+                <Box className={classes.containerDesc}>
+                  <Grid item xs={3} sm={3} md={2}>
+                    <p className={classes.descTitle}>END AT</p>
+                  </Grid>
+                  <Grid className={classes.descValue} item md={10}>
+                    <p><Moment format="MMMM Do YYYY HH:mm">{data.item.end_date}</Moment></p>
+                  </Grid>
+                </Box>
+                <Divider />
+                <Box>
+                  {
+                    !data.owner &&
+                    <form onSubmit={(e) => handleSubmit(e)}
+                      style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', padding: '20px 0' }}
+                    >
+                      <Box>
+                        <NumericInput className="form-control" defaultValue={(data.item.current_price)}
+                          min={(data.item.current_price + data.item.bid_increment)} max={data.item.buyout_price}
+                          step={data.item.bid_increment} onChange={setBid} />
+                      </Box>
+                      <Box style={{ marginTop: 10 }}>
+                        {data.highestBidder ?
                           <Button color="primary" variant="contained" disabled>
-                            The Minimum Bid Is {(data.item.current_price + data.item.bid_increment)}
-                          </Button>}
-                      <Box style={{ textAlign: 'center', marginTop: 10 }}>
-                        {!buyout ?
-                          <Button color="primary" variant="contained" onClick={handleBuyout}>Buyout</Button>
+                            You are leading
+                        </Button>
                           :
-                          <Button disabled>Sold Out</Button> }
-                      </Box>                      
-                    </Box>
-                  </form>
-                }
+                          valid ?
+                            <Button color="primary" type="submit" variant="contained">
+                              Start Bid
+                        </Button>
+                            :
+                            <Button color="primary" variant="contained" disabled>
+                              The Minimum Bid Is {(data.item.current_price + data.item.bid_increment)}
+                            </Button>}
+                        <Box style={{ textAlign: 'center', marginTop: 10 }}>
+                          {!buyout ?
+                            <Button color="primary" variant="contained" onClick={handleBuyout}>Buyout</Button>
+                            :
+                            <Button disabled>Sold Out</Button> }
+                        </Box>                      
+                      </Box>
+                    </form>
+                  }
+                </Box>
               </Box>
+            </Grid>
+          </Grid>
+          <Divider />
+          <Box style={{margin: 10, display: 'flex'}}>
+            <Box style={{display: 'flex', alignItems: 'center'}} flexGrow={1}>
+              <span style={{fontSize: '1.2rem', fontWeight: 'bold'}}>Description</span>
             </Box>
           </Box>
-          <Box style={{ padding: '0 2em' }}>
-            <p className={classes.descriptionTitle}>Description</p>
+          <Divider />
+          <Box>
             <p className={classes.description}> {data.item.description} </p>
           </Box>
-          <hr className={classes.hr} />
-          <p className={classes.descriptionTitle}>Bidder</p>
+          <Divider />
+          <p style={{margin: 10, fontSize: '1.2rem', fontWeight: 'bold'}}>Bidder</p>
           {data.item.Biddings && data.item.Biddings.map(el => {
             return (
-              <Box className={classes.bidder} boxShadow={3}>
-                <Box> <p style={{ fontSize: 23 }}>Rp. {el.price.toLocaleString()} </p> </Box>
-                <Box>
-                  <p>Bidder</p>
-                  <p> {el.User.fullname} </p>
-                </Box>
-                <Box>
-                  <p>Bid Date</p>
-                  <Moment style={{ margin: 0, padding: 0 }} format="YYYY/MM/DD HH:mm">{el.createdAt}</Moment>
-                </Box>
-              </Box>
+              <Container>
+                <Container>
+                  <Grid container style={{margin: 10}}>
+                    <Grid item xs={12} sm={12} md={3} style={{display: 'flex', marginTop: 10}}> 
+                      <Box>
+                        <Avatar style={{backgroundColor: '#BA274A'}}>
+                          {el.User.fullname ? el.User.fullname[0].toUpperCase() : 'A'}
+                        </Avatar>
+                      </Box>
+                      <Box className={classes.bidder}>
+                        <span>{el.User.fullname}</span>
+                        <Moment fromNow>{el.createdAt}</Moment>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={10} sm={10} md={9}>
+                      <Grid item container style={{margin: 10}}>
+                        <Box boxShadow={3} className={classes.boxDetail}>
+                          <Grid><CalendarTodayIcon /></Grid>
+                          <Grid className={classes.biddingDetail}>
+                            <span style={{color: 'rgba(0,0,0,.5)'}}>Bid Time:</span>
+                            <Moment format="MMMM Do YYYY HH:mm">{el.createdAt}</Moment>
+                          </Grid>
+                          <Grid style={{paddingLeft: '1em'}}><LocalOfferOutlinedIcon /></Grid>
+                          <Grid className={classes.biddingDetail}>
+                            <span style={{color: 'rgba(0,0,0,.5)'}}>Bid Price:</span>
+                            <span>Rp {el.price.toLocaleString('id-ID')} </span>
+                          </Grid>
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Container>
+                <Divider />
+              </Container>
             )
           })}
         </Box>
       }
-    </Box>
+    </Container>
   )
 }

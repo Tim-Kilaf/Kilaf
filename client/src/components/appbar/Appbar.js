@@ -143,7 +143,6 @@ export default function Appbar() {
       <MenuItem>{email}</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
       <MenuItem onClick={handleLogout}>Logout</MenuItem>
-      {/* <MenuItem><p>username</p></MenuItem> */}
     </Menu>
   );
 
@@ -183,14 +182,6 @@ export default function Appbar() {
       <AppBar style={{backgroundColor: '#fff'}} position="static">
         <Container>
           <Toolbar>
-            {/* <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="primary"
-              aria-label="open drawer"
-            >
-              <MenuIcon />
-            </IconButton> */}
             <Link style={{marginRight: 20}} to="/">
               <img src="https://i.imgur.com/DkXvWFJ.png" alt="logo" height="35px" />
             </Link>
