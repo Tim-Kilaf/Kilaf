@@ -195,7 +195,7 @@ export default function Appbar() {
               <img src="https://i.imgur.com/DkXvWFJ.png" alt="logo" height="35px" />
             </Link>
             <div className={classes.grow} />
-            <div className={classes.search}>
+            {/* <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
               </div>
@@ -207,7 +207,7 @@ export default function Appbar() {
                 }}
                 inputProps={{ 'aria-label': 'search' }}
               />
-            </div>
+            </div> */}
             <div className={classes.sectionDesktop}>
               <Link to="/cart">
                 <IconButton aria-label="show 2 products" color="primary">

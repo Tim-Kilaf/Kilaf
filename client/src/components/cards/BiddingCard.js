@@ -14,7 +14,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 250,
     maxHeight: 500,
-    marginRight: 30
+    marginRight: 12,
+    [theme.breakpoints.down('xs')]: {
+      margin: "0 20px",
+    },
   },
   button: {
     width: '100%',
