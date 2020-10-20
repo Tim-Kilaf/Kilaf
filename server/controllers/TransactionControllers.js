@@ -41,13 +41,14 @@ class TransactionController {
     create = async (req, res, next) => {
         try {
             const { ItemId } = req.params
-
+            console.log(ItemId,'itemid trx controller');
             const data = await Biddings.findAll(
                 {
                     where: { ItemId },
                     order: [['price', 'DESC']]
                 }
             )
+            console.log(data,'all bids for item trx cont');
             const amount = data[0].price
             const UserId = data[0].UserId
             console.log(UserId)
