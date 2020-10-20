@@ -7,8 +7,9 @@ class PaymentController {
         this.io = io
     }
     stripe = async (req,res,next) => {
-     
+        console.log('masuk stripe')
         const { price, token } = req.body
+        console.log(token, '==============================================')
 
         if(req.user.email === token.email){
            

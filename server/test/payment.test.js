@@ -3,7 +3,7 @@ const app = require("../app");
 const { generateToken } = require("../helpers/jwt");
 const { sequelize, Users } = require("../models");
 const { queryInterface } = sequelize;
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+const stripe = require('stripe')('sk_test_51HdtTKAh63sGgRSDkRYGnptHJ4hgJUkaBQueiHRzpjZnqV9O1HGRRTN1fPsOLDKYaCcdQxnyCYaB3ilc8fBwW1Zu00ESHLlRlh')
 
 
 const userData = {email: 'user@mail.com', password: '123456'}
@@ -86,7 +86,7 @@ describe('success create payment history', () => {
   })
 })
 
-describe.only('success create payment stripe', () => {
+describe('success create payment stripe', () => {
   it('test success create payment stipe', (done) => {
     request(app)
       .post('/payment')
@@ -95,13 +95,12 @@ describe.only('success create payment stripe', () => {
       .send({
         price: 50000,
         token: {
-          id: createToken(),
           email: 'user@mail.com'
         }
       })
       .expect("Content-Type", /json/)
       .then((response) => {
-        console.log(response, 'ini body')
+        // console.log(response, 'ini body')
         const { body, status } = response
         expect(status).toBe(200)
         const expected = {foo: 'bar'}
