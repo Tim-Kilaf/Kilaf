@@ -40,8 +40,6 @@ export default function BiddingCard(props) {
     history.push(`/bid/${id}`)
   }
 
-  console.log(props)
-
   return props.data.ItemPictures.length > 0 && (
     <Card className={classes.root}>
       <CardActionArea>
@@ -53,7 +51,7 @@ export default function BiddingCard(props) {
           title="Contemplative Reptile"
         />
         <CardContent>
-          <Typography gutterBottom component="h1" variant="h6">
+          <Typography gutterBottom component="h1" variant="h6" style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}>
             {props.data.name}
           </Typography>
           <Typography style={{ marginTop: -7 }} gutterBottom color="textSecondary" component="h3" variant="p">

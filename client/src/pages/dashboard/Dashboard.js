@@ -48,12 +48,12 @@ export default function Dashboard() {
 
   return (
     <Box class={classes.mainContainer}>
-      <Box className={classes.container} boxShadow={3} >
-        <DashboadCarousel data={items} text="Latest Bids"/>
+      <Box className={classes.container} boxShadow={2} >
+        <DashboadCarousel data={items} text="Item Terbaru Yang Harus Kamu Cek!"/>
       </Box>
-      <Box className={classes.container} boxShadow={3}>
+      {/* <Box className={classes.container} boxShadow={3}>
         <DashboadCarousel data={items} text="Hottest Bids"/>
-      </Box>
+      </Box> */}
     </Box>
   )
 }

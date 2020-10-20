@@ -30,6 +30,7 @@ export function getItems() {
     })
       .then(res => res.json())
       .then(data => {
+        console.log(data)
         dispatch({
           type: 'FETCH_ITEM',
           payload: data
@@ -97,6 +98,48 @@ export function getCarts() {
       .then(data => {
         dispatch({
           type: 'FETCH_CART',
+          payload: data
+        })
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+}
+
+export function getCategory() {
+  return dispatch => {
+    fetch(`http://localhost:3001/category`, {
+      method: 'GET',
+      headers: {
+        access_token: localStorage.getItem('access_token')
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        dispatch({
+          type: 'FETCH_CATEGORY',
+          payload: data
+        })
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+}
+
+export function getItemByCategory(id) {
+  return dispatch => {
+    fetch(`http://localhost:3001/category/${id}`, {
+      method: 'GET',
+      headers: {
+        access_token: localStorage.getItem('access_token')
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        dispatch({
+          type: 'FETCH_ITEM_CATEGORY',
           payload: data
         })
       })

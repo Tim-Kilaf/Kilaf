@@ -9,9 +9,11 @@ export function DashboadCarousel(props) {
     infinite: true,
     speed: 500,
     slidesToShow: 4,
-    slidesToScroll: 2,
+    slidesToScroll: 4,
     autoplay: true
   };
+
+  console.log(props.data)
 
   return (
     <div>
