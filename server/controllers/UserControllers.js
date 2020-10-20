@@ -20,7 +20,9 @@ class UserController {
             if(valid){
                 let access_token = generateToken(user)
                 let role = user.Role.name
-                return res.status(200).json({access_token, role})
+                let username = user.fullname
+                let email = user.email
+                return res.status(200).json({access_token, role, username, email})
             }else{ 
                 return res.status(400).json({message: 'Invalid Username or Password'})
             }

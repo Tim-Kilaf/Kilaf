@@ -7,9 +7,9 @@ import {
     TextField,
     Button,
 } from "@material-ui/core";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../store/actions/actionsUser'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Redirect } from 'react-router-dom'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,55 +40,58 @@ export default function Login() {
     const dispatch = useDispatch()
     const history = useHistory()
 
+    const isLogin = useSelector(state => state.reducerLogin.isLogin)
+
     function handleLogin(event) {
         event.preventDefault()
         let payload = {
             email,
-            password
+            password 
         }
-        dispatch(login(payload,(cb) => {
-            history.push('/')
-        }))        
+        dispatch(login(payload)) 
     }
 
     return (
-        <Container className={classes.root}>
-            <Paper elevation={3}>
-                <Typography style={{margin: 20}} variant="h3">
-                    Login
-                </Typography>
-                <form onSubmit={handleLogin} className={classes.form}>
-                    <TextField 
-                        placeholder="Type your email here" 
-                        label="Email" 
-                        variant="filled" 
-                        InputLabelProps={{
-                        shrink: true
-                        }} 
-                        onChange={(e) => setEmail(e.target.value)}
-                        value={email}
-                        required
-                    />
-                    <TextField 
-                        placeholder="Type your password here" 
-                        label="Password" 
-                        variant="filled" 
-                        InputLabelProps={{
-                        shrink: true
-                        }} 
-                        onChange={(e) => setPassword(e.target.value)}
-                        value={password}
-                        type="password"
-                        required
-                    />
-                    <Button type="submit" variant="contained" color="primary">
+        <>
+            {isLogin ? <Redirect to="/" /> : null}
+            <Container className={classes.root}>
+                <Paper elevation={3}>
+                    <Typography style={{margin: 20}} variant="h3">
                         Login
-                    </Button>
-                </form>
-                <Typography style={{display: 'flex', justifyContent: 'center'}}>
-                Don't have an account? Register here
-                </Typography>
-            </Paper>
-        </Container>
+                    </Typography>
+                    <form onSubmit={handleLogin} className={classes.form}>
+                        <TextField 
+                            placeholder="Type your email here" 
+                            label="Email" 
+                            variant="filled" 
+                            InputLabelProps={{
+                            shrink: true
+                            }} 
+                            onChange={(e) => setEmail(e.target.value)}
+                            value={email}
+                            required
+                        />
+                        <TextField 
+                            placeholder="Type your password here" 
+                            label="Password" 
+                            variant="filled" 
+                            InputLabelProps={{
+                            shrink: true
+                            }} 
+                            onChange={(e) => setPassword(e.target.value)}
+                            value={password}
+                            type="password"
+                            required
+                        />
+                        <Button type="submit" variant="contained" color="primary">
+                            Login
+                        </Button>
+                    </form>
+                    <Typography style={{display: 'flex', justifyContent: 'center'}}>
+                    Don't have an account? Register here
+                    </Typography>
+                </Paper>
+            </Container>
+        </>
     )
 }
