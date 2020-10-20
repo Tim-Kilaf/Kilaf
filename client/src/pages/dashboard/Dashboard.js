@@ -10,7 +10,10 @@ const useStyles = makeStyles((theme) => ({
     width: '70%',
     margin: '0 auto',
     marginTop: 40,
-    marginBottom: 40
+    marginBottom: 40,
+    [theme.breakpoints.down('xs')]: {
+      width: '80%',
+    },
   },
   container: {        
     padding: 14,
@@ -35,7 +38,7 @@ export default function Dashboard() {
   return (
     <Box class={classes.mainContainer}>
       <Box className={classes.container} boxShadow={2} >
-        <DashboadCarousel data={items} text="Item Terbaru Yang Harus Kamu Cek!"/>
+        <DashboadCarousel data={items} text="New Item You Have To Check Out!"/>
       </Box>
       {/* <Box className={classes.container} boxShadow={3}>
         <DashboadCarousel data={items} text="Hottest Bids"/>
