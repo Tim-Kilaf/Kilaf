@@ -5,9 +5,9 @@ module.exports = (io) => {
     const path = require('path')
     const basename = path.basename(__filename)
 
-    base.get('/', (req, res) => {
-        res.send('Hello World!')
-    })
+    // base.get('/', (req, res) => {
+    //     res.send('Hello World!')
+    // })
 
     fs
     // read the whole file contents inside current dir

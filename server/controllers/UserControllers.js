@@ -4,10 +4,10 @@ const { generateToken } = require('../helpers/jwt')
 const {Users, Roles} = require('../models')
 
 class UserController {
-    constructor(io) {
-        this.io = io
-    }
-    login = async (req, res, next) => {
+    // constructor(io) {
+    //     this.io = io
+    // }
+   static login = async (req, res, next) => {
         try {
             const { email, password } = req.body
             const user = await Users.findOne({
@@ -24,14 +24,14 @@ class UserController {
                 let email = user.email
                 return res.status(200).json({access_token, role, username, email})
             }else{ 
-                return res.status(400).json({message: 'Invalid Username or Password'})
+                next({code: 400, message: 'Invalid email or password'})
             }
         } catch (err) {
-            console.log(err)
+            // console.log(err, 'catch login')
             return next(err)
         }
     }
-    register = async (req, res, next) => {
+  static  register = async (req, res, next) => {
         try {
             const { fullname, email, password } = req.body
 
@@ -44,14 +44,13 @@ class UserController {
 
             const newUser = await Users.findOne({include: [Roles], where: {email: regist.email} })
             let role = newUser.Role.name
-
             return res.status(201).json({id: newUser.id, email: newUser.email, role})
 
         } catch (err) {
-            console.log(err)
+            // console.log(err, 'catch register')
             return next(err)
         }
     }
 }
 
-module.exports = (io) => new UserController(io)
+module.exports = UserController

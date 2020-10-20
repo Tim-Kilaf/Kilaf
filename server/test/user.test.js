@@ -59,8 +59,8 @@ describe("test user fail LOGIN with POST /login", function () {
       .expect("Content-Type", /json/)
       .then((response) => {
         const { body, status } = response;
-        expect(status).toBe(400);
-        expect(body).toHaveProperty("message", "Invalid Username or Password");
+        expect(status).toBe(500);
+        expect(body).toEqual(["Whoops, something happened on our end!"]);
         done();
       });
   });
@@ -72,8 +72,8 @@ describe("test user fail LOGIN with POST /login", function () {
       .expect("Content-Type", /json/)
       .then((response) => {
         const { body, status } = response;
-        expect(status).toBe(400);
-        expect(body).toHaveProperty("message", "Invalid Username or Password");
+        expect(status).toBe(500);
+        expect(body).toEqual(["Whoops, something happened on our end!"]);
         done();
       });
   });
@@ -85,8 +85,21 @@ describe("test user fail LOGIN with POST /login", function () {
       .expect("Content-Type", /json/)
       .then((response) => {
         const { body, status } = response;
+        expect(status).toBe(500);
+        expect(body).toEqual(["Whoops, something happened on our end!"]);
+        done();
+      });
+  });
+  it("test fail LOGIN because wrong password responds with json", function (done) {
+    request(app)
+      .post("/auth/login")
+      .send({ email: "alitong2@mail.com", password: "12345" })
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .then((response) => {
+        const { body, status } = response;
         expect(status).toBe(400);
-        expect(body).toHaveProperty("message", "Invalid Username or Password");
+        expect(body).toEqual(["Invalid email or password"]);
         done();
       });
   });
@@ -102,7 +115,7 @@ describe("test user fail REGISTER with POST /register", function () {
         .then((response) => {
           const { body, status } = response;
           expect(status).toBe(400);
-          expect(body).toHaveProperty("message", "Name Must Be Filled");
+          expect(body).toContain('Validation error: Name Must Be Filled')
           done();
         });
     });
@@ -115,7 +128,7 @@ describe("test user fail REGISTER with POST /register", function () {
           .then((response) => {
             const { body, status } = response;
             expect(status).toBe(400);
-            expect(body).toHaveProperty("message", "Email Must Be Filled");
+            expect(body).toContain('Validation error: Email Must Be Filled')
             done();
         });
     });
@@ -128,7 +141,7 @@ describe("test user fail REGISTER with POST /register", function () {
           .then((response) => {
             const { body, status } = response;
             expect(status).toBe(400);
-            expect(body).toHaveProperty("message", "Please Insert Email Format");
+            expect(body).toContain('Validation error: Please Insert Email Format');
             done();
         });
     });
@@ -141,7 +154,7 @@ describe("test user fail REGISTER with POST /register", function () {
           .then((response) => {
             const { body, status } = response;
             expect(status).toBe(400);
-            expect(body).toHaveProperty("message", "Password Must Be Filled");
+            expect(body).toContain('Validation error: Password Must Be Filled')
             done();
         });
     });
@@ -154,7 +167,7 @@ describe("test user fail REGISTER with POST /register", function () {
           .then((response) => {
             const { body, status } = response;
             expect(status).toBe(400);
-            expect(body).toHaveProperty("message", "Password Minimum 6 Characters");
+            expect(body).toContain('Validation error: Password Minimum 6 Characters')
             done();
         });
     });
@@ -167,9 +180,8 @@ describe("test user fail REGISTER with POST /register", function () {
           .then((response) => {
             const { body, status } = response;
             expect(status).toBe(400);
-            expect(body).toHaveProperty("message", "Email has already exist");
+            expect(body).toContain('unique violation: email must be unique')
             done();
         });
     });
 });
-

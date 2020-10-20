@@ -1,6 +1,7 @@
+
 const errorHandler = (err, req, res, next) => {
     let { code, name, message, errors } = err
-    
+    // console.log(err, 'dari error handler')
     if (code) {
         message = [message]
     } else {
@@ -9,8 +10,9 @@ const errorHandler = (err, req, res, next) => {
 
         switch(name){
             case 'SequelizeValidationError':
+                code = 400
             case 'SequelizeUniqueConstraintError':
-                statusCode = 400
+                code = 400
                 errors.forEach(err => message.push(`${err.type}: ${err.message}`))
                 break
             case 'JsonWebTokenError':
@@ -19,7 +21,6 @@ const errorHandler = (err, req, res, next) => {
                 break
         }
     }
-
     res.status(code).json(message)
 }
 
