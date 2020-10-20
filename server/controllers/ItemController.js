@@ -1,4 +1,4 @@
-const { Items, ItemPictures, Users, Biddings } = require('../models')
+const { Items, ItemPictures, Users, Biddings, sequelize } = require('../models')
 const path = require('path')
 
 class ItemController {
@@ -12,15 +12,34 @@ class ItemController {
         where: {
           status: 'unsold'
         },
-        include: [
-          {
-          model: ItemPictures
-          },
-          {
-            model: Users
-          }
-        ]
+        include: [ItemPictures, Users]
       })
+
+      res.status(200).json({ items })
+    } catch (err) {
+      console.log(err)
+      return next(err)
+    }
+  }
+
+  listHottest = async (req, res, next) => {
+    try {
+      let items = await Items.findAll({
+        where: {
+          status: 'unsold'
+        },
+        include: [ItemPictures, Biddings, Users]
+      })
+
+      items = items.map(item => {
+        item = item.get()
+        item.bids = item.Biddings.length
+        delete item.Biddings
+
+        return item
+      }).sort((a, b) => b.bids - a.bids).slice(0, 10)
+
+      console.log(items.length)
 
       res.status(200).json({ items })
     } catch (err) {

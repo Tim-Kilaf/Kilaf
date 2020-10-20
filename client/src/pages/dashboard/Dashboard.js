@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Box from '@material-ui/core/Box';
-import { DashboadCarousel } from '../../components/carousel/DashboadCarousel'
+import { DashboardCarousel } from '../../components/carousel/DashboardCarousel'
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux'
-import { getItems } from '../../store/actions/actionsItem'
+import { getHottestItems, getItems } from '../../store/actions/actionsItem'
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -12,14 +12,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 40,
     marginBottom: 40
   },
-  container: {        
-    padding: 14,
-    borderRadius: 15, 
-    marginTop: 30,   
-    [theme.breakpoints.down('xs')]: {
-      width: '90%',
-    },
-  }
 }));
 
 export default function Dashboard() {
@@ -27,19 +19,18 @@ export default function Dashboard() {
   const dispatch = useDispatch()
 
   const items = useSelector(state => state.reducerItem.items)
+  const hottestItems = useSelector(state => state.reducerItem.hottestItems)
 
   useEffect(() => {
     dispatch(getItems())
+    dispatch(getHottestItems())
   }, [dispatch])
 
   return (
     <Box class={classes.mainContainer}>
-      <Box className={classes.container} boxShadow={2} >
-        <DashboadCarousel data={items} text="Item Terbaru Yang Harus Kamu Cek!"/>
-      </Box>
-      {/* <Box className={classes.container} boxShadow={3}>
-        <DashboadCarousel data={items} text="Hottest Bids"/>
-      </Box> */}
+      <DashboardCarousel data={hottestItems} text="Hottest Bids" />
+
+      <DashboardCarousel data={items} text="Recommended Items for You" />
     </Box>
   )
 }

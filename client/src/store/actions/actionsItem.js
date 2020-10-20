@@ -42,6 +42,21 @@ export function getItems() {
   }
 }
 
+export function getHottestItems() {
+  return dispatch => {
+    fetch(`http://localhost:3001/item/hottest`, {
+      headers: {
+        access_token: localStorage.getItem('access_token')
+      }
+    })
+      .then(res => res.json())
+      .then(data => dispatch({
+        type: 'FETCH_HOTTEST_ITEM',
+        payload: data
+      }))
+  }
+}
+
 export function detailItem(id) {
   return dispatch => {
     fetch(`http://localhost:3001/item/${id}`, {
@@ -52,6 +67,7 @@ export function detailItem(id) {
     })
       .then(res => res.json())
       .then(data => {
+        console.log(data)
         dispatch({
           type: 'FETCH_ITEM_DETAIL',
           payload: data
