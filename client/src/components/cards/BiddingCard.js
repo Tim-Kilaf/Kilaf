@@ -68,7 +68,7 @@ export default function BiddingCard(props) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button className={classes.button} color="secondary" variant="contained">
+        <Button className={classes.button} color="secondary" variant="contained" onClick={() => navigate(props.data.id)}>
           View
         </Button>        
       </CardActions>
