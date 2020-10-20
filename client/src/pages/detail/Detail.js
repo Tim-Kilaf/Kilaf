@@ -9,6 +9,9 @@ import NumericInput from 'react-numeric-input';
 import { Button, Divider, Container, Grid, Avatar } from '@material-ui/core';
 import LocalOfferOutlinedIcon from '@material-ui/icons/LocalOfferOutlined';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import Slider from "react-slick"
+import "slick-carousel/slick/slick.css"
+import "slick-carousel/slick/slick-theme.css"
 import { disconnectSocket, initiateSocket, subscribeToBidding } from '../../sockets/biddingSocket';
 
 
@@ -154,18 +157,34 @@ export default function Detail() {
     // history.push('/')
   }
 
+  const settings = {
+    dots: true,
+    // infinite: true,
+    speed: 500,
+    slidesToShow: 1.5,
+    slidesToScroll: 1.5,
+    // autoplay: true
+  };
+
   return (
     <Container classname={classes.container}>
       {data.item && data.item.ItemPictures && data.item.User &&
         <Box>
           <Grid container className={classes.containerDetail}>
             <Grid item md={5}>
-              <Box style={{maxWidth: 586, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                <img
-                  src={require("../../assets/images/" + data.item.ItemPictures[0].path)}
-                  className={classes.image}
-                />
-              </Box>
+              <Slider {...settings}>
+                {data.item.ItemPictures.length > 0 && data.item.ItemPictures.map(item => {
+                  return (
+                    <Box style={{display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 200}}>
+                      <img
+                        src={require("../../assets/images/" + item.path)}
+                        className={classes.image}
+                      />
+                    </Box>
+                    )
+                  })}
+                
+              </Slider>
             </Grid>
             <Grid item md={7}>
               <Box className={classes.containerText}>
