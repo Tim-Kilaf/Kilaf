@@ -23,7 +23,7 @@
     "supertest": "^5.0.0"
   },
   "scripts": {
-    "test": "jest --detectOpenHandles --forceExit",
+    "test": "jest --detectOpenHandles --force-exit",
     "dev": "nodemon ./bin/www"
   },
   "keywords": [],
