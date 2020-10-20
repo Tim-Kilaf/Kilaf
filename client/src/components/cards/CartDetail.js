@@ -100,7 +100,7 @@ export default function CartCard(props) {
         <Box className={classes.header}>
           <img
             onClick={() => history.push(`/bid/${cart.id}`)}
-            src={require("../../assets/images/" + cart.Item.ItemPictures[0].path)}
+            src={process.env.PUBLIC_URL + `../uploads/${cart.Item.ItemPictures[0].path}`}            
             className={classes.image}
           />
         </Box>

@@ -49,7 +49,6 @@ class ItemController {
   }
 
   createItem = async (req, res, next) => {
-    console.log('masuk')
     try {
       // console.log(req.body, '===============req.body==================')
       delete req.body.image
@@ -73,22 +72,23 @@ class ItemController {
               ItemId: item.id,
               path: `${images[i].name}`
             })
-            images[i].mv(path.join(__dirname, `../../client/src/assets/images/${images[i].name}`))
+            images[i].mv(path.join(__dirname, `../../client/public/uploads/${images[i].name}`))
           }
         } else {
           await ItemPictures.create({
             ItemId: item.id,
             path: `${images.name}`
           })
-          images.mv(path.join(__dirname, `../../client/src/assets/images/${images.name}`))
+          images.mv(path.join(__dirname, `../../client/public/uploads/${images.name}`))
         }
       }
 
-      this.io.emit('newItem', item)
+      // this.io.emit('newItem', item)
 
       res.status(201).json({ message: 'Sucessfully Created', id: item.id })
     } catch (err) {
       // console.log(err, 'error dari controller')
+      console.log(err)
       return next(err)
     }
   }
