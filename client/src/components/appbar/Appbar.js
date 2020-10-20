@@ -20,7 +20,6 @@ import {
 } from '@material-ui/core';
 
 import { logout, login } from '../../store/actions/actionsUser';
-import { getCategory } from '../../store/actions/actionsItem';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -109,12 +108,6 @@ export default function Appbar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  useEffect(() => {
-    dispatch(getCategory())
-  }, [dispatch])
-
-  const category = useSelector(state => state.reducerItem.category)
-
   function handleLogout() {
     dispatch(logout());
     history.push('/');
@@ -160,7 +153,7 @@ export default function Appbar() {
     >
       <MenuItem>
         <IconButton aria-label="show 4 new mails" color="primary">
-          <Badge badgeContent={4} color="secondary">
+          <Badge color="secondary">
             <MdShoppingCart />
           </Badge>
         </IconButton>
@@ -183,14 +176,6 @@ export default function Appbar() {
       <AppBar style={{backgroundColor: '#fff'}} position="static">
         <Container>
           <Toolbar>
-            {/* <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="primary"
-              aria-label="open drawer"
-            >
-              <MenuIcon />
-            </IconButton> */}
             <Link style={{marginRight: 20}} to="/">
               <img src="https://i.imgur.com/DkXvWFJ.png" alt="logo" height="35px" />
             </Link>
@@ -211,7 +196,7 @@ export default function Appbar() {
             <div className={classes.sectionDesktop}>
               <Link to="/cart">
                 <IconButton aria-label="show 2 products" color="primary">
-                  <Badge badgeContent={2} color="secondary">
+                  <Badge color="secondary">
                     <MdShoppingCart />
                   </Badge>
                 </IconButton>
