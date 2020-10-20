@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -90,8 +90,12 @@ export default function Appbar() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
+  const { carts } = useSelector(state => state.reducerItem)
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -190,11 +194,21 @@ export default function Appbar() {
             </div> */}
             <div className={classes.sectionDesktop}>
               <Link to="/cart">
-                <IconButton aria-label="show 2 products" color="primary">
-                  <Badge color="secondary">
-                    <MdShoppingCart />
-                  </Badge>
-                </IconButton>
+                {carts.length > 0 ? (
+                  <IconButton aria-label={carts.length > 1 ? `show ${carts.length} products` : carts.length > 0 ? `show 1 product` : `your cart is empty`} color="primary">
+                    <Badge badgeContent={carts.length} color="secondary">
+                      <MdShoppingCart />
+                    </Badge>
+                  </IconButton>
+                )
+                  : (
+                    <IconButton aria-label={carts.length > 1 ? `show ${carts.length} products` : carts.length > 0 ? `show 1 product` : `your cart is empty`} color="primary">
+                      <Badge badgeContent={carts.length} color="secondary">
+                      <MdShoppingCart />
+                    </Badge>
+                  </IconButton>
+                  )
+                }
               </Link>
               <MenuItem style={{color: 'black'}}>
                 <Avatar 

@@ -6,6 +6,59 @@ import StripeCheckout from 'react-stripe-checkout'
 
 import CartDetail from '../../components/cards/CartDetail'
 
+const useStyles = makeStyles((theme) => ({
+  container: {
+    display: 'grid',
+    gridTemplateColumns: '3fr 1fr',
+    gap: '1.5em',
+    marginBottom: '2em',
+
+    [theme.breakpoints.down('xs')]: {
+      gridTemplateColumns: '1fr',
+    },
+  },
+
+  card: {
+    padding: 20,
+    height: 'fit-content'
+  },
+
+  button: {
+    padding: 10,
+    width: "100%",
+    marginTop: 20
+  },
+
+  gridRow: {
+    display: 'grid',
+    alignContent: 'start',
+    gap: '1em'
+  },
+
+  boxItem: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+
+  label: {
+    fontWeight: 700
+  },
+
+  value: {
+    textAlign: 'right'
+  },
+
+  valueLarge: {
+    textAlign: 'right',
+    fontSize: '1.25em',
+    color: '#BA274A',
+  },
+
+  group: {
+    marginBottom: '1em'
+  }
+}))
+
 export default function Cart() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -79,98 +132,57 @@ export default function Cart() {
 
   return (
     <Container>
+      <h1> Cart </h1>
       <Grid container className={classes.container}>
-        <Grid item xs={12} sm={12} md={8}>
-          <Paper elevation={2} className={classes.contentLeftTitle}>
-            Your Cart
-          </Paper>
-          <Box className={classes.contentLeftBody}>
-            {carts.map(cart => {
-              return (
+        <Grid className={classes.gridRow}>
+          {carts.length > 0 ?
+            carts.map(cart => (
+              <div>
                 <CartDetail cart={cart} />
-              )
-            })}
-          </Box>
+              </div>
+            )
+            )
+            : (
+              <>
+                <Typography>There are no items in your cart. Go win some item biddings!</Typography>
+              </>
+            )}
         </Grid>
-        <Grid item xs={12} sm={12} md={4}>
-          <Paper className={classes.contentRightItem}>
-            <Typography style={{padding: 10}}>
-              Summary
-            </Typography>
+        <Grid>
+          <Box className={classes.group}>
+            <Typography className={classes.label}>Subtotal</Typography>
+            <Typography className={classes.value}>{localAmount.toLocaleString('id-ID')}</Typography>
+            </Box>
+
+          <Box className={classes.group}>
+            <Typography className={classes.label}>Shipping Cost</Typography>
+            <Typography className={classes.value}>{deliveryPrice.toLocaleString('id-ID')}</Typography>
+            </Box>
+
+          <Box className={classes.group}>
+            <Typography className={classes.label}>Tax</Typography>
+            <Typography className={classes.value}>{tax.toLocaleString('id-ID')}</Typography>
             <Divider />
-            <Box className={classes.boxItem}>
-              <Typography>Subtotal</Typography>
-              <Typography>{localAmount}</Typography>
             </Box>
-            <Divider />
-            <Box className={classes.boxItem}>
-              <Typography>Biaya Pengiriman</Typography>
-              <Typography>{deliveryPrice}</Typography>
+
+
+          <Box className={classes.group}>
+            <Typography className={classes.label}>Grand Total</Typography>
+            <Typography className={classes.valueLarge}>{localAmount.toLocaleString('id-ID')}</Typography>
             </Box>
-            <Divider />
-            <Box className={classes.boxItem}>
-              <Typography>Tax</Typography>
-              <Typography>{tax}</Typography>
-            </Box>
-            <Divider />
-            <Box className={classes.boxItem}>
-              <Typography>Total</Typography>
-              <Typography>{localAmount}</Typography>
-            </Box>
-            <Box style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 20}}>
-              {/* <Button variant="outlined" color="primary">
-                CHECKOUT
-              </Button> */}
-              <StripeCheckout 
-              stripeKey="pk_test_51HdtTKAh63sGgRSDPUu44eUiZVFR5paJ77eJReP9VP2tgmyGkrlwm9NOXCavLUSSQN0Xdl6W65Ju1geL0ucsfx6u00K3WTaPRq"
-              token={makePayment}
-              currency='idr'
-              amount={amountForPaymentGateway * 100}>
-                  <button variant="outlined" color="primary">CHECKOUT</button>
-              </StripeCheckout>
-            </Box>
-          </Paper>
+
+            <StripeCheckout 
+            stripeKey="pk_test_51HdtTKAh63sGgRSDPUu44eUiZVFR5paJ77eJReP9VP2tgmyGkrlwm9NOXCavLUSSQN0Xdl6W65Ju1geL0ucsfx6u00K3WTaPRq"
+            token={makePayment}
+            currency='IDR'
+            amount={amountForPaymentGateway * 100}
+            style={{ display: "block", marginTop: 20 }}>
+            <Button variant="contained" color="primary">
+              CHECKOUT
+              </Button>
+          </StripeCheckout>
         </Grid>
       </Grid>
     </Container>
   )
 }
-
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'flex',
-    height: '100vh',
-    margin: 10
-  },
-  contentLeft: {
-    width: '65%',
-    // border: '1px red solid',
-    padding: 10
-  },
-  contentLeftTitle: {
-    width: '93%',
-    padding: 10
-  },
-  contentLeftBody: {
-    width: '95%',
-    // border: '1px black solid',
-  },
-  contentLeftList: {
-    display: 'flex',
-  },
-  contentRight: {
-    width: '35%',
-    height: '40%',
-    // border: '1px red solid',
-    padding: 10
-  },
-  contentRightItem: {
-    padding: 10,
-    height: '45vh'
-  },
-  boxItem: {
-    display: 'flex', 
-    justifyContent: 'space-between',
-    padding: 10,
-  }
-}))

@@ -2,103 +2,126 @@ import React, { useState } from 'react'
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import Moment from 'react-moment';
+import { Button, Paper } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
-  cardContainer: {
+  container: {
     display: 'flex',
     [theme.breakpoints.down('xs')]: {
-      flexDirection: 'column',
+      flexDirection: 'row',
     },
     [theme.breakpoints.down('md')]: {
       flexWrap: 'wrap',
-      justifyContent: 'center',
-      textAlign: 'center'
     }
   },
-  namaBarang: {
-    fontSize: 25,
-    fontWeight: 500,
+
+  date: {
+    color: 'gray',
+  },
+
+  image: {
+    width: '16em',
+    height: '100%',
+    objectFit: 'cover',
     [theme.breakpoints.down('xs')]: {
-      fontSize: 17
+      width: '100%',
+      height: '100%'
+    },
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+      height: '100%'
     },
   },
-  descDetail: {
-    marginRight: 40,
+
+  content: {
+    display: 'grid',
+    gap: '1em',
+    margin: 20,
+    width: '100%',
+    [theme.breakpoints.down('xs')]: {
+      width: 'fit-content',
+      margin: '0 20',
+    },
+  },
+
+  contentHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%",
+    alignItems: "baseline",
+    [theme.breakpoints.down('xs')]: {
+      display: "grid",
+      gridTemplateRows: '1fr'
+    },
+  },
+
+  title: {
+    fontSize: "1.5em",
+    fontWeight: 700,
+  },
+
+  description: {
     [theme.breakpoints.down('xs')]: {
       marginRight: 10,
     },
   },
-  priceBox: {
-    display: 'flex',
+
+  details: {
     [theme.breakpoints.down('xs')]: {
-      fontSize:13,            
-      justifyContent: 'center',
-      flexWrap: 'wrap'
+      marginRight: 10,
     },
+    display: 'block',
+    margin: '10px 0'
   },
-  currentPrice: {
-    marginTop: 10,
-    [theme.breakpoints.down('xs')]: {
-      margin: 0
-    },
-  },
-  currentPriceText: {
-    fontSize: 23,
-    fontWeight: 600,
+
+  price: {
+    fontWeight: 400,
+    fontSize: '1.25em',
     color: '#BA274A',
-    [theme.breakpoints.down('xs')]: {
-      fontSize: 18
-    },
+    margin: '1em 0',
   },
-  image: {
-    width: '16em',
-    height: '18em',
-    objectFit: 'cover',
-    borderRadius: 20,
-    [theme.breakpoints.down('xs')]: {
-      width: '100%',
-      height: '100%'
-    },
-    [theme.breakpoints.down('md')]: {
-      width: '100%',
-      height: '100%'
-    },
+
+  reset: {
+    margin: 0,
+    padding: 0
   },
-  detailBox: {
-    marginLeft: 20
-  }
 }));
 
 export default function CartCard(props) {
-  const classes = useStyles();
-  const { cart } = props;
-  // console.log(cart, 'cart di detail');
+  const { cart } = props
 
+  const history = useHistory()
+  const classes = useStyles()
 
   return (
-    <Box boxShadow={3} style={{ backgroundColor: '#f7f7f7', borderRadius: 20, margin: '20px 0 10px 0'}}>
-      <Box className={classes.cardContainer}>
-        <Box>
+    <Paper boxShadow={4} style={{ overflow: 'hidden' }}>
+      <Box className={classes.container}>
+        <Box className={classes.header}>
           <img
+            onClick={() => history.push(`/bid/${cart.id}`)}
             src={require("../../assets/images/" + cart.Item.ItemPictures[0].path)}
             className={classes.image}
           />
         </Box>
-        <Box className={classes.detailBox}>
-          <p className={classes.namaBarang}>{cart.Item.name}</p>
-          <Box className={classes.priceBox}>
-            <Box>
-              <p className={classes.descDetail}>kondisi: {cart.Item.condition}</p>
-              <p className={classes.descDetail}>Status: {cart.Item.status}</p>
-              <p className={classes.descDetail}>Deskripsi: {cart.Item.description}</p>
-              <Moment format="MMMM Do YYYY HH:mm">{cart.date}</Moment>
-            </Box>
+        <Box className={classes.content}>
+          <Box className={classes.contentHeader}>
+            <span className={classes.title}>{cart.Item.name}</span>
+            <Moment className={classes.date} format="MMMM Do YYYY HH:mm">{cart.date}</Moment>
           </Box>
-          <Box className={classes.currentPrice}>
-            <p className={classes.currentPriceText}>Rp {cart.amount.toLocaleString('id-ID')}</p>
+          <Box>
+            <span className={classes.price}>Rp {cart.amount.toLocaleString('id-ID')}</span>
+          </Box>
+          <Box>
+            <span className={classes.description}>{cart.Item.description}</span>
+          </Box>
+          <Box>
+            <Button variant="contained" onClick={() => history.push(`/bid/${cart.id}`)} color="primary">
+              Details
+            </Button>
           </Box>
         </Box>
       </Box>
-    </Box>
+    </Paper>
   )
 }
