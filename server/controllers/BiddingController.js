@@ -6,76 +6,76 @@ class BiddingController {
     constructor(io) {
         this.io = io
     }
-    read = async (req, res, next) => {
-        try {
-            const { ItemId } = req.params
+    // read = async (req, res, next) => {
+    //     try {
+    //         const { ItemId } = req.params
 
-            const data = await Biddings.findAll(
-                {
-                    where: { ItemId },
-                    order: [['price', 'DESC']]
-                }
-            )
+    //         const data = await Biddings.findAll(
+    //             {
+    //                 where: { ItemId },
+    //                 order: [['price', 'DESC']]
+    //             }
+    //         )
 
-            res.status(200).json(data)
-        } catch (err) {
-            console.log(err)
-            return next(err)
-        }
-    }
+    //         res.status(200).json(data)
+    //     } catch (err) {
+    //         console.log(err)
+    //         return next(err)
+    //     }
+    // }
 
-    readDistinct = async (req, res, next) => {
-        try {
-            const { ItemId } = req.params
+    // readDistinct = async (req, res, next) => {
+    //     try {
+    //         const { ItemId } = req.params
 
-            const data = await Biddings.findAll(
-                {
-                    where: { ItemId },
-                    attributes: [
-                        [Sequelize.fn('DISTINCT', Sequelize.col('UserId')), 'UserId']
-                    ],
-                    order: [['price', 'DESC']]
-                }
-            )
+    //         const data = await Biddings.findAll(
+    //             {
+    //                 where: { ItemId },
+    //                 attributes: [
+    //                     [Sequelize.fn('DISTINCT', Sequelize.col('UserId')), 'UserId']
+    //                 ],
+    //                 order: [['price', 'DESC']]
+    //             }
+    //         )
 
-            res.status(200).json(data)
-        } catch (err) {
-            console.log(err)
-            return next(err)
-        }
-    }
+    //         res.status(200).json(data)
+    //     } catch (err) {
+    //         console.log(err)
+    //         return next(err)
+    //     }
+    // }
 
-    readGroupBy = async (req, res, next) => {
-        try {
-            const { ItemId } = req.params
+    // readGroupBy = async (req, res, next) => {
+    //     try {
+    //         const { ItemId } = req.params
 
-            const data = await Biddings.findAll(
-                {
-                    where: { ItemId },
-                    group: ['UserId'],
-                    order: [['price', 'DESC']]
-                }
-            )
+    //         const data = await Biddings.findAll(
+    //             {
+    //                 where: { ItemId },
+    //                 group: ['UserId'],
+    //                 order: [['price', 'DESC']]
+    //             }
+    //         )
 
-            res.status(200).json(data)
-        } catch (err) {
-            console.log(err)
-            return next(err)
-        }
-    }
+    //         res.status(200).json(data)
+    //     } catch (err) {
+    //         console.log(err)
+    //         return next(err)
+    //     }
+    // }
 
-    readUser = async (req, res, next) => {
-        try {
-            const { ItemId, UserId } = req.params
+    // readUser = async (req, res, next) => {
+    //     try {
+    //         const { ItemId, UserId } = req.params
 
-            const data = await Biddings.findAll({ where: { ItemId, UserId } })
+    //         const data = await Biddings.findAll({ where: { ItemId, UserId } })
 
-            res.status(200).json(data)
-        } catch (err) {
-            console.log(err)
-            return next(err)
-        }
-    }
+    //         res.status(200).json(data)
+    //     } catch (err) {
+    //         console.log(err)
+    //         return next(err)
+    //     }
+    // }
 
     create = async (req, res, next) => {
         try {
@@ -95,29 +95,29 @@ class BiddingController {
 
                 res.status(201).json({ message: 'Successfully added data' })
             }
-            else throw new Error({ code: 400, message: 'Bad request: invalid data supplied' })
+            // else throw new Error({ code: 400, message: 'Bad request: invalid data supplied' })
         } catch (err) {
             console.log(err)
             return next(err)
         }
     }
 
-    delete = async (req, res, next) => {
-        try {
-            const { id } = req.params
+    // delete = async (req, res, next) => {
+    //     try {
+    //         const { id } = req.params
 
-            const data = await Biddings.findOne({ where: id })
+    //         const data = await Biddings.findOne({ where: id })
 
-            if (data) {
-                const result = await Biddings.destroy({ where: id })
+    //         if (data) {
+    //             const result = await Biddings.destroy({ where: id })
 
-                if (result) res.status(201).json({ message: 'Successfully added data' })
-            } else throw new Error({ code: 404, message: 'Not found: The bidding data is not found.' })
-        } catch (err) {
-            console.log(err)
-            return next(err)
-        }
-    }
+    //             if (result) res.status(201).json({ message: 'Successfully added data' })
+    //         } else throw new Error({ code: 404, message: 'Not found: The bidding data is not found.' })
+    //     } catch (err) {
+    //         console.log(err)
+    //         return next(err)
+    //     }
+    // }
 }
 
 module.exports = (io) => new BiddingController(io)

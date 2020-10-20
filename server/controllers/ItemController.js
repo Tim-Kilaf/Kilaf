@@ -17,7 +17,7 @@ class ItemController {
 
       res.status(200).json({ items })
     } catch (err) {
-      console.log(err)
+      // console.log(err)
       return next(err)
     }
   }
@@ -39,18 +39,19 @@ class ItemController {
         return item
       }).sort((a, b) => b.bids - a.bids).slice(0, 10)
 
-      console.log(items.length)
+      // console.log(items.length)
 
       res.status(200).json({ items })
     } catch (err) {
-      console.log(err)
+      // console.log(err)
       return next(err)
     }
   }
 
   createItem = async (req, res, next) => {
+    console.log('masuk')
     try {
-      console.log(req.body)
+      // console.log(req.body, '===============req.body==================')
       delete req.body.image
       const payload = {
         ...req.body,
@@ -58,36 +59,43 @@ class ItemController {
         status: 'unsold',
         UserId: req.user.id
       }
-
+      // console.log(payload, '=================payload================')
       const item = await Items.create(payload)
-      const images = req.files.images
+      // console.log(item, '=================item================')
 
-      if (Array.isArray(req.files.images)) {
-        for (let i = 0; i < images.length; i++) {
+      if(req.files){
+        // console.log(req.files.images)
+        const images = req.files.images
+  
+        if (Array.isArray(req.files.images)) {
+          for (let i = 0; i < images.length; i++) {
+            await ItemPictures.create({
+              ItemId: item.id,
+              path: `${images[i].name}`
+            })
+            images[i].mv(path.join(__dirname, `../../client/src/assets/images/${images[i].name}`))
+          }
+        } else {
           await ItemPictures.create({
             ItemId: item.id,
-            path: `${images[i].name}`
+            path: `${images.name}`
           })
-          images[i].mv(path.join(__dirname, `../../client/src/assets/images/${images[i].name}`))
+          images.mv(path.join(__dirname, `../../client/src/assets/images/${images.name}`))
         }
-      } else {
-        await ItemPictures.create({
-          ItemId: item.id,
-          path: `${images.name}`
-        })
-        images.mv(path.join(__dirname, `../../client/src/assets/images/${images.name}`))
       }
 
       this.io.emit('newItem', item)
 
-      res.status(201).json({ message: 'Sucessfully Created' })
+      res.status(201).json({ message: 'Sucessfully Created', id: item.id })
     } catch (err) {
-      console.log(err)
+      // console.log(err, 'error dari controller')
       return next(err)
     }
   }
 
   detailItem = async (req, res, next) => {
+    // console.log('masuk detail item')
+    // console.log(req.params)
     try {
       const item = await Items.findOne({
         where: {
@@ -130,7 +138,7 @@ class ItemController {
         res.status(200).json({ item, highestBidder, owner })
         
     } catch (err) {
-      console.log(err)
+      // console.log(err)
       return next(err)
     }
   }

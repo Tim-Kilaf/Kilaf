@@ -8,11 +8,12 @@ const authenticate = async (req, res, next) => {
         const payload = verifyToken(access_token)
         const user = await Users.findOne({ where: { id: payload.id } })
         if (user) {
+            console.log(user)
             req.user = user
             return next()
-        } else throw new Error({ code: 401, message: "Unauthenticated user." })
+        }
     } catch (err) {
-        console.log(err)
+        console.log(err, '====auth====')
         return next(err)
     }
 }

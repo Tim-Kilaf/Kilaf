@@ -1,6 +1,6 @@
-module.exports = (io) => {
+module.exports = () => {
     const authEndpoints = require('express').Router()
-    const UserController = require('../../controllers/UserControllers')(io)
+    const UserController = require('../../controllers/UserControllers')
 
     return authEndpoints
         .post('/login', UserController.login)
