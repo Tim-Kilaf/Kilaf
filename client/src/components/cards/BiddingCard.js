@@ -1,92 +1,34 @@
 import React from 'react'
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
-import Moment from 'react-moment';
 import { useHistory } from 'react-router-dom'
+import Moment from 'react-moment'
 
 const useStyles = makeStyles((theme) => ({
-  cardContainer: {
-    display: 'flex',
-    [theme.breakpoints.down('xs')]: {
-      flexDirection: 'column',
-    },
-    [theme.breakpoints.down('md')]: {
-      flexWrap: 'wrap',
-      justifyContent: 'center',
-      textAlign: 'center'
-    }
+  root: {
+    maxWidth: 250,
+    maxHeight: 500,
+    marginRight: 30
   },
-  namaBarang: {
-    fontSize: 25,
-    fontWeight: 500,
-    [theme.breakpoints.down('xs')]: {
-      fontSize: 17
-    },
+  button: {
+    width: '100%',
+    fontWeight: 700
   },
-  priceDetail: {
-    marginRight: 40,
-    [theme.breakpoints.down('xs')]: {
-      marginRight: 10,
-    },
-  },
-  detailBox: {
-    padding: '10px 30px',    
-    [theme.breakpoints.down('xs')]: {
-      padding: '0px 10px',
-      textAlign: 'center',
-    }
-  },
-  dateBox: {
-    padding: '40px 30px',    
-    [theme.breakpoints.down('xs')]: {
-      padding: '0px 10px',
-      textAlign: 'center',
-    }
-  },
-  priceBox: {
-    display: 'flex',
-    [theme.breakpoints.down('xs')]: {
-      fontSize:13,            
-      justifyContent: 'center',
-      flexWrap: 'wrap'
-    },
-  },
-  buttonBox: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginTop: 40,
-    [theme.breakpoints.down('xs')]: {
-      margin: '20px 0'
-    },
-  },
-  currentPrice: {
-    marginTop: 10,
-    [theme.breakpoints.down('xs')]: {
-      margin: 0
-    },
-  },
-  currentPriceText: {
-    fontSize: 23,
+  price: {
+    fontSize: 17,
     fontWeight: 600,
-    color: '#BA274A',
-    [theme.breakpoints.down('xs')]: {
-      fontSize: 18
-    },
+    marginBottom: 10
   },
-  image: {
-    width: '16em',
-    height: '18em',
-    objectFit: 'cover',
-    borderRadius: 20,
-    [theme.breakpoints.down('xs')]: {
-      width: '100%',
-      height: '100%'
-    },
-    [theme.breakpoints.down('md')]: {
-      width: '100%',
-      height: '100%'
-    },
+  date: {
+    fontSize: 14,
+    fontWeight: 600
   }
 }));
 
@@ -99,48 +41,35 @@ export default function BiddingCard(props) {
   }
 
   return props.data.ItemPictures.length > 0 && (
-    <Box boxShadow={3} style={{ backgroundColor: '#f7f7f7', borderRadius: 20, margin: '20px 0 10px 0'}}>
-      <Box className={classes.cardContainer}>
-        <Box>
-          <img
-            src={require("../../assets/images/" + props.data.ItemPictures[0].path)}
-            className={classes.image}
-          />
-        </Box>
-        <Box className={classes.detailBox}>
-          <p className={classes.namaBarang}> {props.data.name} </p>
-          <Box className={classes.priceBox}>
-            <Box>
-              <p className={classes.priceDetail}>Starting Price</p>
-              <p className={classes.priceDetail}>Rp. {props.data.starting_price.toLocaleString()}</p>
-            </Box>
-            <Box>
-              <p className={classes.priceDetail}>Buyout Price</p>
-              <p className={classes.priceDetail}>Rp. {props.data.buyout_price.toLocaleString()}</p>
-            </Box>
-            <Box>
-              <p className={classes.priceDetail}>Kelipatan Bid</p>
-              <p className={classes.priceDetail}>Rp. {props.data.bid_increment.toLocaleString()}</p>
-            </Box>
-          </Box>
-          <Box className={classes.currentPrice}>
-            <p>Current Price</p>
-            <p className={classes.currentPriceText}>Rp. {props.data.current_price.toLocaleString()}</p>
-          </Box>
-        </Box>
-        <Box className={classes.dateBox}>
-          <Box>
-            <Moment style={{ fontSize: 16 }} format="YYYY/MM/DD HH:mm">{props.data.start_date}</Moment> 
-            <p style={{ fontSize: 15, fontStyle: 'italic', textAlign: 'center', margin: '10px 0' }}>Until</p>
-            <Moment style={{ fontSize: 16 }} format="YYYY/MM/DD HH:mm">{props.data.end_date}</Moment>
-          </Box>
-          <Box className={classes.buttonBox}>     
-            <Button onClick={() => navigate(props.data.id)} variant="contained" color="secondary">
-              Details
-            </Button>
-          </Box>
-        </Box>
-      </Box>
-    </Box>
+    <Card className={classes.root}>
+      <CardActionArea>
+        <CardMedia
+          component="img"
+          alt="Contemplative Reptile"
+          height="200"
+          image={require("../../assets/images/" + props.data.ItemPictures[0].path)}
+          title="Contemplative Reptile"
+        />
+        <CardContent>
+          <Typography gutterBottom component="h1" variant="h6" style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}>
+            {props.data.name}
+          </Typography>
+          <Typography style={{ marginTop: -7 }} gutterBottom color="textSecondary" component="h3" variant="p">
+            {props.data.User.fullname}
+          </Typography>
+          <Typography className={classes.price}>
+            Rp. {props.data.current_price.toLocaleString()}
+          </Typography>
+          <Typography color="secondary" className={classes.date}>
+            Ends <Moment from={new Date()}>{props.data.end_date}</Moment>
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+      <CardActions>
+        <Button className={classes.button} color="secondary" variant="contained" onClick={() => navigate(props.data.id)}>
+          View
+        </Button>        
+      </CardActions>
+    </Card>
   )
 }

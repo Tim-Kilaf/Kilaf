@@ -20,6 +20,7 @@ import {
 } from '@material-ui/core';
 
 import { logout, login } from '../../store/actions/actionsUser';
+import { getCategory } from '../../store/actions/actionsItem';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -107,6 +108,12 @@ export default function Appbar() {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+
+  useEffect(() => {
+    dispatch(getCategory())
+  }, [dispatch])
+
+  const category = useSelector(state => state.reducerItem.category)
 
   function handleLogout() {
     dispatch(logout());
