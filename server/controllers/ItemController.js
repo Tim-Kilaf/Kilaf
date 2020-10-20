@@ -12,7 +12,14 @@ class ItemController {
         where: {
           status: 'unsold'
         },
-        include: [ItemPictures]
+        include: [
+          {
+          model: ItemPictures
+          },
+          {
+            model: Users
+          }
+        ]
       })
 
       res.status(200).json({ items })
