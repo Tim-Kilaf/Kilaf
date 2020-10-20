@@ -4,8 +4,6 @@ import BiddingCard from '../../components/cards/BiddingCard'
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux'
 import { getItems } from '../../store/actions/actionsItem'
-import { DashboadCarousel } from '../../components/carousel/DashboadCarousel'
-import { disconnectSocket, initiateSocket, subscribeToDashboard } from '../../sockets/itemSocket';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -29,18 +27,6 @@ export default function Dashboard() {
   const dispatch = useDispatch()
 
   const items = useSelector(state => state.reducerItem.items)
-
-  const [room, useRoom] = useState('dashboard')
-
-  useEffect(() => {
-    if (room) initiateSocket(room)
-
-    subscribeToDashboard(dispatch)
-
-    return () => {
-      disconnectSocket()
-    }
-  }, [room])
 
   useEffect(() => {
     dispatch(getItems())
