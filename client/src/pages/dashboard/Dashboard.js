@@ -4,7 +4,6 @@ import BiddingCard from '../../components/cards/BiddingCard'
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux'
 import { getItems } from '../../store/actions/actionsItem'
-import { disconnectSocket, initiateSocket, subscribeToDashboard } from '../../sockets/itemSocket';
 
 const useStyles = makeStyles((theme) => ({
   container: {
