@@ -1,4 +1,5 @@
 const { Items, ItemPictures, Users, Biddings, sequelize } = require('../models')
+const { Op } = require('sequelize')
 const path = require('path')
 
 class ItemController {
@@ -10,7 +11,10 @@ class ItemController {
     try {
       const items = await Items.findAll({
         where: {
-          status: 'unsold'
+          status: 'unsold',
+          start_date: {
+            [Op.lte]: new Date() 
+          }
         },
         include: [ItemPictures, Users]
       })
@@ -26,7 +30,10 @@ class ItemController {
     try {
       let items = await Items.findAll({
         where: {
-          status: 'unsold'
+          status: 'unsold',
+          start_date: {
+            [Op.lte]: new Date() 
+          }
         },
         include: [ItemPictures, Biddings, Users]
       })
