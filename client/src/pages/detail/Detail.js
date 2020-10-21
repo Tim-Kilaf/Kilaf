@@ -159,11 +159,9 @@ export default function Detail() {
 
   const settings = {
     dots: true,
-    // infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    // autoplay: true
   };
 
   return (
@@ -177,7 +175,7 @@ export default function Detail() {
                   return (
                     <Box style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                       <img
-                        src={require("../../assets/images/" + item.path)}
+                        src={process.env.PUBLIC_URL + `../uploads/${item.path}`}
                         className={classes.image}
                       />
                     </Box>

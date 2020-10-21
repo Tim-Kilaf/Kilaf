@@ -20,6 +20,7 @@ import {
 } from '@material-ui/core';
 
 import { logout, login } from '../../store/actions/actionsUser';
+import { getCategory } from '../../store/actions/actionsItem';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -118,13 +119,7 @@ export default function Appbar() {
   }
 
   const user = useSelector((state)  => state.reducerLogin.user);
-  const email = useSelector((state)  => state.reducerLogin.email);
-  console.log(email, 'email');
-  console.log(user, 'user');
-
-  useEffect(() => {
-    console.log(user);
-  }, [user])
+  const email = useSelector((state)  => state.reducerLogin.email);  
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -143,6 +138,10 @@ export default function Appbar() {
       {/* <MenuItem><p>username</p></MenuItem> */}
     </Menu>
   );
+
+  useEffect(() => {
+    dispatch(getCategory())
+  }, [dispatch])
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -184,6 +183,19 @@ export default function Appbar() {
               <img src="https://i.imgur.com/DkXvWFJ.png" alt="logo" height="35px" />
             </Link>
             <div className={classes.grow} />
+            {/* <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+              />
+            </div> */}
             <div className={classes.sectionDesktop}>
               <Link to="/cart">
                 {carts.length > 0 ? (

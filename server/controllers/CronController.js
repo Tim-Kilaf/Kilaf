@@ -2,27 +2,27 @@ const { Transactions, Items, Biddings } = require('../models')
 const {Op} = require('sequelize')
 
 class CronController {
-    static getItemByEndDate = async (req,res,next) => {
-        try {
-            const itemTimeOut = await Items.findAll({
-                include: [Biddings],
-                where: {
-                    end_date: "2020-10-19T17:00:00.000Z"
-                },
-                order: [[ Biddings, 'price', 'DESC' ]]
-            })
-            const highestBidder = itemTimeOut[0].Biddings[0]
-            const {UserId, ItemId, price} = highestBidder
+    // static getItemByEndDate = async (req,res,next) => {
+    //     try {
+    //         const itemTimeOut = await Items.findAll({
+    //             include: [Biddings],
+    //             where: {
+    //                 end_date: "2020-10-19T17:00:00.000Z"
+    //             },
+    //             order: [[ Biddings, 'price', 'DESC' ]]
+    //         })
+    //         const highestBidder = itemTimeOut[0].Biddings[0]
+    //         const {UserId, ItemId, price} = highestBidder
 
-            console.log(UserId, ItemId, price)
+    //         console.log(UserId, ItemId, price)
 
-            // return res.status(200).json(itemTimeOut)
-            return itemTimeOut
-        } catch (err) {
-            console.log(err)
-            return next(err)
-        }
-    }
+    //         // return res.status(200).json(itemTimeOut)
+    //         return itemTimeOut
+    //     } catch (err) {
+    //         console.log(err)
+    //         return next(err)
+    //     }
+    // }
     static getWinningBids = async() => {
         try {
             const itemTimeOut = await Items.findAll({
@@ -32,8 +32,7 @@ class CronController {
                         [Op.lte]: new Date() 
                     },
                     status: 'unsold'
-                },
-                // order: [[ Biddings, 'price', 'DESC' ]]
+                }
             })
             
             console.log({itemTimeOut}, 'contorller');
@@ -97,7 +96,7 @@ class CronController {
             // res.status(201).json(trx)
         } catch (err) {
             console.log(err)
-            return next(err)
+            // return next(err)
         }
     }
 }

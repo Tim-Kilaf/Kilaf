@@ -44,7 +44,7 @@ function BeforeEnterContainer() {
 function DefaultContainer() {
   return (
     <div>
-      <Appbar />
+      <Appbar />     
       <Route
         path="/cart"
         component={Cart}
