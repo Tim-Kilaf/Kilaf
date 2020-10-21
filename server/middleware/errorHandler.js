@@ -1,7 +1,7 @@
 
 const errorHandler = (err, req, res, next) => {
     let { code, name, message, errors } = err
-    // console.log(err, 'dari error handler')
+    console.log(err, 'dari error handler')
     if (code) {
         message = [message]
     } else {

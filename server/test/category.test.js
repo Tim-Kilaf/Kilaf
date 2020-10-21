@@ -86,9 +86,9 @@ describe('success get category by id', () => {
 describe('fail get category by id', () => {
     it('test success get category by id', (done) => {
       request(app)
-        .get('/category/1')
+        .get('/category/a')
         .set("Accept", "application/json")
-        // .set("access_token", access_token)
+        .set("access_token", access_token)
         .expect("Content-Type", /json/)
         .then((response) => {
           const { body, status } = response
@@ -101,8 +101,8 @@ describe('fail get category by id', () => {
     })
 })
 
-describe('fail get category list', () => {
-    it('test success get categories', (done) => {
+describe.only('fail get category list', () => {
+    it('test fail get categories', (done) => {
       request(app)
         .get('/category')
         .set("Accept", "application/json")
