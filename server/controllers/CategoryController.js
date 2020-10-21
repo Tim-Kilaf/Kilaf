@@ -1,4 +1,5 @@
 const { Categories, Items, ItemPictures, Users, Biddings } = require('../models')
+const { Op } = require('sequelize')
 const path = require('path')
 
 class CategoryController {
@@ -27,6 +28,12 @@ class CategoryController {
                 include: [
                     {
                     model: Items,
+                    where: {
+                        status: 'unsold',
+                        start_date: {
+                            [Op.lte]: new Date() 
+                        }
+                    },
                     include: [
                         {
                             model: ItemPictures,
