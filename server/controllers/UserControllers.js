@@ -1,4 +1,3 @@
-const SocketHandler = require('../handlers/SocketHandler')
 const { checkPassword } = require('../helpers/bcrypt')
 const { generateToken } = require('../helpers/jwt')
 const {Users, Roles} = require('../models')

@@ -23,7 +23,9 @@ class ItemController {
   }
 
   listHottest = async (req, res, next) => {
+    console.log('baru masuk list hottest')
     try {
+      console.log('dalem try')
       let items = await Items.findAll({
         where: {
           status: 'unsold'

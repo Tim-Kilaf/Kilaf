@@ -101,7 +101,7 @@ describe('fail get category by id', () => {
     })
 })
 
-describe.only('fail get category list', () => {
+describe('fail get category list', () => {
     it('test fail get categories', (done) => {
       request(app)
         .get('/category')

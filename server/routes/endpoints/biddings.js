@@ -9,7 +9,7 @@ module.exports = (io) => {
     // .get('/group/:ItemId', BiddingController.readGroupBy)
     // .get('/:ItemId/:UserId', BiddingController.readUser) // test dulu yang ini
     // .get('/:ItemId', BiddingController.read)
-    .post('/', authenticate ,BiddingController.create)
+    .post('/', authenticate , BiddingController.create)
     // .put('/:id', BiddingController.update) // gk ada update
     // .delete('/:id', BiddingController.delete)
 

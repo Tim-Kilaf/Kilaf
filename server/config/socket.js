@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 const SocketHandler = require('../handlers/SocketHandler')
 
 module.exports = {

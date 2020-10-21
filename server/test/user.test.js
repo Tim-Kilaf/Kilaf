@@ -22,7 +22,7 @@ describe("test user REGISTER with POST /register", function() {
         .send({ fullname: "alitongtong", email: "alitong2@mail.com", password: "123456" })
         .set("Accept", "application/json")
         .expect("Content-Type", /json/)
-        .then((response) => {
+        .then( async (response) => {
             const { body, status } = response
             expect(status).toBe(201)
             expect(body).toHaveProperty("id", expect.any(Number))
@@ -39,7 +39,7 @@ describe("test user LOGIN with POST /login", function () {
         .send({ email: "alitong2@mail.com", password: "123456" })
         .set("Accept", "application/json")
         .expect("Content-Type", /json/)
-        .then((response) => {
+        .then( async (response) => {
           const { body, status } = response;
           expect(status).toBe(200);
           expect(body).toHaveProperty("access_token", expect.any(String));
@@ -57,7 +57,7 @@ describe("test user fail LOGIN with POST /login", function () {
       .send({ email: "admin@mail.com", password: "12345" })
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
-      .then((response) => {
+      .then( async (response) => {
         const { body, status } = response;
         expect(status).toBe(500);
         expect(body).toEqual(["Whoops, something happened on our end!"]);
@@ -83,7 +83,7 @@ describe("test user fail LOGIN with POST /login", function () {
     //   .send({ email: "admin2@mail.com", password: "123456" })
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
-      .then((response) => {
+      .then( async (response) => {
         const { body, status } = response;
         expect(status).toBe(500);
         expect(body).toEqual(["Whoops, something happened on our end!"]);
@@ -96,7 +96,7 @@ describe("test user fail LOGIN with POST /login", function () {
       .send({ email: "alitong2@mail.com", password: "12345" })
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
-      .then((response) => {
+      .then( async (response) => {
         const { body, status } = response;
         expect(status).toBe(400);
         expect(body).toEqual(["Invalid email or password"]);
@@ -112,7 +112,7 @@ describe("test user fail REGISTER with POST /register", function () {
         .send({ fullname: '', email: "admin@mail.com", password: "123456" })
         .set("Accept", "application/json")
         .expect("Content-Type", /json/)
-        .then((response) => {
+        .then( async (response) => {
           const { body, status } = response;
           expect(status).toBe(400);
           expect(body).toContain('Validation error: Name Must Be Filled')
@@ -125,7 +125,7 @@ describe("test user fail REGISTER with POST /register", function () {
           .send({ fullname: 'Snowman', email: "", password: "123456" })
           .set("Accept", "application/json")
           .expect("Content-Type", /json/)
-          .then((response) => {
+          .then( async (response) => {
             const { body, status } = response;
             expect(status).toBe(400);
             expect(body).toContain('Validation error: Email Must Be Filled')
@@ -138,7 +138,7 @@ describe("test user fail REGISTER with POST /register", function () {
           .send({ fullname: 'Snowman', email: "adminmail.com", password: "123456" })
           .set("Accept", "application/json")
           .expect("Content-Type", /json/)
-          .then((response) => {
+          .then( async (response) => {
             const { body, status } = response;
             expect(status).toBe(400);
             expect(body).toContain('Validation error: Please Insert Email Format');
@@ -151,7 +151,7 @@ describe("test user fail REGISTER with POST /register", function () {
           .send({ fullname: 'Snowman', email: "admin@mail.com", password: "" })
           .set("Accept", "application/json")
           .expect("Content-Type", /json/)
-          .then((response) => {
+          .then( async (response) => {
             const { body, status } = response;
             expect(status).toBe(400);
             expect(body).toContain('Validation error: Password Must Be Filled')
@@ -164,7 +164,7 @@ describe("test user fail REGISTER with POST /register", function () {
           .send({ fullname: 'Snowman', email: "admin@mail.com", password: "12345" })
           .set("Accept", "application/json")
           .expect("Content-Type", /json/)
-          .then((response) => {
+          .then( async (response) => {
             const { body, status } = response;
             expect(status).toBe(400);
             expect(body).toContain('Validation error: Password Minimum 6 Characters')
@@ -177,7 +177,7 @@ describe("test user fail REGISTER with POST /register", function () {
           .send({ fullname: 'Snowman', email: "alitong2@mail.com", password: "123456" })
           .set("Accept", "application/json")
           .expect("Content-Type", /json/)
-          .then((response) => {
+          .then( async (response) => {
             const { body, status } = response;
             expect(status).toBe(400);
             expect(body).toContain('unique violation: email must be unique')

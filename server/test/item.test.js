@@ -137,6 +137,7 @@ describe('success get hottest list', () => {
       .expect("Content-Type", /json/)
       .then((response) => {
         const { body, status } = response;
+        console.log(response)
         expect(status).toBe(200);
         const expected = {foo: 'bar'}
         expect(body).toEqual(expect.not.objectContaining(expected))

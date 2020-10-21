@@ -57,7 +57,7 @@ describe('success read paymment histories', () => {
   })
 })
 
-describe('success create payment history', () => {
+describe('success create payment history', async () => {
   it('test success create payment history', (done) => {
     request(app)
       .post('/payment/create/1/20000')
@@ -75,6 +75,8 @@ describe('success create payment history', () => {
 })
 
 describe('success create payment stripe', () => {
+  // const user = await Users.findOne({where: { email: newUser.email}})
+  // access_token = generateToken(user)
   it('test success create payment stipe', (done) => {
     request(app)
       .post('/payment')
@@ -83,12 +85,12 @@ describe('success create payment stripe', () => {
       .send({
         price: 50000,
         token: {
-          email: 'user@mail.com'
+          email: userData.email
         }
       })
       .expect("Content-Type", /json/)
-      .then((response) => {
-        // console.log(response, 'ini body')
+      .then(async (response) => {
+        console.log(access_token, '============================')
         const { body, status } = response
         expect(status).toBe(200)
         const expected = {foo: 'bar'}
