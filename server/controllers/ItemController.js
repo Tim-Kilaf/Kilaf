@@ -27,9 +27,7 @@ class ItemController {
   }
 
   listHottest = async (req, res, next) => {
-    console.log('baru masuk list hottest')
     try {
-      console.log('dalem try')
       let items = await Items.findAll({
         where: {
           status: 'unsold',
@@ -96,8 +94,7 @@ class ItemController {
 
       res.status(201).json({ message: 'Sucessfully Created', id: item.id })
     } catch (err) {
-      // console.log(err, 'error dari controller')
-      console.log(err)
+      // console.log(err)
       return next(err)
     }
   }
