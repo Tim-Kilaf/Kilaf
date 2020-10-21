@@ -68,18 +68,12 @@ export default function Cart() {
   const [amountForPaymentGateway, setAmountForPaymentGateway] = useState(0)
 
   const carts = useSelector(state => state.reducerItem.carts);
-  console.log(carts,'carts');
 
   useEffect(() => {
     let value = 0
     carts.map(cart => {
       value = value + cart.amount
-      // console.log(value)
-      // const formatted = new Intl.NumberFormat('id', { currency: 'IDR', style: 'currency'}).format(value)
-      // setLocalAmount(formatted)
-      // console.log(cart, 'watch cart');
     })
-    // console.log(value)
     setAmountForPaymentGateway(value)
     const formatted = new Intl.NumberFormat('id', { currency: 'IDR', style: 'currency'}).format(value)
     setLocalAmount(formatted)
@@ -90,7 +84,6 @@ export default function Cart() {
   }, [dispatch])
 
   const makePayment = (token) => {
-    console.log('masuk payment')
     const body = {
       token,
       price: amountForPaymentGateway
@@ -105,29 +98,24 @@ export default function Cart() {
       headers,
       body: JSON.stringify(body)
     })
-    .then(response => {
-      console.log(response, "ini response")
-      const {status} = response
-      console.log(status, 'ini status')
+      .then(response => {
+        const { status } = response
 
       //mindahin item dari tabel transaction ke tabel payment
-      carts.map(cart => {
-        // console.log(cart, 'hasil looping')
-        
+        carts.map(cart => {
         fetch(`http://localhost:3001/payment/create/${cart.id}/${cart.amount}`, {
           method: 'POST',
           headers: {
             access_token: localStorage.getItem('access_token')
           }
         })
-        .then(() => {
-          console.log('berhasil nambah payment history')
+          .then(() => {
           dispatch(getCarts())
         })
         .catch((err) => console.log(err))
       })
     })
-    .catch(err => console.log(err, 'ini error'))
+      .catch(err => console.log(err))
   }
 
   return (

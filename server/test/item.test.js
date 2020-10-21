@@ -69,7 +69,7 @@ describe('success create item', () => {
       .then((response) => {
         const { body, status } = response
         productId = body.id
-        // console.log(body, 'dari test')
+
         expect(status).toBe(201)
         expect(body).toHaveProperty('message', 'Sucessfully Created')
         done()
@@ -137,7 +137,6 @@ describe('success get hottest list', () => {
       .expect("Content-Type", /json/)
       .then((response) => {
         const { body, status } = response;
-        console.log(response)
         expect(status).toBe(200);
         const expected = {foo: 'bar'}
         expect(body).toEqual(expect.not.objectContaining(expected))
@@ -151,7 +150,6 @@ describe('fail get hottest list', () => {
     request(app)
       .get(`/item/hottest`)
       .set("Accept", "application/json")
-      // .set("access_token", access_token)
       .expect("Content-Type", /json/)
       .then((response) => {
         const { body, status } = response;
@@ -168,7 +166,6 @@ describe('fail get all item', () => {
     request(app)
       .get(`/item`)
       .set("Accept", "application/json")
-      // .set("access_token", access_token)
       .expect("Content-Type", /json/)
       .then((response) => {
         const { body, status } = response;
@@ -217,7 +214,6 @@ describe('fail create item', () => {
       .then((response) => {
         const { body, status } = response
         productId = body.id
-        console.log(body, 'dari test')
         expect(status).toBe(500)
         const expected = {foo: 'bar'}
         expect(body).toEqual(expect.not.objectContaining(expected))

@@ -10,13 +10,11 @@ function reducerLogin(state = initialState, action) {
         case 'LOGIN':
             localStorage.setItem('access_token', action.payload.access_token)
             localStorage.setItem('username', action.payload.username)
-            console.log(action.payload,'action.payload');
             let newState = {
                 ...state,
                 isLogin: true,
                 user: action.payload.username,
             }
-            console.log(action,'reducerLogin');
             return newState
 
         case 'LOGOUT':

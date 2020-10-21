@@ -5,6 +5,5 @@ module.exports = (io) => {
 
     return categoryEndPoints
     .get('/', authenticate, CategoryController.listCategories)
-    .get('/:categoryId', authenticate, CategoryController.getItemByCategory)
-    // .post('/create', authenticate ,ItemController.createItem)    
+        .get('/:categoryId', authenticate, CategoryController.getItemByCategory)
 }

@@ -115,7 +115,6 @@ export default function Detail() {
 
     if (data.item) {
       if (data.item.current_price >= data.item.buyout_price && buyout === false) {
-        console.log('buyout max price');
         handleBuyoutMaxPrice()
         setBuyout(true)
       }
@@ -143,21 +142,17 @@ export default function Detail() {
   }
 
   const handleBuyoutMaxPrice = async () => {
-    // e.preventDefault()
     fetch(`http://localhost:3001/transaction/buyout/${param.id}`, {
       headers: {
         access_token: localStorage.getItem('access_token')
       }
     })
       .then(() => {
-        console.log('success buyout');
-
         dispatch(getCarts())
       })
       .catch(err => {
         console.log(err);
       })
-    // history.push('/')
   }
 
   const settings = {

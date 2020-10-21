@@ -6,10 +6,8 @@ class PaymentController {
     constructor(io) {
         this.io = io
     }
-    stripe = async (req,res,next) => {
-        // console.log('masuk stripe')
+    stripe = async (req, res, next) => {
         const { price, token } = req.body
-        // console.log(token, '==============================================')
 
         if(req.user.email === token.email){
            
@@ -19,16 +17,14 @@ class PaymentController {
                 email: token.email,
                 source: token.id
             })
-            .then((customer) => {
-                console.log(customer)
+                .then((customer) => {
                 return stripe.invoiceItems.create({
                     customer: customer.id,
                     amount: price * 100,
                     currency: 'idr'
                 },{idempotencyKey})
             })
-            .then((invoiceItem) => {
-                console.log(invoiceItem)
+                .then((invoiceItem) => {
                 return stripe.invoices.create({
                     collection_method: 'send_invoice',
                     customer: invoiceItem.customer,
@@ -38,8 +34,7 @@ class PaymentController {
             .then((invoice) => {
                 return res.status(200).json(invoice)
             })
-            .catch(error => {
-                // console.error(error)
+                .catch(error => {
                 next(error)
             });
         }else{
@@ -53,29 +48,24 @@ class PaymentController {
     }
 
     read = async (req, res, next) => {
-        console.log('masuk read')
         try {
             const payment = await Payments.findAll()
             return res.status(200).json(payment)
         } catch (err) {
-            // console.log(err)
             return next(err)
         }
     }
 
-    create = async (req,res,next) => {
-        console.log(req.params)
+    create = async (req, res, next) => {
         try {
             const { TrxId, amount } = req.params
-            // console.log(payload)
+
             const data = await Payments.create({
                 TransactionId: +TrxId,
                 amount: +amount,
                 date: new Date
             })
-            console.log(data)
-            
-            console.log(req.user)
+
             const UserId = req.user.id
             const paid = await Transactions.update({
                 status: 'paid'
@@ -85,7 +75,6 @@ class PaymentController {
 
             return res.status(201).json({ message: 'Payment successfull'})
         } catch (error) {
-            // console.log(error)
             next(error)
         }
     }
