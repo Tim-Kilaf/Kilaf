@@ -36,7 +36,7 @@ export default function Category() {
       <div style={{ display: 'flex', marginTop: 30, overflow: 'auto'  }}>
         {category && category.map(el => {
           return(
-            <div style={{ marginRight: 20 }}>
+            <div key={el.id} style={{ marginRight: 20 }}>
               {param.id == el.id ? 
                 <div className={classes.active}>         
                   <Button variant="contained" color="primary"> {el.name} </Button>    
@@ -54,7 +54,7 @@ export default function Category() {
         <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
           { items && items.Items && items.Items.map(el => {
               return (
-                <BiddingCard data={el} />
+                <BiddingCard key={el.id} data={el} />
               )
             })
           }

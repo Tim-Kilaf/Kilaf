@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -16,12 +15,11 @@ import {
   Badge,
   MenuItem,
   Menu,
-  Container,
   Avatar,
   Box
 } from '@material-ui/core';
 
-import { logout, login } from '../../store/actions/actionsUser';
+import { logout } from '../../store/actions/actionsUser';
 import { getCategory } from '../../store/actions/actionsItem';
 
 const useStyles = makeStyles((theme) => ({
@@ -123,7 +121,8 @@ export default function Appbar() {
 
   useEffect(() => {
     setUsername(localStorage.getItem('username'))
-  })
+    dispatch(getCategory())
+  }, [])
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (

@@ -3,7 +3,6 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -64,12 +63,13 @@ export default function BiddingCard(props) {
         <img
           src={process.env.PUBLIC_URL + `../uploads/${props.data.ItemPictures[0].path}`}
           className={classes.image}
+          alt="kosong gaes"
         />
         <CardContent>
           <Typography gutterBottom component="h1" variant="h6" style={{ overflow: 'hidden', whiteSpace: 'nowrap', fontWeight: 'normal' }}>
             {props.data.name}
           </Typography>
-          <Typography style={{ marginTop: -7, fontWeight: 'lighter' }} gutterBottom color="textSecondary" component="h3" variant="p">
+          <Typography style={{ marginTop: -7, fontWeight: 400 }} gutterBottom color="textSecondary" component="h3" variant="h6">
             {props.data.User.fullname}
           </Typography>
           <Typography color="textPrimary" className={classes.price}>
