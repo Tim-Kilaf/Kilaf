@@ -169,11 +169,11 @@ export default function Detail() {
       {data.item && data.item.ItemPictures && data.item.User &&
         <Box>
           <Grid container className={classes.containerDetail}>
-            <Grid item md={5}>
-              <Slider {...settings}>
-                {data.item.ItemPictures.map(item => {
+            <Grid item xs={12} sm={12}  md={5}>
+              <Slider {...settings} style={{marginRight: 20, marginTop:30}}>
+                {data.item.ItemPictures.length > 0 && data.item.ItemPictures.map(item => {
                   return (
-                    <Box style={{display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 200}}>
+                    <Box style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                       <img
                         src={process.env.PUBLIC_URL + `../uploads/${item.path}`}
                         className={classes.image}
@@ -184,9 +184,9 @@ export default function Detail() {
                 
               </Slider>
             </Grid>
-            <Grid item md={7}>
+            <Grid item xs={12} sm={12} md={7}>
               <Box className={classes.containerText}>
-                <Box style={{fontSize: '1.3rem', fontWeight: 'bold'}}>
+                <Box style={{fontSize: '1.3rem', fontWeight: 'bold', marginTop: 30}}>
                   <span>{data.item.name.toUpperCase()}</span>
                 </Box>
                 <Divider />
