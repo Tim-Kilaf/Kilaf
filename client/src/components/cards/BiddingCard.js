@@ -66,16 +66,16 @@ export default function BiddingCard(props) {
           className={classes.image}
         />
         <CardContent>
-          <Typography gutterBottom component="h1" variant="h6" style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}>
+          <Typography gutterBottom component="h1" variant="h6" style={{ overflow: 'hidden', whiteSpace: 'nowrap', fontWeight: 'normal' }}>
             {props.data.name}
           </Typography>
-          <Typography style={{ marginTop: -7 }} gutterBottom color="textSecondary" component="h3" variant="p">
+          <Typography style={{ marginTop: -7, fontWeight: 'lighter' }} gutterBottom color="textSecondary" component="h3" variant="p">
             {props.data.User.fullname}
           </Typography>
-          <Typography className={classes.price}>
-            Rp. {props.data.current_price.toLocaleString()}
+          <Typography color="textPrimary" className={classes.price}>
+            Rp {props.data.current_price.toLocaleString('id-ID')}
           </Typography>
-          <Typography color="secondary" className={classes.date}>
+          <Typography color="primary" className={classes.date}>
             Ends <Moment from={new Date()}>{props.data.end_date}</Moment>
           </Typography>
         </CardContent>
