@@ -13,7 +13,7 @@ class CategoryController {
             // console.log(result);
             res.status(200).json({result})
         } catch (error) {
-            console.log(error);
+            console.log(error, '===============');
             return next(error)
         }
     }
@@ -49,7 +49,7 @@ class CategoryController {
             })
             res.status(200).json({items})
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             return next(error)
         }
         

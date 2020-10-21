@@ -38,8 +38,8 @@ class CronController {
             console.log({itemTimeOut}, 'contorller');
             return {itemTimeOut}.itemTimeOut
         } catch (err) {
-            console.log(err)
-            return next(err)
+            // console.log(err)
+            // return next(err)
         }
     }
     static noBids = async(ItemId) => {
@@ -56,10 +56,11 @@ class CronController {
             return itemUpdate
 
         } catch (error) {
-            console.log(error)
+            // console.log(error)
         }
     }
     static bidTransaction = async (ItemId) => {
+        console.log('masuk bidTrx')
         try {
             // const { ItemId } = req.params
 
@@ -71,7 +72,7 @@ class CronController {
             )
             const amount = data[0].price
             const UserId = data[0].UserId
-            console.log(UserId)
+            console.log(data, '---------------------------')
 
             const payload = {
                 UserId,
@@ -95,9 +96,10 @@ class CronController {
             return trx
             // res.status(201).json(trx)
         } catch (err) {
-            console.log(err)
+            // console.log(err)
             // return next(err)
         }
+  
     }
 }
 

@@ -2,8 +2,8 @@ const request = require('supertest')
 const app = require('../app')
 const { Users, Items, sequelize } = require("../models");
 const { queryInterface } = sequelize;
-const jwt = require('jsonwebtoken');
 const CronController = require('../controllers/CronController');
+const { generateToken } = require('../helpers/jwt');
 
 let userId = ''
 let itemId = ''
@@ -14,6 +14,7 @@ let resolveId = ''
 
 beforeAll((done) => {
     const item = {
+        UserId: 2,
         HighestBiddingId: null,
         CategoryId: 1,
         name: 'baju bekas',
@@ -30,6 +31,7 @@ beforeAll((done) => {
     }
 
     const unsoldItem = {
+        UserId: 5,
         HighestBiddingId: null,
         CategoryId: 1,
         name: 'unsold item',
@@ -54,13 +56,15 @@ beforeAll((done) => {
         .then(user => {
             console.log(user);
             userId = user.id
+            item.UserId = user.id
+            unsoldItem.UserId = user.id
             console.log(userId);
-            access_token = jwt.sign({ id: user.id, email: user.email }, 'indomie')
+            access_token = generateToken(user)
             wrong_access_token = access_token + 'bbbbbb'
             return Items.create(item)
         })
         .then(res => {
-            console.log(res);
+            // console.log(res, '++++++++++++++++++++++++++++++++++++');
             itemId = res.id
             return Items.create(unsoldItem)
         })
@@ -132,6 +136,7 @@ describe("test cron controller", function() {
     
 
             const getAll = await CronController.getWinningBids()
+            // console.log(getAll, '===============getAll==============')
             getAll.forEach(async(el) => {
                 if (el.Biddings.length > 0) {
                     const resolveBid = await CronController.bidTransaction(el.id)
@@ -140,7 +145,7 @@ describe("test cron controller", function() {
                     done()
                 }
             })
-            
+            done()
         })
     })
 

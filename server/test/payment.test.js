@@ -6,7 +6,7 @@ const { queryInterface } = sequelize;
 const stripe = require('stripe')('sk_test_51HdtTKAh63sGgRSDkRYGnptHJ4hgJUkaBQueiHRzpjZnqV9O1HGRRTN1fPsOLDKYaCcdQxnyCYaB3ilc8fBwW1Zu00ESHLlRlh')
 
 
-const userData = {email: 'user@mail.com', password: '123456'}
+const userData = {fullname: 'user', email: 'user@mail.com', password: '123456'}
 let access_token
 
 afterAll((done) => {
@@ -26,29 +26,17 @@ afterAll((done) => {
     });
 });
 
-beforeAll((done) => {
-    Users.create({
-      fullname: 'user',
-      email: 'user@mail.com',
-      password: '123456'
-    })
-    .then((data) => {
-    //   console.log(data)
-      return Users.findOne({ where: { email: userData.email } })
-    })
-    .then((user) => {
-      access_token = generateToken(user);
-      done();
-    })
-    .catch((err) => {
-      console.log(err);
-      done();
-    });
+beforeAll( async (done) => {
+  try {
+    const newUser = await Users.create(userData)
+    const user = await Users.findOne({where: { email: newUser.email}})
+    access_token = generateToken(user)
+    done()
+  } catch (error) {
+    console.log(error)
+    done()
+  }
 })
-
-// .get('/', authenticate, PaymentController.read)
-// .post('/', authenticate, PaymentController.stripe)
-// .post('/create/:TrxId/:amount', authenticate, PaymentController.create)
 
 describe('success read paymment histories', () => {
   it('test success read paymment histories', (done) => {
@@ -58,7 +46,7 @@ describe('success read paymment histories', () => {
       .set("access_token", access_token)
       .expect("Content-Type", /json/)
       .then((response) => {
-        console.log(response)
+        // console.log(response)
         const { body, status } = response
         // console.log(body, 'dari test')
         expect(status).toBe(200)
@@ -69,7 +57,7 @@ describe('success read paymment histories', () => {
   })
 })
 
-describe('success create payment history', () => {
+describe('success create payment history', async () => {
   it('test success create payment history', (done) => {
     request(app)
       .post('/payment/create/1/20000')
@@ -77,7 +65,7 @@ describe('success create payment history', () => {
       .set("access_token", access_token)
       .expect("Content-Type", /json/)
       .then((response) => {
-        console.log(response, 'ini body')
+        // console.log(response, 'ini body')
         const { body, status } = response
         expect(status).toBe(201)
         expect(body).toHaveProperty('message', 'Payment successfull')
@@ -87,6 +75,8 @@ describe('success create payment history', () => {
 })
 
 describe('success create payment stripe', () => {
+  // const user = await Users.findOne({where: { email: newUser.email}})
+  // access_token = generateToken(user)
   it('test success create payment stipe', (done) => {
     request(app)
       .post('/payment')
@@ -95,12 +85,12 @@ describe('success create payment stripe', () => {
       .send({
         price: 50000,
         token: {
-          email: 'user@mail.com'
+          email: userData.email
         }
       })
       .expect("Content-Type", /json/)
-      .then((response) => {
-        // console.log(response, 'ini body')
+      .then(async (response) => {
+        console.log(access_token, '============================')
         const { body, status } = response
         expect(status).toBe(200)
         const expected = {foo: 'bar'}
