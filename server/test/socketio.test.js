@@ -119,27 +119,3 @@ describe('start io', () =>{
     done()
   })
 })
-
-// describe('test sockethandler', () =>{
-//   test('test socket join', (done) => {
-//     SocketHandler.joinRoom.on((payload, socket) => {
-//       socket.join(payload)
-//     })
-//     done()
-//   })
-// })
-
-/**
- * start: (io) => io.on('connection', (socket) => {
-        // console.log('connected')
-        socket.on('joinRoom', payload => {
-            SocketHandler.joinRoom(payload, socket)
-        })          
-    })
-
- * static joinRoom = (payload, socket) => {
-        socket.join(payload)
-        // console.log(`${payload}`)
-    }
-    
- */

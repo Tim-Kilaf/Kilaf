@@ -24,7 +24,6 @@ function reducerItem(state = currentState, action) {
         ...state,
         hottestItems: action.payload.items
       }
-      console.log(action.payload.items)
       return hottestState
       case 'FETCH_ITEM_DETAIL':        
         let newDetail = {
@@ -33,9 +32,7 @@ function reducerItem(state = currentState, action) {
         }
 
         return newDetail
-      case 'ADD_BIDDING':
-
-        // console.log(action.payload)
+    case 'ADD_BIDDING':
         return state  
       case 'FETCH_CART':        
         let newCart = {
@@ -49,8 +46,7 @@ function reducerItem(state = currentState, action) {
           category: action.payload
         }
       return category;
-      case 'FETCH_ITEM_CATEGORY':
-        console.log(action.payload)
+    case 'FETCH_ITEM_CATEGORY':
         let categorized = {
           ...state,
           categorized: action.payload

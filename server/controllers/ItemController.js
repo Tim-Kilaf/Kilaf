@@ -21,20 +21,17 @@ class ItemController {
 
       res.status(200).json({ items })
     } catch (err) {
-      // console.log(err)
       return next(err)
     }
   }
 
   listHottest = async (req, res, next) => {
-    console.log('baru masuk list hottest')
     try {
-      console.log('dalem try')
       let items = await Items.findAll({
         where: {
           status: 'unsold',
           start_date: {
-            [Op.lte]: new Date() 
+            [Op.lte]: new Date()
           }
         },
         include: [ItemPictures, Biddings, Users]
@@ -48,31 +45,26 @@ class ItemController {
         return item
       }).sort((a, b) => b.bids - a.bids).slice(0, 10)
 
-      // console.log(items.length)
-
       res.status(200).json({ items })
     } catch (err) {
-      // console.log(err)
       return next(err)
     }
   }
 
   createItem = async (req, res, next) => {
     try {
-      // console.log(req.body, '===============req.body==================')
       delete req.body.image
+
       const payload = {
         ...req.body,
         current_price: req.body.starting_price,
         status: 'unsold',
         UserId: req.user.id
       }
-      // console.log(payload, '=================payload================')
-      const item = await Items.create(payload)
-      // console.log(item, '=================item================')
 
-      if(req.files){
-        // console.log(req.files.images)
+      const item = await Items.create(payload)
+
+      if (req.files) {
         const images = req.files.images
   
         if (Array.isArray(req.files.images)) {
@@ -92,19 +84,13 @@ class ItemController {
         }
       }
 
-      // this.io.emit('newItem', item)
-
       res.status(201).json({ message: 'Sucessfully Created', id: item.id })
     } catch (err) {
-      // console.log(err, 'error dari controller')
-      console.log(err)
       return next(err)
     }
   }
 
   detailItem = async (req, res, next) => {
-    // console.log('masuk detail item')
-    // console.log(req.params)
     try {
       const item = await Items.findOne({
         where: {
@@ -132,7 +118,6 @@ class ItemController {
       })
 
       this.io.emit('joinRoom', `item-${req.params.id}`)
-      // this.op
 
       let highestBidder = item.Biddings.length > 0 && req.user.id === item.Biddings[0].User.id
 
@@ -150,11 +135,9 @@ class ItemController {
         winner = item.Biddings[0].User.id
       }
 
-        // io.emit('test', false)
         res.status(200).json({ item, highestBidder, owner, winner })
         
     } catch (err) {
-      // console.log(err)
       return next(err)
     }
   }

@@ -47,27 +47,25 @@ export default function Register() {
   const history = useHistory()
 
   const handleNameChange = (event) => {
-    console.log(event.target.value,'<<< username change');
     setName(event.target.value);
   }
   const handleEmailChange = (event) => {
-    console.log(event.target.value,'<<< email change');
     setEmail(event.target.value);
 
   }
   const handlePasswordChange = (event) => {
-    console.log(event.target.value,'<<< password change');
     setPassword(event.target.value);
 
   }
   const handleSubmit = (event) => {
     event.preventDefault();
-    // console.log(event, 'submit form register');
+
     let payload = {
       fullname: name,
       email,
       password
     }
+
     dispatch(register(payload))
     history.push('/login')
   }
