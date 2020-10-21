@@ -10,7 +10,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../store/actions/actionsUser'
 import { useHistory, Redirect, Link } from 'react-router-dom'
-import Register from '../register/Register'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -44,7 +43,6 @@ export default function Login() {
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
     const dispatch = useDispatch()
-    const history = useHistory()
 
     const isLogin = useSelector(state => state.reducerLogin.isLogin)
 
@@ -55,11 +53,6 @@ export default function Login() {
             password 
         }
         dispatch(login(payload)) 
-    }
-
-    function navigateRegister(event) {
-        event.preventDefault()
-        history.push('/register')
     }
 
     return (

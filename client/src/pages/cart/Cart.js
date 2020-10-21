@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Box, Container, makeStyles, Paper, Divider, Typography, Button, Grid } from '@material-ui/core';
+import { Box, Container, makeStyles, Divider, Typography, Button, Grid } from '@material-ui/core';
 import { getCarts } from '../../store/actions/actionsItem'
 import StripeCheckout from 'react-stripe-checkout'
 
@@ -125,7 +125,7 @@ export default function Cart() {
         <Grid className={classes.gridRow}>
           {carts.length > 0 ?
             carts.map(cart => (
-              <div>
+              <div key={cart.id}>
                 <CartDetail cart={cart} />
               </div>
             )

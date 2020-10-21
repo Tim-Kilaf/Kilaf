@@ -66,7 +66,7 @@ function DefaultContainer() {
 }
 
 function PrivateRoute({ children, ...rest }) {
-  const isLogin = useSelector((state) => state.isLogin)
+  useSelector((state) => state.isLogin)
   return (
     <Route
       {...rest}

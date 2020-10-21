@@ -176,11 +176,11 @@ export default function Detail() {
     return () => {
       disconnectSocket()
     }
-  }, [room])
+  }, [room, dispatch, param.id])
 
   useEffect(() => {
     dispatch(detailItem(param.id))
-  }, [dispatch])
+  }, [dispatch, param.id])
 
 
   useEffect(() => {
@@ -257,8 +257,10 @@ export default function Detail() {
                 {data.item && data.item.ItemPictures.length > 0 && data.item.ItemPictures.map(item => {
                   return (
                     <img
+                      key={item.id}
                       src={process.env.PUBLIC_URL + `../uploads/${item.path}`}
                       className={classes.image}
+                      alt="kosong gaes"
                     />
                   )
                 })}
@@ -367,7 +369,7 @@ export default function Detail() {
             <p style={{ margin: 10, fontSize: '1.2rem', fontWeight: 'bold' }}>Bidder</p>
             {data.item.Biddings && data.item.Biddings.map(el => {
               return (
-                <Box boxShadow={3} style={{ borderRadius: 15 }}>
+                <Box boxShadow={3} style={{ borderRadius: 15 }} key={el.id}>
                   <Container>
                     <Grid container style={{ margin: 10 }}>
                       <Grid item xs={12} sm={12} md={3} style={{ display: 'flex', alignItems: 'center' }}>

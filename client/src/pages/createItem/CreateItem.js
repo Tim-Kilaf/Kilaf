@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { createItem, getCategory } from '../../store/actions/actionsItem'
+import { createItem } from '../../store/actions/actionsItem'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
 import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -70,8 +67,6 @@ export default function CreateItem() {
 
   const category = useSelector(state => state.reducerItem.category)
 
-  console.log(category)
-
   const onChangeHandler = (e) => {
     setPayload({
       ...payload,
@@ -111,7 +106,7 @@ export default function CreateItem() {
       <h1>Create New Item</h1>
       <form className={clasess.form}>
         <Box className={clasess.inputBox}>
-          <ValidationTextField id="validation-outlined-input" style={{ width: '100%' }} onChange={(e) => onTextHandler(e)} name="name" id="outlined-basic" label="Item's Name" variant="outlined" required />
+          <ValidationTextField id="validation-outlined-input" style={{ width: '100%' }} onChange={(e) => onTextHandler(e)} name="name" label="Item's Name" variant="outlined" required />
         </Box>
         <Box className={clasess.inputBox}>
           <ValidationTextField name="description" onChange={(e) => onTextHandler(e)} style={{ width: '100%' }} id="outlined-basic" label="Description" variant="outlined" required />
@@ -128,7 +123,7 @@ export default function CreateItem() {
                 <option value="Pilih" disabled> Pilih Salah Satu </option>
                 {category.result && category.result.map(el => {
                   return (
-                    <option value={el.id}> {el.name} </option>
+                    <option key={el.id} value={el.id}> {el.name} </option>
                   )
                 })}            
             </select>

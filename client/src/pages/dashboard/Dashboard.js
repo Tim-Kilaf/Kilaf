@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Box from '@material-ui/core/Box';
 import { DashboardCarousel } from '../../components/carousel/DashboardCarousel'
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux'
-import { getItems, getHottestItems, getCategory } from '../../store/actions/actionsItem'
+import { getItems, getHottestItems } from '../../store/actions/actionsItem'
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -57,8 +57,6 @@ export default function Dashboard() {
     dispatch(getHottestItems())
   }, [dispatch])
 
-  console.log(process.env.PUBLIC_URL)
-
   return (
     <Box className={classes.mainContainer}>
       <Box style={{ margin: '3em 0', color: 'rgba(0,0,0,.7)' }}>        
@@ -66,11 +64,12 @@ export default function Dashboard() {
         <Box style={{ display: 'flex', overflow: 'auto' }}>
           {category && category.map((el, i) => {
             return(
-              <Box>
+              <Box key={el.id}>
                 <Link to={`/category/${el.id}`}  style={{ color: 'black', textDecoration: 'none' }}>
                   <img
                     src={imageUrl[i]}
                     className={classes.image}
+                    alt="kosong gaes"
                   />
                   <h3 style={{color: 'rgba(0,0,0,.8)', fontWeight: 'initial'}}> {el.name} </h3>
                 </Link>                

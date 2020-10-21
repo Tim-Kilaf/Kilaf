@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import Moment from 'react-moment';
@@ -102,6 +102,7 @@ export default function CartCard(props) {
             onClick={() => history.push(`/bid/${cart.id}`)}
             src={process.env.PUBLIC_URL + `../uploads/${cart.Item.ItemPictures[0].path}`}            
             className={classes.image}
+            alt="kosong gaes"
           />
         </Box>
         <Box className={classes.content}>
@@ -116,7 +117,7 @@ export default function CartCard(props) {
             <span className={classes.description}>{cart.Item.description}</span>
           </Box>
           <Box>
-            <Button variant="contained" onClick={() => history.push(`/bid/${cart.id}`)} color="primary">
+            <Button variant="contained" onClick={() => history.push(`/bid/${cart.User.id}`)} color="primary">
               Details
             </Button>
           </Box>

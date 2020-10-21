@@ -10,7 +10,6 @@ import {
 import { useDispatch } from 'react-redux';
 import { register } from '../../store/actions/actionsUser'
 import { useHistory, Link } from 'react-router-dom'
-import Login from '../login/Login'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,11 +66,6 @@ export default function Register() {
     }
 
     dispatch(register(payload))
-    history.push('/login')
-  }
-
-  const navigateLogin = (event) => {
-    event.preventDefault()
     history.push('/login')
   }
 
