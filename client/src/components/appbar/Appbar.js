@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { MdShoppingCart } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
@@ -95,6 +96,7 @@ export default function Appbar() {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [username, setUsername] = useState('');
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -118,8 +120,9 @@ export default function Appbar() {
     history.push('/');
   }
 
-  const user = useSelector((state)  => state.reducerLogin.user);
-  const email = useSelector((state)  => state.reducerLogin.email);  
+  useEffect(() => {
+    setUsername(localStorage.getItem('username'))
+  })
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -132,9 +135,20 @@ export default function Appbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
       >
-      <MenuItem>{email}</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Avatar color="primary"style={{marginRight: 10}}>
+          {username ? username[0].toUpperCase() : 'A'}
+        </Avatar>
+        <p>{username}</p>
+      </MenuItem>
+      <MenuItem onClick={handleLogout}>
+      <IconButton aria-label="show 4 new mails" color="primary">
+          <Badge color="secondary">
+            <ExitToAppIcon />
+          </Badge>
+        </IconButton>
+        <p>Logout</p> 
+      </MenuItem>
       {/* <MenuItem><p>username</p></MenuItem> */}
     </Menu>
   );
@@ -154,6 +168,15 @@ export default function Appbar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <MenuItem onClick={handleProfileMenuOpen}>
+        <Avatar 
+          color="primary"
+          style={{marginRight: 10}}
+        >
+          {username ? username[0].toUpperCase() : 'A'}
+        </Avatar>
+        <p>{username}</p>
+      </MenuItem>
       <MenuItem>
         <IconButton aria-label="show 4 new mails" color="primary">
           <Badge color="secondary">
@@ -162,15 +185,15 @@ export default function Appbar() {
         </IconButton>
         <p>Keranjang</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <Avatar 
-          color="primary"
-          style={{marginRight: 10}}
-        >
-          {user ? user[0].toUpperCase() : 'A'}
-        </Avatar>
-        <p>{user}</p>
+      <MenuItem>
+        <IconButton aria-label="show 4 new mails" color="primary">
+          <Badge color="secondary">
+            <ExitToAppIcon />
+          </Badge>
+        </IconButton>
+        <p>Logout</p>
       </MenuItem>
+
     </Menu>
   );
 
@@ -218,9 +241,13 @@ export default function Appbar() {
                 <Avatar 
                   onClick={handleProfileMenuOpen}
                   color="primary"
+                  style={{marginRight: '.5em'}}
                 >
-                  {user ? user[0].toUpperCase() : 'A'}
+                  {username ? username[0].toUpperCase() : 'A'}
                 </Avatar>
+                <span>{username}</span>
+              </MenuItem>
+              <MenuItem>
               </MenuItem>
             </div>
             <div className={classes.sectionMobile}>
