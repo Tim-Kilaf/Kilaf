@@ -128,7 +128,14 @@ class ItemController {
       } else {
         owner = false
       }
-        res.status(200).json({ item, highestBidder, owner })
+
+      let winner;
+
+      if (typeof item.HighestBiddingId === 'number' && item.HighestBiddingId !== null) {
+        winner = item.Biddings[0].User.id
+      }
+
+        res.status(200).json({ item, highestBidder, owner, winner })
         
     } catch (err) {
       return next(err)
