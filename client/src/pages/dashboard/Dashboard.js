@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
     objectFit: 'cover',
     borderRadius: 20,
     marginRight: 13,
+    color: 'rgba(0,0,0,.7)'
   },
 }));
 
