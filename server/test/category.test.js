@@ -56,7 +56,6 @@ describe('success get category list', () => {
       .expect("Content-Type", /json/)
       .then((response) => {
         const { body, status } = response
-        // console.log(body, 'dari test')
         expect(status).toBe(200)
         const expected = {foo: 'bar'}
         expect(body).toEqual(expect.not.objectContaining(expected))
@@ -74,7 +73,6 @@ describe('success get category by id', () => {
         .expect("Content-Type", /json/)
         .then((response) => {
           const { body, status } = response
-          // console.log(body, 'dari test')
           expect(status).toBe(200)
           const expected = {foo: 'bar'}
           expect(body).toEqual(expect.not.objectContaining(expected))
@@ -92,7 +90,6 @@ describe('fail get category by id', () => {
         .expect("Content-Type", /json/)
         .then((response) => {
           const { body, status } = response
-          // console.log(body, 'dari test')
           expect(status).toBe(500)
           const expected = {foo: 'bar'}
           expect(body).toEqual(expect.not.objectContaining(expected))
@@ -106,11 +103,9 @@ describe('fail get category list', () => {
       request(app)
         .get('/category')
         .set("Accept", "application/json")
-        // .set("access_token", access_token)
         .expect("Content-Type", /json/)
         .then((response) => {
           const { body, status } = response
-          // console.log(body, 'dari test')
           expect(status).toBe(500)
           const expected = {foo: 'bar'}
           expect(body).toEqual(expect.not.objectContaining(expected))

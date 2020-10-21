@@ -31,7 +31,6 @@ export function getItems() {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data)
         dispatch({
           type: 'FETCH_ITEM',
           payload: data
@@ -68,7 +67,6 @@ export function detailItem(id) {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data)
         dispatch({
           type: 'FETCH_ITEM_DETAIL',
           payload: data
