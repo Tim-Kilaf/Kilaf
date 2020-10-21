@@ -20,6 +20,8 @@ const useStyles = makeStyles((theme) => ({
     padding: 14,
     borderRadius: 15, 
     marginTop: 30,
+    color: 'rgba(0,0,0,.7)',
+    fontSize: '.8rem',
     [theme.breakpoints.down('xs')]: {
       width: '90%',
     },
@@ -30,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     objectFit: 'cover',
     borderRadius: 20,
     marginRight: 13,
+    color: 'rgba(0,0,0,.7)'
   },
 }));
 
@@ -58,8 +61,8 @@ export default function Dashboard() {
 
   return (
     <Box className={classes.mainContainer}>
-      <Box style={{ margin: '3em 0' }}>        
-        <h1>What Are You Looking For?</h1>
+      <Box style={{ margin: '3em 0', color: 'rgba(0,0,0,.7)' }}>        
+        <h1 style={{fontSize: '1.8rem', fontWeight: 'bold'}}>What Are You Looking For?</h1>
         <Box style={{ display: 'flex', overflow: 'auto' }}>
           {category && category.map((el, i) => {
             return(
@@ -69,7 +72,7 @@ export default function Dashboard() {
                     src={imageUrl[i]}
                     className={classes.image}
                   />
-                  <h3> {el.name} </h3>
+                  <h3 style={{color: 'rgba(0,0,0,.8)', fontWeight: 'initial'}}> {el.name} </h3>
                 </Link>                
               </Box>             
             )
