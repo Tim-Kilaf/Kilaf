@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 const { Items, Biddings, Users } = require('../models')
 
 class SocketHandler {

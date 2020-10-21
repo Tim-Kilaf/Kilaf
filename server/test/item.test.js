@@ -131,7 +131,7 @@ describe('success get all item', () => {
 describe('success get hottest list', () => {
   it('test success get hottest list', (done) => {
     request(app)
-      .get(`/item`)
+      .get(`/item/hottest`)
       .set("Accept", "application/json")
       .set("access_token", access_token)
       .expect("Content-Type", /json/)
@@ -149,7 +149,7 @@ describe('success get hottest list', () => {
 describe('fail get hottest list', () => {
   it('test fail get hottest list', (done) => {
     request(app)
-      .get(`/item`)
+      .get(`/item/hottest`)
       .set("Accept", "application/json")
       // .set("access_token", access_token)
       .expect("Content-Type", /json/)
@@ -183,9 +183,9 @@ describe('fail get all item', () => {
 describe('fail get detail item', () => {
   it('test fail get detail item', (done) => {
     request(app)
-      .get(`/item/${productId}`)
+      .get(`/item/as`)
       .set("Accept", "application/json")
-      // .set("access_token", access_token)
+      .set("access_token", access_token)
       .expect("Content-Type", /json/)
       .then((response) => {
         const { body, status } = response;
@@ -202,12 +202,12 @@ describe('fail create item', () => {
     request(app)
       .post('/item/create')
       .set("Accept", "application/json")
-      // .set("access_token", access_token)
+      .set("access_token", access_token)
       .send({
         name: "Lea Jeans",
         condition: 'Bekas',
         description: 'dilelang buat beli motor',
-        starting_price: 50000,
+        starting_price: 'asd',
         buyout_price: 1000000,
         bid_increment: 5000,
         start_date: new Date,
@@ -217,7 +217,7 @@ describe('fail create item', () => {
       .then((response) => {
         const { body, status } = response
         productId = body.id
-        // console.log(body, 'dari test')
+        console.log(body, 'dari test')
         expect(status).toBe(500)
         const expected = {foo: 'bar'}
         expect(body).toEqual(expect.not.objectContaining(expected))
