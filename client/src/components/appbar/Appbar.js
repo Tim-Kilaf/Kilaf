@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { MdShoppingCart } from 'react-icons/md';
@@ -12,12 +12,13 @@ import {
   AppBar, 
   Toolbar, 
   IconButton, 
-  InputBase, 
+  Button, 
   Badge,
   MenuItem,
   Menu,
   Container,
-  Avatar
+  Avatar,
+  Box
 } from '@material-ui/core';
 
 import { logout, login } from '../../store/actions/actionsUser';
@@ -168,6 +169,19 @@ export default function Appbar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <MenuItem>
+        <Link to="/create" style={{textDecoration: 'none'}}>
+          <Button
+            variant="contained"
+            size="small"
+            color="secondary"
+            className={classes.button}
+            startIcon={<AddCircleOutlineIcon />}
+          >
+            Create Item
+          </Button>
+        </Link>
+      </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <Avatar 
           color="primary"
@@ -193,14 +207,13 @@ export default function Appbar() {
         </IconButton>
         <p>Logout</p>
       </MenuItem>
-
     </Menu>
   );
 
   return (
     <div className={classes.grow}>
       <AppBar style={{backgroundColor: '#fff'}} position="static">
-        <Container>
+        <Box style={{width: '74%', margin: '0 auto',}}>
           <Toolbar>
             <Link style={{marginRight: 20}} to="/">
               <img src="https://i.imgur.com/DkXvWFJ.png" alt="logo" height="35px" />
@@ -220,6 +233,17 @@ export default function Appbar() {
               />
             </div> */}
             <div className={classes.sectionDesktop}>
+              <Link to="/create" style={{textDecoration: 'none', marginTop: 10, marginRight: 20}}>
+                <Button
+                  variant="contained"
+                  size="small"
+                  color="secondary"
+                  className={classes.button}
+                  startIcon={<AddCircleOutlineIcon />}
+                >
+                  Create Item
+                </Button>
+              </Link>
               <Link to="/cart">
                 {carts.length > 0 ? (
                   <IconButton aria-label={carts.length > 1 ? `show ${carts.length} products` : carts.length > 0 ? `show 1 product` : `your cart is empty`} color="primary">
@@ -262,7 +286,7 @@ export default function Appbar() {
               </IconButton>
             </div>
           </Toolbar>
-        </Container>
+        </Box>
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
