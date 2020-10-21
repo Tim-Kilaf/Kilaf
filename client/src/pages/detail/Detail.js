@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { detailItem, addBidding } from '../../store/actions/actionsItem'; // merge line 5-6 to one
+import { detailItem, addBidding, getCarts } from '../../store/actions/actionsItem';
 import { useParams } from 'react-router-dom';
 import Moment from 'react-moment';
 import NumericInput from 'react-numeric-input';
@@ -134,22 +134,25 @@ export default function Detail() {
 
   const handleBuyout = async (e) => {
     e.preventDefault()       
-    await fetch(`http://localhost:3001/transaction/buyout/${param.id}`, {
+    fetch(`http://localhost:3001/transaction/buyout/${param.id}`, {
       headers: {
         access_token: localStorage.getItem('access_token')
       }
-    })     
+    })
+      .then(() => dispatch(getCarts()))
   }
 
-  const handleBuyoutMaxPrice = async() => {
+  const handleBuyoutMaxPrice = async () => {
     // e.preventDefault()
-    await fetch(`http://localhost:3001/transaction/buyout/${param.id}`, {
+    fetch(`http://localhost:3001/transaction/buyout/${param.id}`, {
       headers: {
         access_token: localStorage.getItem('access_token')
       }
     })
       .then(() => {
         console.log('success buyout');
+
+        dispatch(getCarts())
       })
       .catch(err => {
         console.log(err);
