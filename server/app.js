@@ -29,7 +29,7 @@ app
 
 // CRON Function (Runs every minute 00-59)
 cron.schedule('0-59 * * * *', () => {
-    // resolveBids()
+    resolveBids()
 })
 
 module.exports = app
