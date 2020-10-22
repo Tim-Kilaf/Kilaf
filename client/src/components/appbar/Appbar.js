@@ -191,12 +191,14 @@ export default function Appbar() {
         <p>{username}</p>
       </MenuItem>
       <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="primary">
-          <Badge color="secondary">
-            <MdShoppingCart />
-          </Badge>
-        </IconButton>
-        <p>Keranjang</p>
+        <Link to="/cart">
+          <IconButton aria-label="show 4 new mails" color="primary">
+            <Badge color="secondary">
+              <MdShoppingCart />
+            </Badge>
+          </IconButton>
+          </Link>
+        <p style={{textDecoration: 'none'}}>Keranjang</p>
       </MenuItem>
       <MenuItem>
         <IconButton aria-label="show 4 new mails" color="primary">
