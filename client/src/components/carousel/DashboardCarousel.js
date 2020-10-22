@@ -63,7 +63,7 @@ export function DashboardCarousel(props) {
         <Slider {...settings}>
           {props.data.length > 0 && props.data.map(items => {
             return (
-              <BiddingCard data={items} />
+              <BiddingCard key={items.id} data={items} />
             )
           })}
         </Slider>

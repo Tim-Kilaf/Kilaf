@@ -10,7 +10,6 @@ import {
 import { useDispatch } from 'react-redux';
 import { register } from '../../store/actions/actionsUser'
 import { useHistory, Link } from 'react-router-dom'
-import Login from '../login/Login'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,33 +46,26 @@ export default function Register() {
   const history = useHistory()
 
   const handleNameChange = (event) => {
-    console.log(event.target.value,'<<< username change');
     setName(event.target.value);
   }
   const handleEmailChange = (event) => {
-    console.log(event.target.value,'<<< email change');
     setEmail(event.target.value);
 
   }
   const handlePasswordChange = (event) => {
-    console.log(event.target.value,'<<< password change');
     setPassword(event.target.value);
 
   }
   const handleSubmit = (event) => {
     event.preventDefault();
-    // console.log(event, 'submit form register');
+
     let payload = {
       fullname: name,
       email,
       password
     }
-    dispatch(register(payload))
-    history.push('/login')
-  }
 
-  const navigateLogin = (event) => {
-    event.preventDefault()
+    dispatch(register(payload))
     history.push('/login')
   }
 

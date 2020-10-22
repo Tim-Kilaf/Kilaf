@@ -64,7 +64,6 @@ beforeAll((done) => {
             return Items.create(item)
         })
         .then(res => {
-            // console.log(res, '++++++++++++++++++++++++++++++++++++');
             itemId = res.id
             return Items.create(unsoldItem)
         })
@@ -83,19 +82,15 @@ beforeAll((done) => {
 afterAll((done) => {
     queryInterface.bulkDelete("Transactions")
         .then(res => {
-            console.log(res, 'deleted transactions');
             return queryInterface.bulkDelete("Items")
         })
         .then(res => {
-            console.log(res, 'deleted items');
             return queryInterface.bulkDelete("Users")
         })
         .then(res => {
-            console.log(res, 'deleted users');
             done()
         })
         .catch((err) => {
-            console.log(err);
             done()
         });
 });
@@ -110,11 +105,8 @@ describe("test cron controller", function() {
         .expect("Content-Type", /json/)
         .then(async (response) => {
             const { body, status } = response
-            console.log('create biddings');
-            // console.log(body);
-            // console.log(status);
             const getAll = await CronController.getWinningBids()
-            // console.log(getAll,'winingbids');
+
             expect(getAll).toEqual(expect.anything())
             done()
         })
@@ -129,18 +121,11 @@ describe("test cron controller", function() {
         .expect("Content-Type", /json/)
         .then( async (response) => {
             const { body, status } = response
-            // console.log(response);
-            console.log('create biddings resolve');
-            // console.log(body);
-            // console.log(status);
-    
-
             const getAll = await CronController.getWinningBids()
-            // console.log(getAll, '===============getAll==============')
+
             getAll.forEach(async(el) => {
                 if (el.Biddings.length > 0) {
                     const resolveBid = await CronController.bidTransaction(el.id)
-                    // console.log(resolveBid);
                     expect(resolveBid).toEqual(expect.anything())
                     done()
                 }
@@ -151,14 +136,9 @@ describe("test cron controller", function() {
 
     it("resolve no bids", async function (done) {
         const getAll = await CronController.getWinningBids()
-        console.log(getAll,'nobids getall');
         getAll.forEach(async (el) => {
-            // console.log(el.id);
-            // console.log(el.Biddings);
             if (el.Biddings.length < 1) {
-                console.log(el.id, 'nobids id');
                 const noBids = await CronController.noBids(el.id)
-                console.log(noBids,'noBids');
                 expect(noBids).toEqual(expect.anything())
                 done()
             }

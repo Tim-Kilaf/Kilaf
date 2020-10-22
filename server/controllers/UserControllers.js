@@ -3,9 +3,6 @@ const { generateToken } = require('../helpers/jwt')
 const {Users, Roles} = require('../models')
 
 class UserController {
-    // constructor(io) {
-    //     this.io = io
-    // }
    static login = async (req, res, next) => {
         try {
             const { email, password } = req.body
@@ -26,7 +23,6 @@ class UserController {
                 next({code: 400, message: 'Invalid email or password'})
             }
         } catch (err) {
-            // console.log(err, 'catch login')
             return next(err)
         }
     }
@@ -46,7 +42,6 @@ class UserController {
             return res.status(201).json({id: newUser.id, email: newUser.email, role})
 
         } catch (err) {
-            // console.log(err, 'catch register')
             return next(err)
         }
     }

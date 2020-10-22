@@ -80,7 +80,6 @@ describe("test user fail LOGIN with POST /login", function () {
   it("test fail LOGIN because empty email and password responds with json", function (done) {
     request(app)
       .post("/auth/login")
-    //   .send({ email: "admin2@mail.com", password: "123456" })
       .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .then( async (response) => {

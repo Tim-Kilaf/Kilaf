@@ -10,10 +10,9 @@ class CategoryController {
     listCategories = async (req,res,next) => {
         try {
             const result = await Categories.findAll()
-            // console.log(result);
+
             res.status(200).json({result})
         } catch (error) {
-            console.log(error, '===============');
             return next(error)
         }
     }
@@ -49,7 +48,6 @@ class CategoryController {
             })
             res.status(200).json({items})
         } catch (error) {
-            // console.log(error);
             return next(error)
         }
         

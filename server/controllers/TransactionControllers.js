@@ -5,20 +5,9 @@ class TransactionController {
     constructor(io) {
         this.io = io
     }
-    // read = async (req, res, next) => {
-    //     try {
-    //         const dataTrx = await Transactions.findAll()
-    //         // console.log(dataTrx)
-    //         res.status(200).json(dataTrx)
-    //     } catch (err) {
-    //         console.log(err)
-    //         return next(err)
-    //     }
-    // }
 
     getUserTransactions = async (req, res, next) => {
         try {
-            // console.log(req.user)
             const UserId = req.user.id
             const userTrx = await Transactions.findAll(
                 {
@@ -34,24 +23,22 @@ class TransactionController {
             )
             res.status(200).json(userTrx)
         } catch (err) {
-            // console.log(err)
         }
     }
 
     create = async (req, res, next) => {
         try {
             const { ItemId } = req.params
-            console.log(ItemId,'itemid trx controller');
+
             const data = await Biddings.findAll(
                 {
                     where: { ItemId },
                     order: [['price', 'DESC']]
                 }
             )
-            console.log(data,'all bids for item trx cont');
+
             const amount = data[0].price
             const UserId = data[0].UserId
-            console.log(UserId)
 
             const payload = {
                 UserId,
@@ -61,7 +48,7 @@ class TransactionController {
                 date: new Date
             }
             const trx = await Transactions.create(payload)
-            console.log(trx)
+
             const itemUpdate = await Items.update({
                 status: 'sold',
                 HighestBiddingId: UserId,
@@ -74,7 +61,6 @@ class TransactionController {
 
             res.status(201).json(trx)
         } catch (err) {
-            // console.log(err)
             return next(err)
         }
     }
@@ -83,16 +69,6 @@ class TransactionController {
         try {
             const { ItemId } = req.params
 
-            // const data = await Biddings.findAll(
-            //     {
-            //         where: { ItemId },
-            //         order: [['price', 'DESC']]
-            //     }
-            // )
-            // const amount = data[0].price
-            // const UserId = data[0].UserId
-            // console.log(UserId)
-
             const item = await Items.findOne({
                 where: {
                   id: ItemId
@@ -100,7 +76,6 @@ class TransactionController {
             })
 
             const buyoutPrice = item.dataValues.buyout_price
-            console.log(item.dataValues.buyout_price,'buyout price');
 
             const payload = {
                 UserId: req.user.id,
@@ -110,9 +85,8 @@ class TransactionController {
                 date: new Date
             }
 
-            console.log(payload, 'buyout trx payload');
             const trx = await Transactions.create(payload)
-            console.log(trx)
+
             const itemUpdate = await Items.update({
                 status: 'sold',
                 HighestBiddingId: req.user.id,
@@ -128,68 +102,9 @@ class TransactionController {
             res.status(201).json(trx)
             
         } catch (err) {
-            // console.log(err)
             next(err)
         }
     }
-
-    // createForCron = async (ItemId) => {
-    //     try {
-    //         // const { ItemId } = req.params
-
-    //         const data = await Biddings.findAll(
-    //             {
-    //                 where: { ItemId: ItemId },
-    //                 order: [['price', 'DESC']]
-    //             }
-    //         )
-    //         const amount = data[0].price
-    //         const UserId = data[0].UserId
-    //         console.log(UserId)
-
-    //         const payload = {
-    //             UserId,
-    //             ItemId,
-    //             status: 'pending',
-    //             amount,
-    //             date: new Date
-    //         }
-    //         const trx = await Transactions.create(payload)
-    //         // console.log(trx)
-    //         const itemUpdate = await Items.update({
-    //             status: 'sold',
-    //             HighestBiddingId: UserId,
-    //             buyout_date: new Date
-    //         },{
-    //             where: {
-    //                 id: ItemId
-    //             }
-    //         })
-    //         io.emit('test',true)
-    //         return trx
-    //         // res.status(201).json(trx)
-    //     } catch (err) {
-    //         console.log(err)
-    //         return next(err)
-    //     }
-    // }
-    
-    // delete = async (req, res, next) => {
-    //     try {
-    //         const { UserId } = req.params
-
-    //         const data = await Transactions.findAll({ where: { UserId }})
-
-    //         if (data) {
-    //             const result = await Transactions.destroy({ where: { UserId } })
-
-    //             if (result) res.status(200).json({ message: 'Successfully deleted data' })
-    //         } else throw new Error({ code: 404, message: 'Not found: The bidding data is not found.' })
-    //     } catch (err) {
-    //         console.log(err)
-    //         return next(err)
-    //     }
-    // }
 
     paid = async (req, res, next) => {
         try {
@@ -201,7 +116,6 @@ class TransactionController {
             })
             res.status(200).json({ message: 'Payment successfull'})
         } catch (err) {
-            // console.log(err)
             return next(err)
         }
     }

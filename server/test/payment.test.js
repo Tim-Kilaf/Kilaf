@@ -46,9 +46,7 @@ describe('success read paymment histories', () => {
       .set("access_token", access_token)
       .expect("Content-Type", /json/)
       .then((response) => {
-        // console.log(response)
         const { body, status } = response
-        // console.log(body, 'dari test')
         expect(status).toBe(200)
         const expected = {foo: 'bar'}
         expect(body).toEqual(expect.not.objectContaining(expected))
@@ -65,7 +63,6 @@ describe('success create payment history', () => {
       .set("access_token", access_token)
       .expect("Content-Type", /json/)
       .then((response) => {
-        // console.log(response, 'ini body')
         const { body, status } = response
         expect(status).toBe(201)
         expect(body).toHaveProperty('message', 'Payment successfull')
@@ -75,8 +72,6 @@ describe('success create payment history', () => {
 })
 
 describe('success create payment stripe', () => {
-  // const user = await Users.findOne({where: { email: newUser.email}})
-  // access_token = generateToken(user)
   it('test success create payment stipe', (done) => {
     request(app)
       .post('/payment')
@@ -114,7 +109,6 @@ describe('fail create payment stripe', () => {
       })
       .expect("Content-Type", /json/)
       .then((response) => {
-        // console.log(response, 'ini body')
         const { body, status } = response
         expect(status).toBe(400)
         const expected = {foo: 'bar'}
@@ -137,9 +131,7 @@ describe('fail create payment stripe', () => {
           id: 'as'
         }
       })
-      // .expect("Content-Type", /json/)
       .then((response) => {
-        // console.log(response, 'ini body')
         const { body, status } = response
         expect(status).toBe(500)
         const expected = {foo: 'bar'}
@@ -154,12 +146,10 @@ describe('fail read paymment histories', () => {
     request(app)
       .get('/payment')
       .set("Accept", "application/json")
-      // .set("access_token", access_token)
       .expect("Content-Type", /json/)
       .then((response) => {
         console.log(response)
         const { body, status } = response
-        // console.log(body, 'dari test')
         expect(status).toBe(500)
         const expected = {foo: 'bar'}
         expect(body).toEqual(expect.not.objectContaining(expected))
@@ -173,10 +163,8 @@ describe('fail create payment history', () => {
     request(app)
       .post('/payment/create/1/20000')
       .set("Accept", "application/json")
-      // .set("access_token", access_token)
       .expect("Content-Type", /json/)
       .then((response) => {
-        // console.log(response, 'ini body')
         const { body, status } = response
         expect(status).toBe(500)
         const expected = {foo: 'bar'}

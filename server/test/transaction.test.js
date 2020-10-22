@@ -110,9 +110,7 @@ describe("create transaction from buyout", function() {
             console.log(status);
 
             return request(app)
-            .post(`/transaction/create/${itemId}`)
-            // .set('access_token', access_token)
-            // .send({ ItemId: itemId, price: 11000, UserId: userId })
+                .post(`/transaction/create/${itemId}`)
             .set("Accept", "application/json")
             .expect("Content-Type", /json/)
         })
@@ -131,8 +129,7 @@ describe("test buyout function", function() {
     it("user hits buyout", function (done) {
         request(app)
         .get(`/transaction/buyout/${buyoutItemId}`)
-        .set('access_token', access_token)
-        // .send({ ItemId: itemId, price: 11000, UserId: userId })
+            .set('access_token', access_token)
         .set("Accept", "application/json")
         .expect("Content-Type", /json/)
         .then((response) => {
@@ -150,8 +147,7 @@ describe("read transaction", function() {
     it("get user cart", function (done) {
         request(app)
         .get('/transaction')
-        .set('access_token', access_token)
-        // .send({ ItemId: itemId, price: 11000, UserId: userId })
+            .set('access_token', access_token)
         .set("Accept", "application/json")
         .expect("Content-Type", /json/)
         .then((response) => {
@@ -187,8 +183,7 @@ describe("fail create transaction", function() {
 describe("fail read transaction", function() {
     it("get user cart", function (done) {
         request(app)
-        .get('/transaction')
-        // .set('access_token', access_token)
+            .get('/transaction')
         .set("Accept", "application/json")
         .expect("Content-Type", /json/)
         .then((response) => {
@@ -205,9 +200,7 @@ describe("fail read transaction", function() {
 describe("fail buyout function", function() {
     it("user hits buyout", function (done) {
         request(app)
-        .get(`/transaction/buyout/${buyoutItemId}`)
-        // .set('access_token', access_token)
-        // .send({ ItemId: itemId, price: 11000, UserId: userId })
+            .get(`/transaction/buyout/${buyoutItemId}`)
         .set("Accept", "application/json")
         .expect("Content-Type", /json/)
         .then((response) => {
@@ -216,7 +209,6 @@ describe("fail buyout function", function() {
             console.log(body);
             const expected = {foo: 'bar'}
             expect(body).toContain("Whoops, something happened on our end!")
-            // expect(body).toEqual(expect.not.objectContaining(expected))
             done()
         })
     })
