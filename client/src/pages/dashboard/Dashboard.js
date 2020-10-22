@@ -49,7 +49,7 @@ export default function Dashboard() {
     'https://image.freepik.com/free-photo/toys-model-plane-airplane-colorful-model-blue-background_40163-49.jpg',
     'https://image.freepik.com/free-photo/glasses-mobile-phone-laptop-flower-stickers-paper-clips-stationery-yellow-background-workplace-freelancer-businessman-entrepreneur_112337-1210.jpg',
     'https://image.freepik.com/free-photo/cosmetic-make-up-flat-lay-pink-background-copy-space-text-beauty_71163-456.jpg',
-    'https://image.freepik.com/free-photo/toys-model-plane-airplane-colorful-model-blue-background_40163-49.jpg',
+    'https://i.imgur.com/uBIfMjE.jpg',
   ]
 
   useEffect(() => {
