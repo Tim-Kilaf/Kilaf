@@ -16,7 +16,7 @@ class CronController {
 
             return {itemTimeOut}.itemTimeOut
         } catch (err) {
-            console.log(err)
+            // console.log(err)
         }
     }
 
@@ -33,7 +33,7 @@ class CronController {
             return itemUpdate
 
         } catch (err) {
-            console.log(err)
+            // console.log(err)
         }
     }
 
@@ -70,7 +70,7 @@ class CronController {
 
             return trx
         } catch (err) {
-            console.log(err)
+            // console.log(err)
         }
   
     }

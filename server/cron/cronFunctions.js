@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 const CronController = require('../controllers/CronController');
 const TransactionController = require('../controllers/TransactionControllers');
 
