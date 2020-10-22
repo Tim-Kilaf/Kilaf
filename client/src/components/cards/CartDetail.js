@@ -116,11 +116,11 @@ export default function CartCard(props) {
           <Box>
             <span className={classes.description}>{cart.Item.description}</span>
           </Box>
-          <Box>
-            <Button variant="contained" onClick={() => history.push(`/bid/${cart.User.id}`)} color="primary">
+          {/* <Box>
+            <Button variant="contained" onClick={() => history.push(`/bid/${cart.id}`)} color="primary">
               Details
             </Button>
-          </Box>
+          </Box> */}
         </Box>
       </Box>
     </Paper>
